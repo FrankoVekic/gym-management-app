@@ -1,0 +1,120 @@
+.custom-navbar {
+    background: linear-gradient(to right, #1e3c72, #2a5298, #4b79a1, #6c92b2, #98b9ce, #c2d9e6, #ebf2fa);
+    padding: 10px 0;
+    width: 100%;
+    font-family: 'Oswald', sans-serif;
+    text-align: left;
+}
+
+.navbar-toggler{
+    color: #2980b9;
+}
+
+.custom-navbar .navbar-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #f1f1f1;
+}
+
+.custom-navbar .nav-link {
+    margin-right: 15px;
+    color: #2980b9;
+    font-size: 1.2rem;
+}
+
+.nav-link:hover {
+    color: #1a5276;
+}
+
+.feature {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 4rem;
+    width: 4rem;
+    font-size: 2rem;
+  }
+
+.header-bg {
+    background-image: url('/src/style/images/homepageImage1.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 500px;
+}
+
+.custom-prev-icon,
+.custom-next-icon {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    color: white;
+    text-align: center;
+    line-height: 30px;
+    font-size: 20px;
+}
+
+.custom-prev-icon {
+    position: absolute;
+    top: 50%;
+    left: -40px; 
+    transform: translateY(-50%);
+    z-index: 1;
+}
+
+.divider:after,
+.divider:before {
+content: "";
+flex: 1;
+height: 1px;
+background: #eee;
+}
+.h-custom {
+height: calc(100% - 73px);
+}
+@media (max-width: 450px) {
+.h-custom {
+height: 100%;
+}
+}
+
+.custom-next-icon {
+    position: absolute;
+    top: 50%;
+    right: -40px; 
+    transform: translateY(-50%);
+    z-index: 1;
+}
+
+.custom-prev-icon::before {
+    content: '<';
+}
+
+.custom-next-icon::before {
+    content: '>';
+}
+
+.footer {
+    padding: 20px 0;
+    background: linear-gradient(to right, #1e3c72, #2a5298, #4b79a1, #6c92b2, #98b9ce);
+    color: #ffffff;
+}
+
+.footer p {
+    margin: 0;
+    text-align: center;
+}
+
+@media (max-width: 992px) {
+    .navbar-collapse.show .nav-link {
+        color: #ffffff;
+    }
+}
+
+@media (min-width: 992px) {
+    .container {
+        max-width: 90%;
+    }
+}
