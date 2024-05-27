@@ -17,16 +17,16 @@ const FooterComponent = () => {
                         <div className="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3">
                             <h6 className="text-uppercase mb-4 font-weight-bold">Useful Links</h6>
                             <p>
-                                <a className="text-white">Register for Training</a>
+                                <a className="text-white" href="/">Register for Training</a>
                             </p>
                             <p>
-                                <a className="text-white">View Training Schedule</a>
+                                <a className="text-white"  href="/">View Training Schedule</a>
                             </p>
                             <p>
-                                <a className="text-white">Account Login</a>
+                                <a className="text-white"  href="/">Account Login</a>
                             </p>
                             <p>
-                                <a className="text-white">Contact Us</a>
+                                <a className="text-white"  href="/">Contact Us</a>
                             </p>
                         </div>
                         <hr className="w-100 clearfix d-md-none" />
@@ -34,16 +34,16 @@ const FooterComponent = () => {
                         <div className="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3">
                             <h6 className="text-uppercase mb-4 font-weight-bold">Resources</h6>
                             <p>
-                                <a className="text-white">Blog</a>
+                                <a className="text-white"  href="/">Blog</a>
                             </p>
                             <p>
-                                <a className="text-white">FAQs</a>
+                                <a className="text-white"  href="/">FAQs</a>
                             </p>
                             <p>
-                                <a className="text-white">Customer Reviews</a>
+                                <a className="text-white"  href="/">Customer Reviews</a>
                             </p>
                             <p>
-                                <a className="text-white">Terms and Conditions</a>
+                                <a className="text-white"  href="/">Terms and Conditions</a>
                             </p>
                         </div>
                         <hr className="w-100 clearfix d-md-none" />

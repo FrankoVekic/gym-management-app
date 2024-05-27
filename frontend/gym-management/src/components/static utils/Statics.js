@@ -15,7 +15,7 @@ const Statics = {
     navbarLink5: 'Login',
 
     firmName: 'FitnessFit',
-    copyright: `© ${new Date().getFullYear()} Copyright:`,
+    copyright: `© ${new Date().getFullYear()} Copyright: `,
     websiteUrl: 'http://localhost:3000/',
     firmAddress:'31000 Osijek, Croatia',
 
