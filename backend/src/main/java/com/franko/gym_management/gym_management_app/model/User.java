@@ -26,7 +26,6 @@ public class User {
     @Column(columnDefinition = "varchar(255)",nullable = false, unique = true)
     private String email;
 
-    @Pattern(regexp="^\\+385\\d{8,12}$", message="Invalid phone number")
-    @Column(name = "phone_number", unique = true)
+    @Column(columnDefinition = "varchar(13)",name = "phone_number", unique = true)
     private String phoneNumber;
 }
