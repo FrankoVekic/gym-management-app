@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 public class UserMapper {
 
+    // Mapping from UserDto to User
     public static User mapToUser(UserDto userDto) {
         return new User(
                 userDto.getId(),
@@ -18,6 +19,7 @@ public class UserMapper {
         );
     }
 
+    // Mapping from User to UserDto
     public static UserDto mapToUserDto(User user){
         return new UserDto(
                 user.getId(),
@@ -28,6 +30,7 @@ public class UserMapper {
         );
     }
 
+    // Mapping from List of Users to List of UserDto
     public static List<UserDto> mapToUserDtoList(List<User> users) {
         return users.stream()
                 .map(UserMapper::mapToUserDto)

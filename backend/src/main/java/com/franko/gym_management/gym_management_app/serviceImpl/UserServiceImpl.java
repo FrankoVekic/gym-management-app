@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -18,6 +19,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto createUser(UserDto userDto) {
+
         User user = UserMapper.mapToUser(userDto);
         User savedUser = userRepository.save(user);
         return UserMapper.mapToUserDto(savedUser);
@@ -32,8 +34,29 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDto> getUsers() {
-        List<User> users = userRepository.findAll();
-        return UserMapper.mapToUserDtoList(users);
+
+        List<User> users = userRepository.findAllByOrderByIdAsc();
+        return users.stream()
+                .map(UserMapper::mapToUserDto)
+                .collect(Collectors.toList());
+
+    }
+
+    @Override
+    public UserDto updateUser(Long id, UserDto userDto) {
+
+        User existingUser = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        existingUser.setFirstName(userDto.getFirstName());
+        existingUser.setLastName((userDto.getLastName()));
+        existingUser.setEmail(userDto.getEmail());
+        existingUser.setPhoneNumber(userDto.getPhoneNumber());
+
+        User updatedUser = userRepository.save(existingUser);
+
+        return UserMapper.mapToUserDto(updatedUser);
+
 
     }
 }
