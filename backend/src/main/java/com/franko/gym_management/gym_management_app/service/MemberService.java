@@ -9,4 +9,6 @@ public interface MemberService {
 
     List<MemberDto> getMembers();
 
+    MemberDto createMember(MemberDto memberDto);
+
 }
