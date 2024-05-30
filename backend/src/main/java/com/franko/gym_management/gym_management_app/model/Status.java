@@ -1,6 +1,7 @@
 package com.franko.gym_management.gym_management_app.model;
 
 
+import com.franko.gym_management.gym_management_app.enums.StatusType;
 import com.franko.gym_management.gym_management_app.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.*;
@@ -17,7 +18,11 @@ public class Status {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, unique = true)
+    private StatusType statusType;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false, unique = true)
     private UserRole userRole;
 }

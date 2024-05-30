@@ -7,11 +7,11 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Setter
-@Getter
+
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
+
 public class MemberDto {
 
     private Long id;
