@@ -3,7 +3,7 @@ package com.franko.gym_management.gym_management_app.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -22,8 +22,8 @@ public class TrainingSession {
     private TrainingType trainingType;
 
     @Column(nullable = false)
-    @Temporal(TemporalType.DATE)
-    private Date date;
+    @Temporal(TemporalType.TIMESTAMP)
+    private LocalDateTime date;
 
     @ManyToMany
     private List<Trainer> trainers;

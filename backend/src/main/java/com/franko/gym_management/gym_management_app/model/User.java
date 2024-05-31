@@ -2,7 +2,6 @@ package com.franko.gym_management.gym_management_app.model;
 
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Pattern;
 import lombok.*;
 
 @Setter
