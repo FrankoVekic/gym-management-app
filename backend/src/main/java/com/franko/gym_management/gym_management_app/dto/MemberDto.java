@@ -20,5 +20,4 @@ public class MemberDto {
     private User user;
     private Status status;
     private LocalDateTime joinedDate;
-    private List<Attendance> attendances;
 }
