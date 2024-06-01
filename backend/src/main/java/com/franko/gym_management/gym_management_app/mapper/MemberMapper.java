@@ -14,8 +14,7 @@ public class MemberMapper {
             member.getId(),
             member.getUser(),
             member.getStatus(),
-            member.getJoinedDate(),
-            member.getAttendances()
+            member.getJoinedDate()
         );
     }
 
@@ -24,8 +23,7 @@ public class MemberMapper {
             memberDto.getId(),
             memberDto.getUser(),
             memberDto.getStatus(),
-            memberDto.getJoinedDate(),
-            memberDto.getAttendances()
+            memberDto.getJoinedDate()
         );
     }
 

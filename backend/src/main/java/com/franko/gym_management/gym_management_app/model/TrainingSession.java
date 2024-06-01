@@ -1,5 +1,6 @@
 package com.franko.gym_management.gym_management_app.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -28,6 +29,7 @@ public class TrainingSession {
     inverseJoinColumns = @JoinColumn(name = "trainer_id"))
     private List<Trainer> trainers;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "trainingSession")
     private List<Attendance> attendances;
 

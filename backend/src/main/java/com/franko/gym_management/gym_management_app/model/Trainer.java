@@ -1,6 +1,7 @@
 package com.franko.gym_management.gym_management_app.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,6 +23,7 @@ public class Trainer {
     @ManyToOne
     private Status status;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "trainers")
     private List<TrainingSession> trainingSessions;
 }

@@ -28,6 +28,4 @@ public class Member {
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime joinedDate;
 
-    @OneToMany(mappedBy = "member")
-    private List<Attendance> attendances;
 }
