@@ -39,4 +39,18 @@ public class StatusServiceImpl implements StatusService {
                 .orElseThrow(() -> new RuntimeException("Status with ID: "+ id + " doesn't exist."));
         statusRepository.delete(status);
     }
+
+    @Override
+    public StatusDto updateStatus(Long id, StatusDto statusDto) {
+
+        Status existingStatus = statusRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Status not found"));
+
+        existingStatus.setStatusType(statusDto.getStatusType());
+        existingStatus.setUserRole(statusDto.getUserRole());
+
+        Status updatedStatus = statusRepository.save(existingStatus);
+
+        return StatusMapper.mapToStatusDto(updatedStatus);
+    }
 }

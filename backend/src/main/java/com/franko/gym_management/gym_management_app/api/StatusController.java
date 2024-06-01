@@ -28,6 +28,12 @@ public class StatusController {
         return new ResponseEntity<>(savedStatus, HttpStatus.CREATED);
     }
 
+    @PutMapping("{id}")
+    public ResponseEntity<StatusDto> updateStatus(@PathVariable("id") Long id, @RequestBody StatusDto statusDto) {
+        StatusDto updatedStatus = statusService.updateStatus(id, statusDto);
+        return ResponseEntity.ok(updatedStatus);
+    }
+
     @DeleteMapping("{id}")
     public ResponseEntity<String> deleteStatus(@PathVariable("id") Long id) {
         statusService.deleteStatus(id);
