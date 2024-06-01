@@ -2,6 +2,7 @@ package com.franko.gym_management.gym_management_app.dto;
 
 import com.franko.gym_management.gym_management_app.model.Status;
 import com.franko.gym_management.gym_management_app.model.TrainingSession;
+import com.franko.gym_management.gym_management_app.model.TrainingSessionTrainer;
 import com.franko.gym_management.gym_management_app.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,5 +18,5 @@ public class TrainerDto {
     private Long id;
     private User user;
     private Status status;
-    private List<TrainingSession> trainingSessions;
+    private List<TrainingSessionTrainer> trainingSessions;
 }
