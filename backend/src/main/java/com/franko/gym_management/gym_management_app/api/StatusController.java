@@ -27,4 +27,10 @@ public class StatusController {
         StatusDto savedStatus = statusService.createStatus(statusDto);
         return new ResponseEntity<>(savedStatus, HttpStatus.CREATED);
     }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<String> deleteStatus(@PathVariable("id") Long id) {
+        statusService.deleteStatus(id);
+        return ResponseEntity.ok("User with ID: " + id + " has been deleted");
+    }
 }

@@ -32,4 +32,11 @@ public class StatusServiceImpl implements StatusService {
         Status savedStatus = statusRepository.save(createdStatus);
         return StatusMapper.mapToStatusDto(savedStatus);
     }
+
+    @Override
+    public void deleteStatus(Long id) {
+        Status status = statusRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Status with ID: "+ id + " doesn't exist."));
+        statusRepository.delete(status);
+    }
 }
