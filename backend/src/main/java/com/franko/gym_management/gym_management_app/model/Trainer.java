@@ -24,6 +24,6 @@ public class Trainer {
     private Status status;
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "trainers")
-    private List<TrainingSession> trainingSessions;
+    @OneToMany(mappedBy = "trainer")
+    private List<TrainingSessionTrainer> trainingSessions;
 }

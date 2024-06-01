@@ -23,11 +23,9 @@ public class TrainingSession {
     @Column(nullable = false)
     private LocalDateTime date;
 
-    @ManyToMany
-    @JoinTable(name = "training_sessions_trainers",
-    joinColumns = @JoinColumn(name = "training_session_id"),
-    inverseJoinColumns = @JoinColumn(name = "trainer_id"))
-    private List<Trainer> trainers;
+    @JsonIgnore
+    @OneToMany(mappedBy = "trainingSession")
+    private List<TrainingSessionTrainer> trainers;
 
     @JsonIgnore
     @OneToMany(mappedBy = "trainingSession")
