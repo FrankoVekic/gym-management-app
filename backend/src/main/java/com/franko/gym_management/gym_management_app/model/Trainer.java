@@ -4,6 +4,8 @@ package com.franko.gym_management.gym_management_app.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,4 +21,7 @@ public class Trainer {
 
     @ManyToOne
     private Status status;
+
+    @ManyToMany(mappedBy = "trainers")
+    private List<TrainingSession> trainingSessions;
 }

@@ -17,8 +17,10 @@ public class Attendance {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "training_session_id", nullable = false)
     private TrainingSession trainingSession;
 
     @ManyToOne
+    @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 }

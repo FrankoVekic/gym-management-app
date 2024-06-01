@@ -10,7 +10,8 @@ public class TrainerMapper {
         return new TrainerDto(
                 trainer.getId(),
                 trainer.getUser(),
-                trainer.getStatus()
+                trainer.getStatus(),
+                trainer.getTrainingSessions()
         );
     }
 
@@ -18,7 +19,8 @@ public class TrainerMapper {
         return new Trainer(
                 trainerDto.getId(),
                 trainerDto.getUser(),
-                trainerDto.getStatus()
+                trainerDto.getStatus(),
+                trainerDto.getTrainingSessions()
         );
     }
 }

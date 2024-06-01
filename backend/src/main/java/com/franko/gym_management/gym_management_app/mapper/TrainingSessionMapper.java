@@ -16,7 +16,8 @@ public class TrainingSessionMapper {
             trainingSession.getId(),
             trainingSession.getTrainingType(),
             trainingSession.getDate(),
-            trainingSession.getTrainers()
+            trainingSession.getTrainers(),
+            trainingSession.getAttendances()
         );
     }
 
@@ -25,7 +26,8 @@ public class TrainingSessionMapper {
                 trainingSessionDto.getId(),
                 trainingSessionDto.getTrainingType(),
                 trainingSessionDto.getDate(),
-                trainingSessionDto.getTrainers()
+                trainingSessionDto.getTrainers(),
+               trainingSessionDto.getAttendances()
        );
     }
 }

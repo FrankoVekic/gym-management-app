@@ -6,10 +6,9 @@ import lombok.*;
 
 
 import java.time.LocalDateTime;
+import java.util.List;
 
-@Getter
-@Setter
-@ToString
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "members")
@@ -28,4 +27,7 @@ public class Member {
     @Column(name = "joined_date", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime joinedDate;
+
+    @OneToMany(mappedBy = "member")
+    private List<Attendance> attendances;
 }

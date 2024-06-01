@@ -6,9 +6,7 @@ import lombok.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Getter
-@Setter
-@ToString
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "training_sessions")
@@ -22,10 +20,15 @@ public class TrainingSession {
     private TrainingType trainingType;
 
     @Column(nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime date;
 
     @ManyToMany
+    @JoinTable(name = "training_sessions_trainers",
+    joinColumns = @JoinColumn(name = "training_session_id"),
+    inverseJoinColumns = @JoinColumn(name = "trainer_id"))
     private List<Trainer> trainers;
+
+    @OneToMany(mappedBy = "trainingSession")
+    private List<Attendance> attendances;
 
 }
