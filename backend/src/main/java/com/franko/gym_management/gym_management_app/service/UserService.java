@@ -10,6 +10,8 @@ public interface UserService {
 
     UserDto createUser (UserDto user);
 
+    List<UserDto> addMultipleUsers (List<UserDto> users);
+
     UserDto getUserById(Long userId);
 
     List<UserDto> getUsers();

@@ -23,6 +23,6 @@ public class Status {
     private StatusType statusType;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private UserRole userRole;
 }

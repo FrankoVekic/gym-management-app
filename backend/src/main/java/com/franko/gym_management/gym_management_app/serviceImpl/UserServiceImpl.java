@@ -25,6 +25,15 @@ public class UserServiceImpl implements UserService {
         return UserMapper.mapToUserDto(savedUser);
     }
 
+    @Override
+    public List<UserDto> addMultipleUsers(List<UserDto> users) {
+
+        List<User> userList = users.stream().map(UserMapper::mapToUser).collect(Collectors.toList());
+        List<User> savedUserList = userRepository.saveAll(userList);
+        return UserMapper.mapToUserDtoList(savedUserList);
+
+    }
+
     public UserDto getUserById(Long userID) {
 
         User user = userRepository.findById(userID)
