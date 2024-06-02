@@ -49,10 +49,10 @@ export default function HeaderComponent() {
         if (!values.phoneNumber.trim()) {
             errors.phoneNumber = 'Phone number is required';
         } else if (!/^(\+385\d{8,10})$/.test(values.phoneNumber)) {
-            errors.phoneNumber = 'Invalid phone number, must start with (+385) and have 8 to 10 digits';
+            errors.phoneNumber = 'Invalid phone number, must start with (+385) and have 8 or 9 digits';;
         
         } else if (values.phoneNumber.startsWith('+385') && (values.phoneNumber.length < 12 || values.phoneNumber.trim().length > 13)) {
-            errors.phoneNumber = 'Phone number must start with (+385) and have 8 to 10 digits';
+            errors.phoneNumber = 'Phone number must start with (+385) and have 8 to 9 digits';
         }
 
         // message validation
