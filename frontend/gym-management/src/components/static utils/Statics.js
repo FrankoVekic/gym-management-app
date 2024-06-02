@@ -25,8 +25,11 @@ const Statics = {
     supportEmail: 'support@fitnessfit.com',
     applicationEmail: 'application@fitnessfit.com',
 
-    footerDescription:'At FitnessFit, your health is our priority. Our mission is to provide you with the best services and support on your journey to better health and a fitter body. Join us today and embark on the path to your fitness goals with expert guidance and the support of our community.'
+    footerDescription:'At FitnessFit, your health is our priority. Our mission is to provide you with the best services and support on your journey to better health and a fitter body. Join us today and embark on the path to your fitness goals with expert guidance and the support of our community.',
 
+
+    contactFormEntryTitle: "Get in Touch",
+    contactFormEntryDescription: "If you're ready to shake things up, get in touch with us. We're here to help you take the next step!"
 
 };
 
