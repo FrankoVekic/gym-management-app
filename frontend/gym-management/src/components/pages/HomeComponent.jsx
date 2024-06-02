@@ -10,25 +10,59 @@ export default function HeaderComponent() {
     const [successMessage, setSuccessMessage] = useState('');
 
     const handleSubmit = (values, { setSubmitting, resetForm }) => {
+
         createContactEntry({
             fullName: values.fullName,
             email: values.email,
-            phoneNumber: values.phone,
+            phoneNumber: values.phoneNumber,
             message: values.message
         })
-        .then(response => {
-            setSuccessMessage('Entry is successfully sent.');
-            resetForm();
-            setSubmitting(false);
-            setTimeout(() => {
-                setSuccessMessage('');
-            }, 5000);
-        })
-        .catch(error => {
-            console.error('An error occurred while submitting the form!', error);
-            setSubmitting(false);
-        });
+            .then(response => {
+                setSuccessMessage('Entry is successfully sent.');
+                resetForm();
+                setSubmitting(false);
+                setTimeout(() => {
+                    setSuccessMessage('');
+                }, 5000);
+            })
+            .catch(error => {
+                console.error('An error occurred while submitting the form!', error);
+                setSubmitting(false);
+            });
     };
+
+    function validateForm(values) {
+
+        let errors = {};
+        
+        // full name validation
+        if (!values.fullName.trim()) {
+            errors.fullName = 'Full name is required';
+        }
+        //email validation
+        if (!values.email.trim()) {
+            errors.email = 'Email is required';
+        } else if (!/^\S+@\S+\.\S+$/.test(values.email)) {
+            errors.email = 'Invalid email address';
+        }
+        // phone number validation
+        if (!values.phoneNumber.trim()) {
+            errors.phoneNumber = 'Phone number is required';
+        } else if (!/^(\+385\d{8,10})$/.test(values.phoneNumber)) {
+            errors.phoneNumber = 'Invalid phone number, must start with (+385) and have 8 to 10 digits';
+        
+        } else if (values.phoneNumber.startsWith('+385') && (values.phoneNumber.length < 12 || values.phoneNumber.trim().length > 13)) {
+            errors.phoneNumber = 'Phone number must start with (+385) and have 8 to 10 digits';
+        }
+
+        // message validation
+        if (!values.message || values.message.trim().length < 1) {
+            errors.message = 'Message is required';
+
+        }
+
+        return errors;
+    }
 
     return (
         <div>
@@ -46,13 +80,13 @@ export default function HeaderComponent() {
                             </div>
                         </div>
                     </div>
-                </div>           
+                </div>
             </header>
 
             <section className="py-5 border-bottom" id="features">
                 <div className="container px-5 my-5">
                     <div className="row gx-5">
-                        <CarouselComponent/>
+                        <CarouselComponent />
                     </div>
                 </div>
             </section>
@@ -116,8 +150,7 @@ export default function HeaderComponent() {
                                         <span className="display-4 fw-bold">$49</span>
                                         <span className="text-muted">/ mo.</span>
                                     </div>
-                                    <ul className="list-unstyled mb-4">
-                                        <li className="mb-2"><i className="bi bi-check text-primary"></i> <strong>Unlimited users</strong></li>
+                                    <ul className="list-unstyled mb-4"><li className="mb-2"><i className="bi bi-check text-primary"></i> <strong>Unlimited users</strong></li>
                                         <li className="mb-2"><i className="bi bi-check text-primary"></i> 5GB storage</li>
                                         <li className="mb-2"><i className="bi bi-check text-primary"></i> Unlimited public projects</li>
                                         <li className="mb-2"><i className="bi bi-check text-primary"></i> Community access</li>
@@ -179,10 +212,14 @@ export default function HeaderComponent() {
                     <div className="row gx-5 justify-content-center">
                         <div className="col-lg-6">
                             <Formik
-                                initialValues={{ fullName: '', email: '', phone: '', message: '' }}
+                                initialValues={{ fullName: '', email: '', phoneNumber: '', message: '' }}
+                                enableReinitialize={true}
                                 onSubmit={handleSubmit}
+                                validate={validateForm}
+                                validateOnChange={false}
+                                validateOnBlur={false}
                             >
-                                {({ values, handleChange, handleSubmit, isSubmitting }) => (
+                                {({ values, errors, handleChange, handleSubmit, isSubmitting }) => (
                                     <Form id="contactForm" onSubmit={handleSubmit}>
                                         <div className="form-floating mb-3">
                                             <Form.Control
@@ -192,9 +229,10 @@ export default function HeaderComponent() {
                                                 name="fullName"
                                                 value={values.fullName}
                                                 onChange={handleChange}
+                                                isInvalid={!!errors.fullName}
                                             />
                                             <Form.Label htmlFor="fullName">Full name</Form.Label>
-                                        </div>
+                                            <Form.Control.Feedback type="invalid">{errors.fullName}</Form.Control.Feedback>                                       </div>
                                         <div className="form-floating mb-3">
                                             <Form.Control
                                                 type="email"
@@ -203,19 +241,23 @@ export default function HeaderComponent() {
                                                 name="email"
                                                 value={values.email}
                                                 onChange={handleChange}
+                                                isInvalid={!!errors.email}
                                             />
                                             <Form.Label htmlFor="email">Email address</Form.Label>
-                                        </div>
+                                            <Form.Control.Feedback type="invalid">{errors.email}</Form.Control.Feedback>                                      </div>
                                         <div className="form-floating mb-3">
                                             <Form.Control
                                                 type="tel"
-                                                id="phone"
-                                                placeholder="(123) 456-7890"
-                                                name="phone"
-                                                value={values.phone}
+                                                id="phoneNumber"
+                                                placeholder="(+385)..."
+                                                name="phoneNumber"
+                                                value={values.phoneNumber}
+                                                defaultValue="+385"
                                                 onChange={handleChange}
+                                                isInvalid={!!errors.phoneNumber}
                                             />
-                                            <Form.Label htmlFor="phone">Phone number</Form.Label>
+                                            <Form.Label htmlFor="phoneNumber">Phone number</Form.Label>
+                                            <Form.Control.Feedback type="invalid">{errors.phoneNumber}</Form.Control.Feedback>
                                         </div>
                                         <div className="form-floating mb-3">
                                             <Form.Control
@@ -225,8 +267,10 @@ export default function HeaderComponent() {
                                                 name="message"
                                                 value={values.message}
                                                 onChange={handleChange}
+                                                isInvalid={!!errors.message}
                                             />
                                             <Form.Label htmlFor="message">Message</Form.Label>
+                                            <Form.Control.Feedback type="invalid">{errors.message}</Form.Control.Feedback>
                                         </div>
                                         {successMessage && <Alert variant="success">{successMessage}</Alert>}
                                         <div className="d-grid">
