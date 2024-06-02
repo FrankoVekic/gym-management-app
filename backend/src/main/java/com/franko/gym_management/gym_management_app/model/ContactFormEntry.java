@@ -3,6 +3,8 @@ package com.franko.gym_management.gym_management_app.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,10 +22,14 @@ public class ContactFormEntry {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Full name is required")
+    @NotEmpty(message = "Full name is required")
     @Column(columnDefinition = "varchar(255)", nullable = false)
     private String fullName;
 
     @Email(message = "Email is not valid")
+    @NotBlank(message = "Email is required")
+    @NotEmpty(message = "Email is required")
     @Column(columnDefinition = "varchar(255)", nullable = false, unique = true)
     private String email;
 
