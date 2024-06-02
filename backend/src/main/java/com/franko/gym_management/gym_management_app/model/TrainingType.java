@@ -4,6 +4,8 @@ package com.franko.gym_management.gym_management_app.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -16,6 +18,12 @@ public class TrainingType {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "training_name")
+    @Column(columnDefinition = "varchar(255)",nullable = false)
     private String name;
+    @Column(columnDefinition = "text",nullable = false)
+    private String description;
+    @Column(nullable = false)
+    private BigDecimal price;
+    @Column(columnDefinition = "text",nullable = false)
+    private String features;
 }

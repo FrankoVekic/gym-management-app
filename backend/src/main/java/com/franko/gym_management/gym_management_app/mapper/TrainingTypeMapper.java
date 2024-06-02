@@ -8,14 +8,20 @@ public class TrainingTypeMapper {
     public static TrainingTypeDto mapToTrainingTypeDto(TrainingType trainingType){
         return new TrainingTypeDto(
             trainingType.getId(),
-            trainingType.getName()
+            trainingType.getName(),
+            trainingType.getDescription(),
+            trainingType.getPrice(),
+            trainingType.getFeatures()
         );
     }
 
     public static TrainingType mapToTrainingType(TrainingTypeDto trainingTypeDto){
         return new TrainingType(
             trainingTypeDto.getId(),
-            trainingTypeDto.getName()
+            trainingTypeDto.getName(),
+            trainingTypeDto.getDescription(),
+            trainingTypeDto.getPrice(),
+            trainingTypeDto.getFeatures()
         );
     }
 }
