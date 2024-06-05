@@ -1,9 +1,10 @@
 package com.franko.gym_management.gym_management_app.dto;
 
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.Pattern;
+import com.franko.gym_management.gym_management_app.model.TestimonialUser;
 import lombok.*;
+
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -15,4 +16,5 @@ public class UserDto {
     private String lastName;
     private String email;
     private String phoneNumber;
+    private List<TestimonialUser> testimonials;
 }

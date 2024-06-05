@@ -3,6 +3,7 @@ package com.franko.gym_management.gym_management_app.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 
 import java.time.LocalDateTime;
@@ -24,8 +25,8 @@ public class Member {
     @ManyToOne
     private Status status;
 
-    @Column(name = "joined_date", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-    @Temporal(TemporalType.TIMESTAMP)
+    @CreationTimestamp
+    @Column(name = "joined_date", nullable = false, updatable = false)
     private LocalDateTime joinedDate;
 
 }

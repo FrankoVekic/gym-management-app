@@ -34,7 +34,7 @@ export default function HeaderComponent() {
     function validateForm(values) {
 
         let errors = {};
-        
+
         // full name validation
         if (!values.fullName.trim()) {
             errors.fullName = 'Full name is required';
@@ -50,7 +50,7 @@ export default function HeaderComponent() {
             errors.phoneNumber = 'Phone number is required';
         } else if (!/^(\+385\d{8,10})$/.test(values.phoneNumber)) {
             errors.phoneNumber = 'Invalid phone number, must start with (+385) and have 8 or 9 digits';;
-        
+
         } else if (values.phoneNumber.startsWith('+385') && (values.phoneNumber.length < 12 || values.phoneNumber.trim().length > 13)) {
             errors.phoneNumber = 'Phone number must start with (+385) and have 8 to 9 digits';
         }
@@ -81,8 +81,8 @@ export default function HeaderComponent() {
                         </div>
                     </div>
                 </div>
-            </header>                        
-                    <CarouselComponent />       
+            </header>
+            <CarouselComponent />
             <section className="bg-light py-5 border-bottom">
                 <div className="container px-5 my-5">
                     <div className="text-center mb-5">

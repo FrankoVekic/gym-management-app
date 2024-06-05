@@ -1,8 +1,11 @@
 package com.franko.gym_management.gym_management_app.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 @Setter
 @Getter
@@ -27,4 +30,8 @@ public class User {
 
     @Column(columnDefinition = "varchar(13)",name = "phone_number", unique = true)
     private String phoneNumber;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user")
+    private List<TestimonialUser> testimonials;
 }
