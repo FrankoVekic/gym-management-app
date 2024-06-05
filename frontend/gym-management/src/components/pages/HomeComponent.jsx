@@ -81,16 +81,8 @@ export default function HeaderComponent() {
                         </div>
                     </div>
                 </div>
-            </header>
-
-            <section className="py-5 border-bottom" id="features">
-                <div className="container px-5 my-5">
-                    <div className="row gx-5">
-                        <CarouselComponent />
-                    </div>
-                </div>
-            </section>
-
+            </header>                        
+                    <CarouselComponent />       
             <section className="bg-light py-5 border-bottom">
                 <div className="container px-5 my-5">
                     <div className="text-center mb-5">
