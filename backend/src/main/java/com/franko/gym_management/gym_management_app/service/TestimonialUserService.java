@@ -9,4 +9,6 @@ public interface TestimonialUserService {
     List<TestimonialUserDto> getTestimonialUsers();
 
     TestimonialUserDto createTestimonialUser(TestimonialUserDto testimonialUserDto);
+
+    List<TestimonialUserDto> getTwoRandomTestimonialUsers();
 }

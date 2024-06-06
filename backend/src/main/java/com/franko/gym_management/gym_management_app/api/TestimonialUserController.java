@@ -26,6 +26,12 @@ public class TestimonialUserController {
         return ResponseEntity.ok(trainingSessions);
     }
 
+    @GetMapping("getTwoTestemonialsUsers")
+    public ResponseEntity<List<TestimonialUserDto>> getTwoRandomTestimonialUsers(){
+        List<TestimonialUserDto> testimonialUsers = testimonialUserService.getTwoRandomTestimonialUsers();
+        return ResponseEntity.ok(testimonialUsers);
+    }
+
     @PostMapping("addTestimonialUser")
     public ResponseEntity<TestimonialUserDto> createTestimonialUser(@RequestBody TestimonialUserDto testimonialUserDto){
         TestimonialUserDto savedTestimonialUser = testimonialUserService.createTestimonialUser(testimonialUserDto);

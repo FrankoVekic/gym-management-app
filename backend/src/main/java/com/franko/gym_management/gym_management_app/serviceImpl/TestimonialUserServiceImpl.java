@@ -34,4 +34,15 @@ public class TestimonialUserServiceImpl implements TestimonialUserService {
         TestimonialUser savedTestimonialUser = testimonialUserRepository.save(testimonialUser);
         return TestimonialUserMapper.mapToTestimonialUserDto(savedTestimonialUser);
     }
+
+    @Override
+    public List<TestimonialUserDto> getTwoRandomTestimonialUsers() {
+        List<TestimonialUser> testimonialUsers = testimonialUserRepository.findTwoRandomTestimonialUsers();
+        return testimonialUsers
+                .stream()
+                .map(TestimonialUserMapper::mapToTestimonialUserDto)
+                .collect(Collectors.toList());
+
+    }
+
 }
