@@ -29,7 +29,11 @@ const Statics = {
 
 
     contactFormEntryTitle: "Get in Touch",
-    contactFormEntryDescription: "If you're ready to shake things up, get in touch with us. We're here to help you take the next step!"
+    contactFormEntryDescription: "If you're ready to shake things up, get in touch with us. We're here to help you take the next step!",
+
+
+    testimonialsTitle: "Customer testimonials",
+    testimonialSmallTitle: "Our customers love working with us"
 
 };
 
