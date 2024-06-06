@@ -1,8 +1,10 @@
-package com.franko.gym_management.gym_management_app.model;
+package com.franko.gym_management.gym_management_app.dto;
+
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
+import com.franko.gym_management.gym_management_app.model.TestimonialUser;
+import jakarta.persistence.Column;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,26 +16,14 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "testimonials")
-public class Testimonial {
+public class TestimonialDto {
 
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @JsonIgnore
-    @OneToMany(mappedBy = "testimonial")
     private List<TestimonialUser> users;
-
-    @Column(columnDefinition = "text")
+    
     private String content;
-
-    @CreationTimestamp
-    @Column(name = "createdAt", nullable = false, updatable = false)
     private LocalDateTime createdAt;
-
-
 
 
 }

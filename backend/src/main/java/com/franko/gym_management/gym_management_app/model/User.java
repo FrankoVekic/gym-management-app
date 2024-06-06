@@ -3,6 +3,7 @@ package com.franko.gym_management.gym_management_app.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.*;
 
 import java.util.List;
@@ -25,6 +26,7 @@ public class User {
     @Column(columnDefinition = "varchar(255)",name = "last_name", nullable = false)
     private String lastName;
 
+    @Email
     @Column(columnDefinition = "varchar(255)",nullable = false, unique = true)
     private String email;
 
