@@ -1,8 +1,8 @@
 package com.franko.gym_management.gym_management_app.dto;
 
 import com.franko.gym_management.gym_management_app.model.Attendance;
-import com.franko.gym_management.gym_management_app.model.Trainer;
 import com.franko.gym_management.gym_management_app.model.TrainingSessionTrainer;
+import com.franko.gym_management.gym_management_app.model.TrainingPackage;
 import com.franko.gym_management.gym_management_app.model.TrainingType;
 import lombok.AllArgsConstructor;
 import lombok.Data;

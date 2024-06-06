@@ -1,25 +1,23 @@
 package com.franko.gym_management.gym_management_app.mapper;
 
 import com.franko.gym_management.gym_management_app.dto.TrainingTypeDto;
-import com.franko.gym_management.gym_management_app.model.TrainingType;
+import com.franko.gym_management.gym_management_app.model.TrainingPackage;
 
 public class TrainingTypeMapper {
 
-    public static TrainingTypeDto mapToTrainingTypeDto(TrainingType trainingType){
+    public static TrainingTypeDto mapToTrainingTypeDto(TrainingPackage trainingPackage){
         return new TrainingTypeDto(
-            trainingType.getId(),
-            trainingType.getName(),
-            trainingType.getDescription(),
-            trainingType.getPrice(),
-            trainingType.getFeatures()
+            trainingPackage.getId(),
+            trainingPackage.getName(),
+            trainingPackage.getPrice(),
+            trainingPackage.getFeatures()
         );
     }
 
-    public static TrainingType mapToTrainingType(TrainingTypeDto trainingTypeDto){
-        return new TrainingType(
+    public static TrainingPackage mapToTrainingType(TrainingTypeDto trainingTypeDto){
+        return new TrainingPackage(
             trainingTypeDto.getId(),
             trainingTypeDto.getName(),
-            trainingTypeDto.getDescription(),
             trainingTypeDto.getPrice(),
             trainingTypeDto.getFeatures()
         );

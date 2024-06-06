@@ -3,6 +3,7 @@ package com.franko.gym_management.gym_management_app.dto;
 
 import com.franko.gym_management.gym_management_app.model.Attendance;
 import com.franko.gym_management.gym_management_app.model.Status;
+import com.franko.gym_management.gym_management_app.model.TrainingPackage;
 import com.franko.gym_management.gym_management_app.model.User;
 import lombok.*;
 
@@ -20,4 +21,5 @@ public class MemberDto {
     private User user;
     private Status status;
     private LocalDateTime joinedDate;
+    private TrainingPackage trainingPackage;
 }

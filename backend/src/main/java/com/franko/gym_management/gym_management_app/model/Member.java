@@ -29,4 +29,7 @@ public class Member {
     @Column(name = "joined_date", nullable = false, updatable = false)
     private LocalDateTime joinedDate;
 
+    @ManyToOne
+    private TrainingPackage trainingPackage;
+
 }

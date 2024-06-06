@@ -16,7 +16,6 @@ public class TrainingTypeDto {
     @NotNull
 
     private String name;
-    private String description;
     private BigDecimal price;
     private String features;
 }
