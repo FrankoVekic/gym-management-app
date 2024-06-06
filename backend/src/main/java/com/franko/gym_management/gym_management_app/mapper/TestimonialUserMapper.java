@@ -5,18 +5,18 @@ import com.franko.gym_management.gym_management_app.model.TestimonialUser;
 
 public class TestimonialUserMapper {
 
-    public static TestimonialUserDto testimonialUserDto (TestimonialUser testimonialUser){
+    public static TestimonialUserDto mapToTestimonialUserDto (TestimonialUser testimonialUser){
         return new TestimonialUserDto(
             testimonialUser.getId(),
-            testimonialUser.getTestimonial(),
+            testimonialUser.getTestimonials(),
             testimonialUser.getUser()
         );
     }
 
-    public static TestimonialUser testimonialUser (TestimonialUserDto testimonialUserDto){
+    public static TestimonialUser mapToTestimonialUser (TestimonialUserDto testimonialUserDto){
         return new TestimonialUser(
             testimonialUserDto.getId(),
-            testimonialUserDto.getTestimonial(),
+            testimonialUserDto.getTestimonials(),
             testimonialUserDto.getUser()
         );
     }
