@@ -18,4 +18,7 @@ public class TrainingType {
         @Column(nullable = false, unique = true)
         private String name;
 
+
+        private int durationInMinutes;
+
 }

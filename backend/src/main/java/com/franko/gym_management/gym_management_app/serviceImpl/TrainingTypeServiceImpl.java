@@ -3,6 +3,7 @@ package com.franko.gym_management.gym_management_app.serviceImpl;
 import com.franko.gym_management.gym_management_app.dto.TrainingTypeDto;
 import com.franko.gym_management.gym_management_app.mapper.TrainingTypeMapper;
 import com.franko.gym_management.gym_management_app.model.TrainingPackage;
+import com.franko.gym_management.gym_management_app.model.TrainingType;
 import com.franko.gym_management.gym_management_app.repository.TrainingTypeRepository;
 import com.franko.gym_management.gym_management_app.service.TrainingTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +21,10 @@ public class TrainingTypeServiceImpl implements TrainingTypeService {
 
     @Override
     public List<TrainingTypeDto> getTrainingTypes() {
-        List<TrainingPackage> trainingPackages
+        List<TrainingType> trainingTypes
                 = trainingTypeRepository.findAllByOrderByIdAsc();
 
-        return trainingPackages
+        return trainingTypes
                 .stream()
                 .map(TrainingTypeMapper::mapToTrainingTypeDto)
                 .collect(Collectors.toList());
@@ -31,7 +32,7 @@ public class TrainingTypeServiceImpl implements TrainingTypeService {
 
     @Override
     public TrainingTypeDto createTrainingType(TrainingTypeDto trainingTypeDto) {
-        TrainingPackage trainingPackage = TrainingTypeMapper.mapToTrainingType(trainingTypeDto);
-        return TrainingTypeMapper.mapToTrainingTypeDto(trainingTypeRepository.save(trainingPackage));
+        TrainingType trainingType = TrainingTypeMapper.mapToTrainingType(trainingTypeDto);
+        return TrainingTypeMapper.mapToTrainingTypeDto(trainingTypeRepository.save(trainingType));
     }
 }

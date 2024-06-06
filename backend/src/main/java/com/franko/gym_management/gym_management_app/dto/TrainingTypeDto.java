@@ -14,8 +14,7 @@ public class TrainingTypeDto {
     private Long id;
 
     @NotNull
-
     private String name;
-    private BigDecimal price;
-    private String features;
+
+    private int durationInMinutes;
 }
