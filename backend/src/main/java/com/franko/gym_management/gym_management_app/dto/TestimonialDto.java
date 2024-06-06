@@ -21,7 +21,7 @@ public class TestimonialDto {
     private Long id;
     @JsonIgnore
     private List<TestimonialUser> users;
-    
+
     private String content;
     private LocalDateTime createdAt;
 

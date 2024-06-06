@@ -1,6 +1,7 @@
 package com.franko.gym_management.gym_management_app.dto;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.franko.gym_management.gym_management_app.model.TestimonialUser;
 import lombok.*;
 
@@ -16,5 +17,6 @@ public class UserDto {
     private String lastName;
     private String email;
     private String phoneNumber;
+    @JsonIgnore
     private List<TestimonialUser> testimonials;
 }
