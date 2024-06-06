@@ -3,6 +3,7 @@ package com.franko.gym_management.gym_management_app.api;
 import com.franko.gym_management.gym_management_app.dto.TrainingSessionDto;
 import com.franko.gym_management.gym_management_app.service.TrainingSessionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +25,6 @@ public class TrainingSessionController {
     @PostMapping("addTrainingSession")
     public ResponseEntity<TrainingSessionDto> createTrainingSession(@RequestBody TrainingSessionDto trainingSessionDto){
         TrainingSessionDto savedTrainingSession = trainingSessionService.createTrainingSession(trainingSessionDto);
-        return ResponseEntity.ok(savedTrainingSession);
+        return new ResponseEntity(savedTrainingSession, HttpStatus.CREATED);
     }
 }

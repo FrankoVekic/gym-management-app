@@ -17,8 +17,8 @@ public class TestimonialUser {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "testemonial_id")
-    private Testimonial testimonial;
+    @JoinColumn(name = "testimonial_id")
+    private Testimonial testimonials;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

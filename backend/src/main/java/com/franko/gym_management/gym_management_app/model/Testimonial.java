@@ -14,16 +14,15 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "testimonials")
+@Entity(name="testimonials")
 public class Testimonial {
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "testimonial")
+    @OneToMany(mappedBy = "testimonials")
     private List<TestimonialUser> users;
 
     @Column(columnDefinition = "text")

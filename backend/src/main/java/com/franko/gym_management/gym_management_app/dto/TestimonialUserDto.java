@@ -15,7 +15,7 @@ public class TestimonialUserDto {
     @NotNull
 
     private Long id;
-    private Testimonial testimonial;
+    private Testimonial testimonials;
     private User user;
 
 }
