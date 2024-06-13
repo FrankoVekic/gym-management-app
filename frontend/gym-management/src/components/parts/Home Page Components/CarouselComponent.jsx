@@ -1,12 +1,23 @@
 import React, { useState } from 'react';
 import { Carousel } from 'react-bootstrap';
-
+import { getTrainingTypes } from '../../api/api';
+import { useEffect } from 'react';
 
 export default function CarouselComponent() {
-
     const [index, setIndex] = useState(0);
+    const [trainingTypes, setTrainingTypes] = useState([]);
 
-    const handleSelect = (selectedIndex, e) => {
+    useEffect(() => {
+        getTrainingTypes()
+            .then(response => {
+                setTrainingTypes(response.data);
+            })
+            .catch(error => {
+                console.error('Error fetching training types:', error);
+            });
+    }, []);
+
+    const handleSelect = (selectedIndex) => {
         setIndex(selectedIndex);
     };
 
@@ -23,48 +34,19 @@ export default function CarouselComponent() {
                             prevIcon={<span className="custom-prev-icon" />}
                             nextIcon={<span className="custom-next-icon" />}
                         >
-                            <Carousel.Item>
-                                <div className="col-md-4 mx-auto">
-                                    <div className="feature bg-primary bg-gradient text-white rounded-3 mb-3">
-                                        <i className="bi bi-collection"></i>
+                            {trainingTypes.map(trainingType => (
+                                <Carousel.Item key={trainingType.id}>
+                                    <div className="col-md-4 mx-auto">
+                                        <h2 className="h4 fw-bolder">{trainingType.name}</h2>
+                                        <p>{trainingType.description}</p>
+                                        <img
+                                            className="d-block w-100"
+                                            src={`https://via.placeholder.com/300x140?text=${encodeURIComponent(trainingType.name)}`}
+                                            alt={trainingType.name}
+                                        />
                                     </div>
-                                    <h2 className="h4 fw-bolder">Featured title 1</h2>
-                                    <p>Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
-                                    <img
-                                        className="d-block w-100"
-                                        src="https://via.placeholder.com/300x140"
-                                        alt="First slide"
-                                    />
-                                </div>
-                            </Carousel.Item>
-                            <Carousel.Item>
-                                <div className="col-md-4 mx-auto">
-                                    <div className="feature bg-primary bg-gradient text-white rounded-3 mb-3">
-                                        <i className="bi bi-building"></i>
-                                    </div>
-                                    <h2 className="h4 fw-bolder">Featured title 2</h2>
-                                    <p>Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
-                                    <img
-                                        className="d-block w-100"
-                                        src="https://via.placeholder.com/300x140"
-                                        alt="Second slide"
-                                    />
-                                </div>
-                            </Carousel.Item>
-                            <Carousel.Item>
-                                <div className="col-md-4 mx-auto">
-                                    <div className="feature bg-primary bg-gradient text-white rounded-3 mb-3">
-                                        <i className="bi bi-toggles2"></i>
-                                    </div>
-                                    <h2 className="h4 fw-bolder">Featured title 3</h2>
-                                    <p>Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
-                                    <img
-                                        className="d-block w-100"
-                                        src="https://via.placeholder.com/300x140"
-                                        alt="Third slide"
-                                    />
-                                </div>
-                            </Carousel.Item>
+                                </Carousel.Item>
+                            ))}
                         </Carousel>
                     </div>
                 </div>
