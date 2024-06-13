@@ -10,7 +10,8 @@ public class TrainingTypeMapper {
         return new TrainingTypeDto(
                 trainingType.getId(),
                 trainingType.getName(),
-                trainingType.getDurationInMinutes()
+                trainingType.getDurationInMinutes(),
+                trainingType.getDescription()
         );
     }
 
@@ -18,7 +19,8 @@ public class TrainingTypeMapper {
         return new TrainingType(
             trainingTypeDto.getId(),
             trainingTypeDto.getName(),
-            trainingTypeDto.getDurationInMinutes()
+            trainingTypeDto.getDurationInMinutes(),
+            trainingTypeDto.getDescription()
         );
     }
 }

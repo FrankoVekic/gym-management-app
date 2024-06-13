@@ -21,4 +21,6 @@ public class TrainingType {
 
         private int durationInMinutes;
 
+        private String description;
+
 }

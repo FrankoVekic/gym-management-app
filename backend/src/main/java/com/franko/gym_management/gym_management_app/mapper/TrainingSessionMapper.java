@@ -7,21 +7,21 @@ public class TrainingSessionMapper {
 
     public static TrainingSessionDto mapToTrainingSessionDto(TrainingSession trainingSession) {
         return new TrainingSessionDto(
-            trainingSession.getId(),
-            trainingSession.getTrainingType(),
-            trainingSession.getDate(),
-            trainingSession.getTrainers(),
-            trainingSession.getAttendances()
+                trainingSession.getId(),
+                trainingSession.getTrainingType(),
+                trainingSession.getDate(),
+                trainingSession.getTrainers(),
+                trainingSession.getAttendances()
         );
     }
 
     public static TrainingSession mapToTrainingSession(TrainingSessionDto trainingSessionDto) {
-       return new TrainingSession(
+        return new TrainingSession(
                 trainingSessionDto.getId(),
                 trainingSessionDto.getTrainingType(),
                 trainingSessionDto.getDate(),
                 trainingSessionDto.getTrainers(),
-               trainingSessionDto.getAttendances()
-       );
+                trainingSessionDto.getAttendances()
+        );
     }
 }
