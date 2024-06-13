@@ -15,7 +15,6 @@ public class TrainingTypeDto {
 
     @NotNull
     private String name;
-
     private int durationInMinutes;
     private String description;
 }

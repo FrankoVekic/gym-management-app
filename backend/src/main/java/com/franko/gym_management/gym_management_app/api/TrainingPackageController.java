@@ -4,10 +4,7 @@ import com.franko.gym_management.gym_management_app.dto.TrainingPackageDto;
 import com.franko.gym_management.gym_management_app.service.TrainingPackageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,7 +22,7 @@ public class TrainingPackageController {
     }
 
     @PostMapping("createTrainingPackage")
-    public ResponseEntity<TrainingPackageDto> createTrainingPackage(TrainingPackageDto trainingPackageDto){
+    public ResponseEntity<TrainingPackageDto> createTrainingPackage(@RequestBody TrainingPackageDto trainingPackageDto){
         TrainingPackageDto savedTrainingPackage = trainingPackageService.createTrainingPackage(trainingPackageDto);
         return new ResponseEntity<>(savedTrainingPackage, org.springframework.http.HttpStatus.CREATED);
     }

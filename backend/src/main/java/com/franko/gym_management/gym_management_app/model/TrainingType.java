@@ -18,9 +18,10 @@ public class TrainingType {
         @Column(nullable = false, unique = true)
         private String name;
 
-
+        @Column(nullable = false)
         private int durationInMinutes;
 
+        @Column(columnDefinition = "text", nullable = false)
         private String description;
 
 }
