@@ -13,3 +13,7 @@ export const getTestimonialUsers = () => {
     return axios.get(`${API_URL}/public/testimonialsUsers/getTwoTestemonialsUsers`);
 }
 
+export const getTrainingPackages = () =>{
+    return axios.get(`${API_URL}/public/trainingPackages/getAllTrainingPackages`);
+}
+
