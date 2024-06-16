@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Carousel } from 'react-bootstrap';
 import { getTrainingTypes } from '../../api/api';
-import { useEffect } from 'react';
+import Statics from '../../static utils/Statics';
 
 export default function CarouselComponent() {
     const [index, setIndex] = useState(0);
@@ -41,7 +41,7 @@ export default function CarouselComponent() {
                                         <p>{trainingType.description}</p>
                                         <img
                                             className="d-block w-100"
-                                            src={`https://via.placeholder.com/300x140?text=${encodeURIComponent(trainingType.name)}`}
+                                            src={`${Statics.imagesBaseUrl}${trainingType.image}`}
                                             alt={trainingType.name}
                                         />
                                     </div>

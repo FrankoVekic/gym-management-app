@@ -11,7 +11,8 @@ public class TrainingTypeMapper {
                 trainingType.getId(),
                 trainingType.getName(),
                 trainingType.getDurationInMinutes(),
-                trainingType.getDescription()
+                trainingType.getDescription(),
+                trainingType.getImage()
         );
     }
 
@@ -20,7 +21,8 @@ public class TrainingTypeMapper {
             trainingTypeDto.getId(),
             trainingTypeDto.getName(),
             trainingTypeDto.getDurationInMinutes(),
-            trainingTypeDto.getDescription()
+            trainingTypeDto.getDescription(),
+            trainingTypeDto.getImage()
         );
     }
 }

@@ -17,4 +17,5 @@ public class TrainingTypeDto {
     private String name;
     private int durationInMinutes;
     private String description;
+    private String image;
 }

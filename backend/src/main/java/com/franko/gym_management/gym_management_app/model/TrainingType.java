@@ -24,4 +24,7 @@ public class TrainingType {
         @Column(columnDefinition = "text", nullable = false)
         private String description;
 
+        @Column(columnDefinition = "varchar(255)")
+        private String image;
+
 }

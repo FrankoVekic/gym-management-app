@@ -33,7 +33,9 @@ const Statics = {
 
 
     testimonialsTitle: "Customer testimonials",
-    testimonialSmallTitle: "Our customers love working with us"
+    testimonialSmallTitle: "Our customers love working with us",
+
+    imagesBaseUrl: 'http://localhost:8080/images/'
 
 };
 
