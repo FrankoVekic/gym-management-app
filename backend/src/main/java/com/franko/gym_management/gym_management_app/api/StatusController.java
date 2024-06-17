@@ -28,6 +28,12 @@ public class StatusController {
         return new ResponseEntity<>(savedStatus, HttpStatus.CREATED);
     }
 
+    @PostMapping("addStatusList")
+    public ResponseEntity<List<StatusDto>> createMultipleStatuses(@RequestBody List<StatusDto> statuses) {
+        List<StatusDto> savedStatuses = statusService.addMultipleStatuses(statuses);
+        return new ResponseEntity<>(savedStatuses, HttpStatus.CREATED);
+    }
+
     @PutMapping("{id}")
     public ResponseEntity<StatusDto> updateStatus(@PathVariable("id") Long id, @RequestBody StatusDto statusDto) {
         StatusDto updatedStatus = statusService.updateStatus(id, statusDto);

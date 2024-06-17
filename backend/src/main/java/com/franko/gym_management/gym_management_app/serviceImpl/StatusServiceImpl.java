@@ -36,7 +36,7 @@ public class StatusServiceImpl implements StatusService {
     @Override
     public void deleteStatus(Long id) {
         Status status = statusRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Status with ID: "+ id + " doesn't exist."));
+                .orElseThrow(() -> new RuntimeException("Status with ID: " + id + " doesn't exist."));
         statusRepository.delete(status);
     }
 
@@ -52,5 +52,17 @@ public class StatusServiceImpl implements StatusService {
         Status updatedStatus = statusRepository.save(existingStatus);
 
         return StatusMapper.mapToStatusDto(updatedStatus);
+    }
+
+    @Override
+    public List<StatusDto> addMultipleStatuses(List<StatusDto> statusDtoList) {
+        List<Status> statuses =
+                statusDtoList
+                        .stream()
+                        .map(StatusMapper::mapToStatus)
+                        .collect(Collectors.toList());
+        List<Status> savedList = statusRepository.saveAll(statuses);
+
+        return StatusMapper.mapToStatusDtoList(savedList);
     }
 }

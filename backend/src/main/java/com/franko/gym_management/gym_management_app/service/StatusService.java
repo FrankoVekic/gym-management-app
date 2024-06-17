@@ -8,8 +8,12 @@ import java.util.List;
 public interface StatusService {
 
     List<StatusDto> getStatuses();
+
     StatusDto createStatus(StatusDto statusDto);
+
     void deleteStatus(Long id);
 
     StatusDto updateStatus(Long id, StatusDto statusDto);
+
+    List<StatusDto> addMultipleStatuses(List<StatusDto> statusDtoList);
 }
