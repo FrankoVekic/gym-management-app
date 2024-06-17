@@ -2,11 +2,13 @@
 
 const Statics = {
 
+    // home page 
     homePageTitle: 'Welcome to FitnessPro',
     homePagedescription: 'Unlock your potential and achieve your fitness goals with us—join now and be part of a community that inspires and supports you every step of the way!',
     homePageregisterButton: 'Join Now',
     homePagelearnMoreButton: 'Learn More',
 
+    // navbar
     navbarTitle: 'FitnessFit',
     navbarLink1: 'Home',
     navbarLink2: 'About',
@@ -14,28 +16,33 @@ const Statics = {
     navbarLink4: 'Services',
     navbarLink5: 'Login',
 
+    // footer data
     firmName: 'FitnessFit',
     copyright: `© ${new Date().getFullYear()} Copyright: `,
     websiteUrl: 'http://localhost:3000/',
     firmAddress:'31000 Osijek, Croatia',
-
     mobileNumber: '+385 92 537 2120',
     phoneNumber: '+385 (1) 651 4423',
     infoEmail: 'info@fitnessfit.com',
     supportEmail: 'support@fitnessfit.com',
     applicationEmail: 'application@fitnessfit.com',
-
     footerDescription:'At FitnessFit, your health is our priority. Our mission is to provide you with the best services and support on your journey to better health and a fitter body. Join us today and embark on the path to your fitness goals with expert guidance and the support of our community.',
 
-
+    // contact form data
     contactFormEntryTitle: "Get in Touch",
     contactFormEntryDescription: "If you're ready to shake things up, get in touch with us. We're here to help you take the next step!",
 
-
+    // testimonials data
     testimonialsTitle: "Customer testimonials",
     testimonialSmallTitle: "Our customers love working with us",
 
-    imagesBaseUrl: 'http://localhost:8080/images/'
+    // urls
+    imagesBaseUrl: 'http://localhost:8080/images/',
+
+    // errors
+    errorMessage: 'Oops! Something went wrong.',
+    errorDescriptionUp: 'You seem to have stumbled upon a page that no longer exists.',
+    errorDescriptionDown: 'You might have spelled the page URL incorrectly.'
 
 };
 

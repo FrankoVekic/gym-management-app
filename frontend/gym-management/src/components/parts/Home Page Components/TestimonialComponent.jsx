@@ -31,7 +31,7 @@ const TestimonialComponent = () => {
                                         <div className="flex-shrink-0"><i className="bi bi-chat-right-quote-fill text-primary fs-1"></i></div>
                                         <div className="ms-4">
                                             <p className="mb-1">{testimonial.testimonials.content}</p>
-                                            <div className="small text-muted">- {testimonial.user.firstName} {testimonial.user.lastName}</div>
+                                            <div className="small text-muted"style={{ textAlign: 'left' }}>-{testimonial.user.firstName} {testimonial.user.lastName}</div>
                                         </div>
                                     </div>
                                 </div>
