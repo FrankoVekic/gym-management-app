@@ -10,7 +10,6 @@ import lombok.*;
 public class StatusDto {
 
     private Long id;
-    private UserRole userRole;
     private StatusType statusType;
 
 }

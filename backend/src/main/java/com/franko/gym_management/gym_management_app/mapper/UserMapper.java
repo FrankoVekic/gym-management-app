@@ -15,9 +15,11 @@ public class UserMapper {
                 userDto.getFirstName(),
                 userDto.getLastName(),
                 userDto.getEmail(),
+                userDto.getPassword(),
+                userDto.getRole(),
+                userDto.getImage(),
                 userDto.getPhoneNumber(),
                 userDto.getTestimonials()
-
         );
     }
 
@@ -28,9 +30,12 @@ public class UserMapper {
                 user.getFirstName(),
                 user.getLastName(),
                 user.getEmail(),
+                user.getPassword(),
+                user.getRole(),
+                user.getImage(),
                 user.getPhoneNumber(),
                 user.getTestimonials()
-        );
+                );
     }
 
     // Mapping from List of Users to List of UserDto

@@ -20,6 +20,7 @@ public class Member {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(unique = true, nullable = false)
     private User user;
 
     @ManyToOne
