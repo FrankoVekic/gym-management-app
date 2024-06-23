@@ -20,5 +20,10 @@ export const getTrainingPackages = () => {
 
 // GET ALL TRAINING TYPES
 export const getTrainingTypes = () => {
-    return axios.get(`${API_URL}/public/trainingTypes/getTrainingTypes`)
+    return axios.get(`${API_URL}/public/trainingTypes/getTrainingTypes`);
+}
+
+// GET ALL TRAINERS
+export const getTrainers = () =>{
+    return axios.get(`${API_URL}/public/trainers/getTrainers`);
 }

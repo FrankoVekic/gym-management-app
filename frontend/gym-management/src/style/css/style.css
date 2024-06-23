@@ -44,6 +44,14 @@
     height: 500px;
 }
 
+.header-bg-about {
+    background-image: url('/src/style/images/backgroundimage.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 500px;
+}
+
 .custom-prev-icon,
 .custom-next-icon {
     display: inline-block;
@@ -126,6 +134,22 @@ html, body {
     margin: 0;
     text-align: center;
 }
+
+.trainer-image {
+    width: 100%; 
+    height: auto; 
+    border-radius: 15px; 
+    border: 5px solid #ddd; 
+    padding: 10px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: white; 
+}
+
+.timeline-item img {
+    max-width: 600px;
+    max-height: 600px; 
+    border-radius: 8px; 
+  }
 
 
 
