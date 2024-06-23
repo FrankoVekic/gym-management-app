@@ -47,7 +47,6 @@ public class StatusServiceImpl implements StatusService {
                 .orElseThrow(() -> new RuntimeException("Status not found"));
 
         existingStatus.setStatusType(statusDto.getStatusType());
-        existingStatus.setUserRole(statusDto.getUserRole());
 
         Status updatedStatus = statusRepository.save(existingStatus);
 

@@ -11,8 +11,7 @@ public class StatusMapper {
 
         return new Status(
             statusDto.getId(),
-            statusDto.getStatusType(),
-            statusDto.getUserRole()
+            statusDto.getStatusType()
         );
     }
 
@@ -20,7 +19,6 @@ public class StatusMapper {
 
         return new StatusDto(
             status.getId(),
-            status.getUserRole(),
             status.getStatusType()
         );
     }

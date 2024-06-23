@@ -9,6 +9,7 @@ public class TrainerMapper {
 
         return new TrainerDto(
                 trainer.getId(),
+                trainer.getDescription(),
                 trainer.getUser(),
                 trainer.getStatus(),
                 trainer.getTrainingSessions()
@@ -18,6 +19,7 @@ public class TrainerMapper {
     public static Trainer mapToTrainer(TrainerDto trainerDto){
         return new Trainer(
                 trainerDto.getId(),
+                trainerDto.getDescription(),
                 trainerDto.getUser(),
                 trainerDto.getStatus(),
                 trainerDto.getTrainingSessions()

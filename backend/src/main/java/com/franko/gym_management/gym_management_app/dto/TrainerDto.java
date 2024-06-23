@@ -16,6 +16,7 @@ import java.util.List;
 public class TrainerDto {
 
     private Long id;
+    private String description;
     private User user;
     private Status status;
     private List<TrainingSessionTrainer> trainingSessions;

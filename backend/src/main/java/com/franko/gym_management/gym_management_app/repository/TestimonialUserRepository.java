@@ -12,7 +12,7 @@ public interface TestimonialUserRepository extends JpaRepository<TestimonialUser
 
     List<TestimonialUser> findAllByOrderByIdAsc();
 
-    @Query(value = "SELECT * FROM testimonial_user ORDER BY RANDOM() LIMIT 2", nativeQuery = true)
+    @Query(value = "SELECT * FROM testimonial_user ORDER BY RANDOM() LIMIT 3", nativeQuery = true)
     List<TestimonialUser> findTwoRandomTestimonialUsers();
 
 }
