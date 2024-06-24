@@ -52,6 +52,14 @@
     height: 500px;
 }
 
+.header-bg-contact {
+    background-image: url('/src/style/images/contact.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 500px;
+}
+
 .custom-prev-icon,
 .custom-next-icon {
     display: inline-block;

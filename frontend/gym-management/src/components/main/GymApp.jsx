@@ -5,12 +5,13 @@ import HeaderComponent from '../parts/HeaderComponent';
 import HomeComponent from '../pages/HomeComponent';
 import FooterComponent from '../parts/FooterComponent';
 import ErrorComponent from '../parts/ErrorComponent';
-import { AuthProvider } from '../context/AuthContext';
+//import { AuthProvider } from '../context/AuthContext';
 import AboutComponent from '../pages/AboutComponent';
+import ContactComponent from '../pages/ContactComponent';
 
 export default function GymApp() {
     return (
-        <AuthProvider>
+    //    <AuthProvider>
             <BrowserRouter>
                 <div className="GymApp">
                     <HeaderComponent />
@@ -19,12 +20,13 @@ export default function GymApp() {
                             <Route path="/" element={<HomeComponent />} />
                             <Route path="/login" element={<LoginComponent />} />
                             <Route path="/about" element={<AboutComponent/>} />
+                            <Route path="contact" element={<ContactComponent />} />
                             <Route path="*" element={<ErrorComponent />} />
                         </Routes>
                     </div>
                     <FooterComponent />
                 </div>
             </BrowserRouter>
-        </AuthProvider>
+     //   </AuthProvider>
     );
 }
