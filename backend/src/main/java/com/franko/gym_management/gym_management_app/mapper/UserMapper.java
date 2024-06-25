@@ -1,42 +1,60 @@
 package com.franko.gym_management.gym_management_app.mapper;
 
+import com.franko.gym_management.gym_management_app.dto.UserCreationDto;
 import com.franko.gym_management.gym_management_app.dto.UserDto;
 import com.franko.gym_management.gym_management_app.model.User;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Component
 public class UserMapper {
 
-    // Mapping from UserDto to User
-    public static User mapToUser(UserDto userDto) {
-        return new User(
-                userDto.getId(),
-                userDto.getFirstName(),
-                userDto.getLastName(),
-                userDto.getEmail(),
-                userDto.getPassword(),
-                userDto.getRole(),
-                userDto.getImage(),
-                userDto.getPhoneNumber(),
-                userDto.getTestimonials()
-        );
+    public static User mapToUser(UserCreationDto userDto) {
+        if(userDto == null) return null;
+
+        return User.builder()
+                .firstName(userDto.getFirstName())
+                .lastName(userDto.getLastName())
+                .email(userDto.getEmail())
+                .password(userDto.getPassword())
+                .role(userDto.getRole())
+                .image(userDto.getImage())
+                .phoneNumber(userDto.getPhoneNumber())
+                .build();
     }
 
-    // Mapping from User to UserDto
+
     public static UserDto mapToUserDto(User user){
-        return new UserDto(
-                user.getId(),
-                user.getFirstName(),
-                user.getLastName(),
-                user.getEmail(),
-                user.getPassword(),
-                user.getRole(),
-                user.getImage(),
-                user.getPhoneNumber(),
-                user.getTestimonials()
-                );
+
+        if(user == null) return null;
+
+        return UserDto
+                .builder()
+                .id(user.getId())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .email(user.getEmail())
+                .image(user.getImage())
+                .phoneNumber(user.getPhoneNumber())
+                .build();
     }
+
+    public static UserDto mapToUserDto(UserCreationDto userCreationDto){
+        if(userCreationDto == null) return null;
+
+        return UserDto
+                .builder()
+                .firstName(userCreationDto.getFirstName())
+                .lastName(userCreationDto.getLastName())
+                .email(userCreationDto.getEmail())
+                .image(userCreationDto.getImage())
+                .phoneNumber(userCreationDto.getPhoneNumber())
+                .build();
+    }
+
+
 
     // Mapping from List of Users to List of UserDto
     public static List<UserDto> mapToUserDtoList(List<User> users) {

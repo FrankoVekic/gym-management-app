@@ -1,5 +1,6 @@
 package com.franko.gym_management.gym_management_app.api;
 
+import com.franko.gym_management.gym_management_app.dto.UserCreationDto;
 import com.franko.gym_management.gym_management_app.dto.UserDto;
 import com.franko.gym_management.gym_management_app.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,7 @@ public class UserController {
     }
 
     @PostMapping("addUserList")
-    public ResponseEntity<List<UserDto>> addMultipleUsers(@RequestBody List<UserDto> users){
+    public ResponseEntity<List<UserDto>> addMultipleUsers(@RequestBody List<UserCreationDto> users){
         List<UserDto> savedUsers = userService.addMultipleUsers(users);
         return new ResponseEntity<>(savedUsers, HttpStatus.CREATED);
     }
@@ -35,13 +36,13 @@ public class UserController {
     }
 
     @PostMapping("addUser")
-    public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
+    public ResponseEntity<UserDto> createUser(@RequestBody UserCreationDto userDto) {
         UserDto savedUser = userService.createUser(userDto);
         return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<UserDto> updateUser(@PathVariable("id") Long id, @RequestBody UserDto userDto){
+    public ResponseEntity<UserDto> updateUser(@PathVariable("id") Long id, @RequestBody UserCreationDto userDto){
         UserDto updatedUser = userService.updateUser(id, userDto);
         return ResponseEntity.ok(updatedUser);
     }

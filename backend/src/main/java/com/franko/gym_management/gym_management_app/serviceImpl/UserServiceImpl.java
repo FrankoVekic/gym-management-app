@@ -1,5 +1,6 @@
 package com.franko.gym_management.gym_management_app.serviceImpl;
 
+import com.franko.gym_management.gym_management_app.dto.UserCreationDto;
 import com.franko.gym_management.gym_management_app.dto.UserDto;
 import com.franko.gym_management.gym_management_app.mapper.UserMapper;
 import com.franko.gym_management.gym_management_app.model.User;
@@ -18,7 +19,7 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     @Override
-    public UserDto createUser(UserDto userDto) {
+    public UserDto createUser(UserCreationDto userDto) {
 
         User user = UserMapper.mapToUser(userDto);
         User savedUser = userRepository.save(user);
@@ -26,7 +27,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDto> addMultipleUsers(List<UserDto> users) {
+    public List<UserDto> addMultipleUsers(List<UserCreationDto> users) {
+
+        if(users == null || users.isEmpty()) return null;
 
         List<User> userList = users.stream().map(UserMapper::mapToUser).collect(Collectors.toList());
         List<User> savedUserList = userRepository.saveAll(userList);
@@ -52,7 +55,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto updateUser(Long id, UserDto userDto) {
+    public UserDto updateUser(Long id, UserCreationDto userDto) {
 
         User existingUser = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
