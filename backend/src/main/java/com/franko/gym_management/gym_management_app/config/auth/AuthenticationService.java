@@ -8,7 +8,6 @@ import com.franko.gym_management.gym_management_app.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +33,7 @@ public class AuthenticationService {
 
         repository.save(user);
 
-        var jwtToken = jwtService.generateToken(user, user.getId());
+        var jwtToken = jwtService.generateToken(user, user.getId(), user.getRole().name());
 
         return AuthenticationResponse
                 .builder()
@@ -61,7 +60,7 @@ public class AuthenticationService {
         var user = repository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new UnauthorizedException("Invalid email"));
 
-        var jwtToken = jwtService.generateToken(user, user.getId());
+        var jwtToken = jwtService.generateToken(user, user.getId(), user.getRole().name());
 
         return AuthenticationResponse
                 .builder()
