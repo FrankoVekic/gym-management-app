@@ -2,6 +2,7 @@ package com.franko.gym_management.gym_management_app.config.auth;
 
 import com.franko.gym_management.gym_management_app.config.jwt.JwtService;
 import com.franko.gym_management.gym_management_app.enums.Role;
+import com.franko.gym_management.gym_management_app.exceptions.UnauthorizedException;
 import com.franko.gym_management.gym_management_app.model.User;
 import com.franko.gym_management.gym_management_app.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -44,6 +45,12 @@ public class AuthenticationService {
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
 
+        if (request.getEmail() == null || request.getEmail().isEmpty()) {
+            throw new UnauthorizedException("Email cannot be empty!");
+        } else if (request.getPassword() == null || request.getPassword().isEmpty()) {
+            throw new UnauthorizedException("Password cannot be empty");
+        }
+
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getEmail(),
@@ -51,8 +58,8 @@ public class AuthenticationService {
                 )
         );
 
-       var user = repository.findByEmail(request.getEmail())
-               .orElseThrow();
+        var user = repository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new UnauthorizedException("Invalid email"));
 
         var jwtToken = jwtService.generateToken(user, user.getId());
 
