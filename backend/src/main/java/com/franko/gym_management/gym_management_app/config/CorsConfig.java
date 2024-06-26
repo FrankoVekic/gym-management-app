@@ -10,7 +10,6 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-@EnableWebMvc
 public class CorsConfig {
 
     @Bean
@@ -21,8 +20,10 @@ public class CorsConfig {
                 registry
                         .addMapping("/**")
                         .allowedMethods("*")
+                        .allowCredentials(true)
                         .allowedOrigins("http://localhost:3000")
                         .allowedHeaders("*");
+
             }
         };
     }

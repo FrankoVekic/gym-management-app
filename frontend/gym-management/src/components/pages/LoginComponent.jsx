@@ -1,19 +1,40 @@
-import React from 'react';
-import { Form, Button} from 'react-bootstrap';
+import React, { useContext, useState } from 'react';
+import { Form, Button, Alert } from 'react-bootstrap';
 import { Formik } from 'formik';
-import { useState } from 'react';
-
+import { AuthContext } from '../context/AuthContext';
 
 const LoginComponent = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const { login } = useContext(AuthContext);
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    // logika za prijavu
-    console.log('Email:', email);
-    console.log('Password:', password);
+  const handleSubmit = async (values, { setSubmitting }) => {
+    try {
+      await login(values);
+      setErrorMessage('');
+    } catch (error) {
+      setErrorMessage('Invalid email or password');
+    } finally {
+      setSubmitting(false);
+    }
   };
+
+  function validateForm(values) {
+    let errors = {}
+
+    // email validation
+    if (!values.email.trim()) {
+        errors.email = 'Email is required';
+    } else if (!/^\S+@\S+\.\S+$/.test(values.email)) {
+        errors.email = 'Invalid email address';
+    }
+
+    // password validation
+    if(!values.password.trim()){
+      errors.password = 'Password is required';
+    }
+
+    return errors;
+  }
 
   return (
     <section className="vh-100">
@@ -26,33 +47,44 @@ const LoginComponent = () => {
             <Formik
               initialValues={{ email: '', password: '' }}
               onSubmit={handleSubmit}
+              validate={validateForm}
+              validateOnChange={false}
+              validateOnBlur={false}
             >
-              {({ values, handleChange, handleSubmit, isSubmitting }) => (
+              {({ values, handleChange, handleSubmit, isSubmitting, errors }) => (
                 <Form onSubmit={handleSubmit}>
 
-                  <div data-mdb-input-init className="form-outline mb-4">
-                    <input
+                  <div className="form-floating mb-4">
+                    <Form.Control
                       type="email"
-                      id="form3Example3"
-                      className="form-control form-control-lg"
+                      id="email"
                       placeholder="Enter a valid email address"
+                      name="email"
                       value={values.email}
                       onChange={handleChange}
+                      isInvalid={!!errors.email}
+                      className="form-control form-control-lg"
                     />
-                    <label className="form-label" htmlFor="form3Example3">Email address</label>
+                    <Form.Label htmlFor="email">Email address</Form.Label>
+                    <Form.Control.Feedback type="invalid">{errors.email}</Form.Control.Feedback>
                   </div>
 
-                  <div data-mdb-input-init className="form-outline mb-3">
-                    <input
+                  <div className="form-floating mb-3">
+                    <Form.Control
                       type="password"
-                      id="form3Example4"
-                      className="form-control form-control-lg"
+                      id="password"
                       placeholder="Enter password"
+                      name="password"
                       value={values.password}
                       onChange={handleChange}
+                      isInvalid={!!errors.password}
+                      className="form-control form-control-lg"
                     />
-                    <label className="form-label" htmlFor="form3Example4">Password</label>
+                    <Form.Label htmlFor="password">Password</Form.Label>
+                    <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
                   </div>
+
+                  {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
 
                   <div className="d-flex justify-content-between align-items-center">
                     <div className="form-check mb-0">
@@ -65,8 +97,6 @@ const LoginComponent = () => {
                   <div className="text-center text-lg-start mt-4 pt-2">
                     <Button
                       type="submit"
-                      data-mdb-button-init
-                      data-mdb-ripple-init
                       className="btn btn-primary btn-lg"
                       style={{ paddingLeft: '2.5rem', paddingRight: '2.5rem' }}
                       disabled={isSubmitting}
