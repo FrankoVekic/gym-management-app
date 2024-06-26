@@ -27,3 +27,8 @@ export const getTrainingTypes = () => {
 export const getTrainers = () =>{
     return axios.get(`${API_URL}/public/trainers/getTrainers`);
 }
+
+// AUTHENTICATE USER
+export const authenticate = (values) =>{
+    return axios.post(`${API_URL}/public/api/auth/authenticate`, values);
+}
