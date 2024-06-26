@@ -2,15 +2,18 @@ import React, { useContext, useState } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
 import { Formik } from 'formik';
 import { AuthContext } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const LoginComponent = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const { login } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
       await login(values);
       setErrorMessage('');
+      navigate('/');
     } catch (error) {
       setErrorMessage('Invalid email or password');
     } finally {

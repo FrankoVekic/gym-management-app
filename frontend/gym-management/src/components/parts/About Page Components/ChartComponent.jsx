@@ -13,9 +13,16 @@ const data = [
   { year: '2022', members: 3800 },
   { year: '2023', members: 4500 },
   { year: '2024', members: 5020 },
-
 ];
 
+
+const CustomXAxis = ({ dataKey = 'year' }) => (
+  <XAxis dataKey={dataKey} />
+);
+
+const CustomYAxis = ({}) => (
+  <YAxis />
+);
 
 const ChartComponent = () => {
   return (
@@ -28,8 +35,8 @@ const ChartComponent = () => {
             <ResponsiveContainer width="100%" height={400}>
               <LineChart data={data}>
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="year" />
-                <YAxis />
+                <CustomXAxis />
+                <CustomYAxis />
                 <Tooltip />
                 <Legend />
                 <Line type="monotone" dataKey="members" stroke="#8884d8" activeDot={{ r: 8 }} />
