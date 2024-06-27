@@ -5,9 +5,11 @@ import com.franko.gym_management.gym_management_app.enums.Role;
 import com.franko.gym_management.gym_management_app.enums.StatusType;
 import com.franko.gym_management.gym_management_app.model.Member;
 import com.franko.gym_management.gym_management_app.model.Status;
+import com.franko.gym_management.gym_management_app.model.Trainer;
 import com.franko.gym_management.gym_management_app.model.User;
 import com.franko.gym_management.gym_management_app.repository.MemberRepository;
 import com.franko.gym_management.gym_management_app.repository.StatusRepository;
+import com.franko.gym_management.gym_management_app.repository.TrainerRepository;
 import com.franko.gym_management.gym_management_app.repository.UserRepository;
 import com.github.javafaker.Faker;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+
+
 
 @Component
 @Profile("init-data")
@@ -29,6 +33,9 @@ public class FakeDataInitalizer implements CommandLineRunner {
 
     @Autowired
     private StatusRepository statusRepository;
+
+    @Autowired
+    private TrainerRepository trainerRepository;
 
     @Autowired
     private Faker faker;
@@ -83,8 +90,18 @@ public class FakeDataInitalizer implements CommandLineRunner {
             if (userRepository.findByEmail(user.getEmail()).isPresent()) {
                 continue;
             }
-            User savedUser = userRepository.save(user);
+            User savedMember = userRepository.save(user);
             memberCounter++;
+
+            Status activeStatus = statusRepository.getReferenceById(1L);
+
+            Member member = Member
+                    .builder()
+                    .user(savedMember)
+                    .status(activeStatus)
+                    .build();
+
+            memberRepository.save(member);
 
         }
 
@@ -108,8 +125,20 @@ public class FakeDataInitalizer implements CommandLineRunner {
             if (userRepository.findByEmail(user.getEmail()).isPresent()) {
                 continue;
             }
-            userRepository.save(user);
+            User savedTrainer = userRepository.save(user);
             trainerCounter++;
+
+            Status availableStatus = statusRepository.getReferenceById(6L);
+
+            Trainer trainer = Trainer
+                    .builder()
+                    .user(savedTrainer)
+                    .status(availableStatus)
+                    .description(faker.lorem().fixedString(800))
+                    .build();
+
+            trainerRepository.save(trainer);
+
         }
 
     }
