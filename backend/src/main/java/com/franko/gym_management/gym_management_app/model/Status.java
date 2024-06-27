@@ -6,9 +6,8 @@ import com.franko.gym_management.gym_management_app.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Setter
-@Getter
-@ToString
+@Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "statuses")

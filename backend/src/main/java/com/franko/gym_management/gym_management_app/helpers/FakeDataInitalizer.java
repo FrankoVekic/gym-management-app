@@ -2,7 +2,12 @@ package com.franko.gym_management.gym_management_app.helpers;
 
 
 import com.franko.gym_management.gym_management_app.enums.Role;
+import com.franko.gym_management.gym_management_app.enums.StatusType;
+import com.franko.gym_management.gym_management_app.model.Member;
+import com.franko.gym_management.gym_management_app.model.Status;
 import com.franko.gym_management.gym_management_app.model.User;
+import com.franko.gym_management.gym_management_app.repository.MemberRepository;
+import com.franko.gym_management.gym_management_app.repository.StatusRepository;
 import com.franko.gym_management.gym_management_app.repository.UserRepository;
 import com.github.javafaker.Faker;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +25,12 @@ public class FakeDataInitalizer implements CommandLineRunner {
     private UserRepository userRepository;
 
     @Autowired
+    private MemberRepository memberRepository;
+
+    @Autowired
+    private StatusRepository statusRepository;
+
+    @Autowired
     private Faker faker;
 
     @Autowired
@@ -32,9 +43,26 @@ public class FakeDataInitalizer implements CommandLineRunner {
     public void run(String... args) throws Exception {
         if("create-drop".equals(ddlAuto)){
 
+            insertStatuses();
             insertFakeUsersTrainerRole(2);
             insertFakeUsersMemberRole(10);
         }
+    }
+
+    private void insertStatuses() {
+
+        for(StatusType type : StatusType.values()){
+            if(!statusRepository.existsById(type.ordinal() + 1L)){
+                Status status = Status
+                        .builder()
+                        .statusType(type)
+                        .build();
+
+                statusRepository.save(status);
+            }
+        }
+
+
     }
 
     private void insertFakeUsersMemberRole(int numberOfMemberUsers) {
@@ -55,8 +83,9 @@ public class FakeDataInitalizer implements CommandLineRunner {
             if (userRepository.findByEmail(user.getEmail()).isPresent()) {
                 continue;
             }
-            userRepository.save(user);
+            User savedUser = userRepository.save(user);
             memberCounter++;
+
         }
 
     }
