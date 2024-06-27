@@ -1,6 +1,7 @@
 package com.franko.gym_management.gym_management_app.config;
 
 import com.franko.gym_management.gym_management_app.repository.UserRepository;
+import com.github.javafaker.Faker;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -42,6 +43,11 @@ public class ApplicationConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public Faker faker(){
+        return new Faker();
     }
 
 }
