@@ -2,12 +2,10 @@ import React, {createContext, useState, useEffect} from "react";
 import { jwtDecode } from "jwt-decode";
 import { authenticate } from "../api/api";
 import { useNavigate } from "react-router-dom";
+import { registerUser } from "../api/api";
 
 
 export const AuthContext = createContext();
-
-
-
 
 export const AuthProvider = ({ children }) => {
 
@@ -41,6 +39,20 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
+    const register = async (values) => {
+        try {
+            const response = await registerUser(values);
+            const token = response.data.token;
+            localStorage.setItem('token', token);
+            setAuthState({
+                token,
+                user: jwtDecode(token),
+            });
+        } catch (error) {
+            throw new Error('Registration failed');
+        }
+    };
+
     const logout = () => {
         localStorage.removeItem('token');
         setAuthState({
@@ -51,7 +63,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ authState, login, logout }}>
+        <AuthContext.Provider value={{ authState, login, logout, register }}>
             {children}
         </AuthContext.Provider>
     );

@@ -4,18 +4,18 @@ import { Formik } from 'formik';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
-const LoginComponent = () => {
+const RegisterComponent = () => {
   const [errorMessage, setErrorMessage] = useState('');
-  const { login } = useContext(AuthContext);
+  const { register } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
-      await login(values);
+      await register(values);
       setErrorMessage('');
       navigate('/');
     } catch (error) {
-      setErrorMessage('Invalid email or password');
+      setErrorMessage('Registration failed');
     } finally {
       setSubmitting(false);
     }
@@ -23,6 +23,16 @@ const LoginComponent = () => {
 
   function validateForm(values) {
     let errors = {}
+
+    // firstname validation
+    if (!values.firstname.trim()) {
+        errors.firstname = 'First name is required';
+    }
+
+    // lastname validation
+    if (!values.lastname.trim()) {
+        errors.lastname = 'Last name is required';
+    }
 
     // email validation
     if (!values.email.trim()) {
@@ -32,8 +42,10 @@ const LoginComponent = () => {
     }
 
     // password validation
-    if(!values.password.trim()){
-      errors.password = 'Password is required';
+    if (!values.password.trim()) {
+        errors.password = 'Password is required';
+    } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}/.test(values.password)) {
+        errors.password = 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character, and be at least 8 characters long';
     }
 
     return errors;
@@ -48,7 +60,7 @@ const LoginComponent = () => {
           </div>
           <div className="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
             <Formik
-              initialValues={{ email: '', password: '' }}
+              initialValues={{ firstname: '', lastname: '', email: '', password: '' }}
               onSubmit={handleSubmit}
               validate={validateForm}
               validateOnChange={false}
@@ -56,6 +68,36 @@ const LoginComponent = () => {
             >
               {({ values, handleChange, handleSubmit, isSubmitting, errors }) => (
                 <Form onSubmit={handleSubmit}>
+                  
+                  <div className="form-floating mb-4">
+                    <Form.Control
+                      type="text"
+                      id="firstname"
+                      placeholder="Enter your first name"
+                      name="firstname"
+                      value={values.firstname}
+                      onChange={handleChange}
+                      isInvalid={!!errors.firstname}
+                      className="form-control form-control-lg"
+                    />
+                    <Form.Label htmlFor="firstname">First Name</Form.Label>
+                    <Form.Control.Feedback type="invalid">{errors.firstname}</Form.Control.Feedback>
+                  </div>
+                  
+                  <div className="form-floating mb-4">
+                    <Form.Control
+                      type="text"
+                      id="lastname"
+                      placeholder="Enter your last name"
+                      name="lastname"
+                      value={values.lastname}
+                      onChange={handleChange}
+                      isInvalid={!!errors.lastname}
+                      className="form-control form-control-lg"
+                    />
+                    <Form.Label htmlFor="lastname">Last Name</Form.Label>
+                    <Form.Control.Feedback type="invalid">{errors.lastname}</Form.Control.Feedback>
+                  </div>
 
                   <div className="form-floating mb-4">
                     <Form.Control
@@ -89,14 +131,6 @@ const LoginComponent = () => {
 
                   {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
 
-                  <div className="d-flex justify-content-between align-items-center">
-                    <div className="form-check mb-0">
-                      <input className="form-check-input me-2" type="checkbox" value="" id="form2Example3" />
-                      <label className="form-check-label" htmlFor="form2Example3">Remember me</label>
-                    </div>
-                    <a href="#!" className="text-body">Forgot password?</a>
-                  </div>
-
                   <div className="text-center text-lg-start mt-4 pt-2">
                     <Button
                       type="submit"
@@ -104,9 +138,9 @@ const LoginComponent = () => {
                       style={{ paddingLeft: '2.5rem', paddingRight: '2.5rem' }}
                       disabled={isSubmitting}
                     >
-                      {isSubmitting ? 'Logging in...' : 'Login'}
+                      {isSubmitting ? 'Registering...' : 'Register'}
                     </Button>
-                    <p className="small fw-bold mt-2 pt-1 mb-0">Don't have an account? <a href="/register" className="link-danger">Register</a></p>
+                    <p className="small fw-bold mt-2 pt-1 mb-5">Already have an account? <a href="/login" className="link-danger">Login</a></p>
                   </div>
                 </Form>
               )}
@@ -118,4 +152,4 @@ const LoginComponent = () => {
   );
 };
 
-export default LoginComponent;
+export default RegisterComponent;

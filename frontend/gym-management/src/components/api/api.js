@@ -32,3 +32,8 @@ export const getTrainers = () =>{
 export const authenticate = (values) =>{
     return axios.post(`${API_URL}/public/api/auth/authenticate`, values);
 }
+
+// REGISTER USER
+export const registerUser = (values) =>{
+    return axios.post(`${API_URL}/public/api/auth/register`, values);
+}
