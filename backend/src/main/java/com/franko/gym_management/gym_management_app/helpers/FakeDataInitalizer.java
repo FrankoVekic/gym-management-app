@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,8 +51,9 @@ public class FakeDataInitalizer implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        if("create-drop".equals(ddlAuto)){
-            
+        if ("create-drop".equals(ddlAuto)) {
+
+            insertTrainingPackages();
             insertTrainingTypes();
             insertStatuses();
             insertFakeUsersTrainerRole(2);
@@ -59,9 +61,38 @@ public class FakeDataInitalizer implements CommandLineRunner {
         }
     }
 
+    private void insertTrainingPackages() {
+
+        List<TrainingPackage> trainingPackages = new ArrayList<>();
+
+        trainingPackages.add(TrainingPackage
+                .builder()
+                .name("Basic Training Package")
+                .price(new BigDecimal(80.00))
+                .features("3x per week training, Progress tracking")
+                .build());
+
+        trainingPackages.add(TrainingPackage
+                .builder()
+                .name("Medium Training Package")
+                .price(new BigDecimal(100.00))
+                .features("4x per week training, Personalized meal plan, Progress tracking")
+                .build());
+
+        trainingPackages.add(TrainingPackage
+                .builder()
+                .name("Premium Training Package")
+                .price(new BigDecimal(120.00))
+                .features("5x per week training, Personalized meal plan, Personal trainer present, Progress tracking")
+                .build());
+
+        trainingPackageRepository.saveAll(trainingPackages);
+    }
+
     private void insertTrainingTypes() {
 
         List<TrainingType> trainingTypes = new ArrayList<>();
+
         trainingTypes.add(TrainingType
                 .builder()
                 .name("Pilates Training")
@@ -100,8 +131,8 @@ public class FakeDataInitalizer implements CommandLineRunner {
 
     private void insertStatuses() {
 
-        for(StatusType type : StatusType.values()){
-            if(!statusRepository.existsById(type.ordinal() + 1L)){
+        for (StatusType type : StatusType.values()) {
+            if (!statusRepository.existsById(type.ordinal() + 1L)) {
                 Status status = Status
                         .builder()
                         .statusType(type)

@@ -6,10 +6,10 @@ import lombok.*;
 
 import java.math.BigDecimal;
 
-@Getter
-@Setter
+
+@Data
+@Builder
 @NoArgsConstructor
-@ToString
 @AllArgsConstructor
 @Entity(name = "training_packages")
 public class TrainingPackage {
