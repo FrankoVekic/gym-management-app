@@ -41,6 +41,9 @@ public class FakeDataInitalizer implements CommandLineRunner {
     private TrainingPackageRepository trainingPackageRepository;
 
     @Autowired
+    private TestimonialRepository testimonialRepository;
+
+    @Autowired
     private Faker faker;
 
     @Autowired
@@ -53,12 +56,28 @@ public class FakeDataInitalizer implements CommandLineRunner {
     public void run(String... args) throws Exception {
         if ("create-drop".equals(ddlAuto)) {
 
+            insertTestimonials(2);
             insertTrainingPackages();
             insertTrainingTypes();
             insertStatuses();
             insertFakeUsersTrainerRole(2);
             insertFakeUsersMemberRole(10);
         }
+    }
+
+    private void insertTestimonials(int numberOfTestimonials) {
+        int testimonialCounter = 0;
+
+        while(testimonialCounter < numberOfTestimonials){
+            var testimonial = Testimonial
+                    .builder()
+                    .content(faker.lorem().fixedString(100))
+                    .build();
+
+            testimonialRepository.save(testimonial);
+            testimonialCounter++;
+        }
+
     }
 
     private void insertTrainingPackages() {
@@ -141,8 +160,6 @@ public class FakeDataInitalizer implements CommandLineRunner {
                 statusRepository.save(status);
             }
         }
-
-
     }
 
     private void insertFakeUsersMemberRole(int numberOfMemberUsers) {
