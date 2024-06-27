@@ -1,11 +1,17 @@
 import React, {createContext, useState, useEffect} from "react";
 import { jwtDecode } from "jwt-decode";
 import { authenticate } from "../api/api";
+import { useNavigate } from "react-router-dom";
 
 
 export const AuthContext = createContext();
 
+
+
+
 export const AuthProvider = ({ children }) => {
+
+    const navigate = useNavigate();
     const [authState, setAuthState] = useState({
         token: null,
         user: null,
@@ -41,6 +47,7 @@ export const AuthProvider = ({ children }) => {
             token: null,
             user: null,
         });
+        navigate("/");
     };
 
     return (

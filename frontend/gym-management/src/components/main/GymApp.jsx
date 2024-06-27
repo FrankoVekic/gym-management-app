@@ -5,7 +5,7 @@ import HeaderComponent from '../parts/HeaderComponent';
 import HomeComponent from '../pages/HomeComponent';
 import FooterComponent from '../parts/FooterComponent';
 import ErrorComponent from '../parts/ErrorComponent';
-//import { AuthProvider } from '../context/AuthContext';
+import { AuthProvider } from '../context/AuthContext';
 import AboutComponent from '../pages/AboutComponent';
 import ContactComponent from '../pages/ContactComponent';
 
@@ -13,6 +13,7 @@ export default function GymApp() {
     return (
     //    <AuthProvider>
             <BrowserRouter>
+            <AuthProvider>
                 <div className="GymApp">
                     <HeaderComponent />
                     <div className="content">
@@ -26,7 +27,8 @@ export default function GymApp() {
                     </div>
                     <FooterComponent />
                 </div>
+                </AuthProvider>
             </BrowserRouter>
-     //   </AuthProvider>
+     //   
     );
 }
