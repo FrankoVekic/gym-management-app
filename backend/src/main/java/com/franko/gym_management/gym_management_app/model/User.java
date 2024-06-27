@@ -43,8 +43,6 @@ public class User implements UserDetails {
     @Column(columnDefinition = "varchar(255)")
     private String image;
 
-    @Column(columnDefinition = "varchar(13)",name = "phone_number", unique = true)
-    private String phoneNumber;
 
     @JsonIgnore
     @OneToMany(mappedBy = "user")
