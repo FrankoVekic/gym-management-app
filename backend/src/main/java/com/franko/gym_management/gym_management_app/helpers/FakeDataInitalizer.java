@@ -3,14 +3,8 @@ package com.franko.gym_management.gym_management_app.helpers;
 
 import com.franko.gym_management.gym_management_app.enums.Role;
 import com.franko.gym_management.gym_management_app.enums.StatusType;
-import com.franko.gym_management.gym_management_app.model.Member;
-import com.franko.gym_management.gym_management_app.model.Status;
-import com.franko.gym_management.gym_management_app.model.Trainer;
-import com.franko.gym_management.gym_management_app.model.User;
-import com.franko.gym_management.gym_management_app.repository.MemberRepository;
-import com.franko.gym_management.gym_management_app.repository.StatusRepository;
-import com.franko.gym_management.gym_management_app.repository.TrainerRepository;
-import com.franko.gym_management.gym_management_app.repository.UserRepository;
+import com.franko.gym_management.gym_management_app.model.*;
+import com.franko.gym_management.gym_management_app.repository.*;
 import com.github.javafaker.Faker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,6 +13,8 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Component
@@ -38,6 +34,12 @@ public class FakeDataInitalizer implements CommandLineRunner {
     private TrainerRepository trainerRepository;
 
     @Autowired
+    private TrainingTypeRepository trainingTypeRepository;
+
+    @Autowired
+    private TrainingPackageRepository trainingPackageRepository;
+
+    @Autowired
     private Faker faker;
 
     @Autowired
@@ -49,11 +51,51 @@ public class FakeDataInitalizer implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         if("create-drop".equals(ddlAuto)){
-
+            
+            insertTrainingTypes();
             insertStatuses();
             insertFakeUsersTrainerRole(2);
             insertFakeUsersMemberRole(10);
         }
+    }
+
+    private void insertTrainingTypes() {
+
+        List<TrainingType> trainingTypes = new ArrayList<>();
+        trainingTypes.add(TrainingType
+                .builder()
+                .name("Pilates Training")
+                .durationInMinutes(60)
+                .description(faker.lorem().fixedString(500))
+                .image("pilates.jpg")
+                .build());
+
+        trainingTypes.add(TrainingType
+                .builder()
+                .name("Strength Training")
+                .durationInMinutes(45)
+                .description(faker.lorem().fixedString(500))
+                .image("strength.jpg")
+                .build());
+
+        trainingTypes.add(TrainingType
+                .builder()
+                .name("HIIT Training")
+                .durationInMinutes(30)
+                .description(faker.lorem().fixedString(500))
+                .image("hiit.jpg")
+                .build());
+
+        trainingTypes.add(TrainingType
+                .builder()
+                .name("Yoga Training")
+                .durationInMinutes(30)
+                .description(faker.lorem().fixedString(500))
+                .image("yoga.jpg")
+                .build());
+
+        trainingTypeRepository.saveAll(trainingTypes);
+
     }
 
     private void insertStatuses() {
