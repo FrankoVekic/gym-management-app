@@ -22,11 +22,13 @@ const Statics = {
 
     // navbar
     navbarTitle: 'FitnessFit',
-    navbarLink1: 'Home',
-    navbarLink2: 'About',
-    navbarLink3: 'Contact',
-    navbarLink4: 'Services',
-    navbarLink5: 'Login',
+    navbarHome: 'Home',
+    navbarAbout: 'About',
+    navbarContact: 'Contact',
+    navbarServices: 'Services',
+    navbarLogin: 'Login',
+    navBarTrainerDash: 'Dashboard',
+    navbarTrainerManage: 'Manage',
 
     // footer data
     firmName: 'FitnessFit',
