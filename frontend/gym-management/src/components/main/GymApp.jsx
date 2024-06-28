@@ -9,6 +9,7 @@ import { AuthProvider } from '../context/AuthContext';
 import AboutComponent from '../pages/AboutComponent';
 import ContactComponent from '../pages/ContactComponent';
 import RegisterComponent from '../pages/RegisterComponent';
+import ForgotPasswordComponent from '../pages/ForgotPasswordComponent';
 
 export default function GymApp() {
     return (
@@ -22,6 +23,7 @@ export default function GymApp() {
                             <Route path="/" element={<HomeComponent />} />
                             <Route path="/login" element={<LoginComponent />} />
                             <Route path="/register" element={<RegisterComponent />} />
+                            <Route path="/forgot-password" element={<ForgotPasswordComponent />} />
                             <Route path="/about" element={<AboutComponent/>} />
                             <Route path="contact" element={<ContactComponent />} />
                             <Route path="*" element={<ErrorComponent />} />

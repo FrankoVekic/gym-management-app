@@ -94,7 +94,7 @@ const LoginComponent = () => {
                       <input className="form-check-input me-2" type="checkbox" value="" id="form2Example3" />
                       <label className="form-check-label" htmlFor="form2Example3">Remember me</label>
                     </div>
-                    <a href="#!" className="text-body">Forgot password?</a>
+                    <a href="/forgot-password" className="text-body">Forgot password?</a>
                   </div>
 
                   <div className="text-center text-lg-start mt-4 pt-2">

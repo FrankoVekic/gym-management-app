@@ -37,3 +37,8 @@ export const authenticate = (values) =>{
 export const registerUser = (values) =>{
     return axios.post(`${API_URL}/public/api/auth/register`, values);
 }
+
+// FORGOT PASSWORD
+export const forgotPassword = ({email}) => {
+    return axios.post(`${API_URL}/public/api/auth/forgot-password`, { email }); 
+}

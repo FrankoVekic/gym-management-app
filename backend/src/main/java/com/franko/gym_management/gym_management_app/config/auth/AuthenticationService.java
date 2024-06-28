@@ -6,6 +6,10 @@ import com.franko.gym_management.gym_management_app.exceptions.UnauthorizedExcep
 import com.franko.gym_management.gym_management_app.model.User;
 import com.franko.gym_management.gym_management_app.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,6 +18,9 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
+
+    @Autowired
+    private JavaMailSender javaMailSender;
 
     private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
@@ -67,4 +74,17 @@ public class AuthenticationService {
                 .token(jwtToken)
                 .build();
     }
+
+    @Value("${spring.mail.username}")
+    private String fromEmailId;
+
+    public void sendEmail(String recipient,String subject, String body) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom(fromEmailId);
+        message.setTo(recipient);
+        message.setSubject(subject);
+        message.setText(body);
+        javaMailSender.send(message);
+    }
+
 }
