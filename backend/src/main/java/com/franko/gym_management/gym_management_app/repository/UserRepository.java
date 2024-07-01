@@ -13,4 +13,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<User> findAllByOrderByIdAsc();
 
     Optional<User> findByEmail(String email);
+
+    Optional<User> findByResetToken(String resetToken);
 }

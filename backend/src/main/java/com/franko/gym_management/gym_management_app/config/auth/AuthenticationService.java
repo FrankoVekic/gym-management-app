@@ -8,12 +8,17 @@ import com.franko.gym_management.gym_management_app.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +31,8 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+
+    private final static String LOCAL_DEV_URL = "http://localhost:3000/";
 
     public AuthenticationResponse register(RegisterRequest request) {
 
@@ -76,15 +83,55 @@ public class AuthenticationService {
     }
 
     @Value("${spring.mail.username}")
-    private String fromEmailId;
+    private String fromEmail;
 
-    public void sendEmail(String recipient,String subject, String body) {
+    public void sendResetPasswordEmail(String email) {
+
+        String resetToken = UUID.randomUUID().toString();
+        LocalDateTime tokenExpiryTime = LocalDateTime.now().plusHours(1);
+
+        User user = repository.findByEmail(email)
+                .orElseThrow(() -> new UnauthorizedException("User with this email does not exist.", HttpStatus.NOT_FOUND));
+
+        user.setResetToken(resetToken);
+        user.setTokenExpiryTime(tokenExpiryTime);
+        repository.save(user);
+
+        String resetUrl = LOCAL_DEV_URL + "reset-password?token=" + resetToken;
+        String emailBody = "Hello " + user.getFirstName() + ",\n\n"
+                + "You requested a password reset. Click the link below to reset your password:\n"
+                + resetUrl + "\n\n"
+                + "If you did not request a password reset, please ignore this email.\n\n"
+                + "Best regards,\n"
+                + "Your FitnessFit Team";
+
+        sendEmail(email, "Reset Password", emailBody);
+    }
+
+    private void sendEmail(String recipient, String subject, String body) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom(fromEmailId);
+        message.setFrom(fromEmail);
         message.setTo(recipient);
         message.setSubject(subject);
         message.setText(body);
         javaMailSender.send(message);
+    }
+
+    public void resetPassword(String token, String newPassword) {
+        Optional<User> userOptional = repository.findByResetToken(token);
+        if (userOptional.isEmpty()) {
+            throw new UnauthorizedException("Invalid reset token.", HttpStatus.BAD_REQUEST);
+        }
+
+        User user = userOptional.get();
+        if (user.getTokenExpiryTime().isBefore(LocalDateTime.now())) {
+            throw new UnauthorizedException("Reset token has expired.", HttpStatus.BAD_REQUEST);
+        }
+
+        user.setPassword(passwordEncoder.encode(newPassword));
+        user.setResetToken(null);
+        user.setTokenExpiryTime(null);
+        repository.save(user);
     }
 
 }

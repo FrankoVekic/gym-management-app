@@ -42,3 +42,8 @@ export const registerUser = (values) =>{
 export const forgotPassword = ({email}) => {
     return axios.post(`${API_URL}/public/api/auth/forgot-password`, { email }); 
 }
+
+// RESET PASSWORD
+export const resetPassword = ({ token, newPassword }) => {
+    return axios.post(`${API_URL}/public/api/auth/reset-password`, { token, newPassword });
+}

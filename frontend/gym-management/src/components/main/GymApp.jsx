@@ -10,6 +10,7 @@ import AboutComponent from '../pages/AboutComponent';
 import ContactComponent from '../pages/ContactComponent';
 import RegisterComponent from '../pages/RegisterComponent';
 import ForgotPasswordComponent from '../pages/ForgotPasswordComponent';
+import ResetPasswordComponent from '../pages/ResetPasswordComponent';
 
 export default function GymApp() {
     return (
@@ -24,6 +25,7 @@ export default function GymApp() {
                             <Route path="/login" element={<LoginComponent />} />
                             <Route path="/register" element={<RegisterComponent />} />
                             <Route path="/forgot-password" element={<ForgotPasswordComponent />} />
+                            <Route path="/reset-password" element={<ResetPasswordComponent/>} />
                             <Route path="/about" element={<AboutComponent/>} />
                             <Route path="contact" element={<ContactComponent />} />
                             <Route path="*" element={<ErrorComponent />} />
