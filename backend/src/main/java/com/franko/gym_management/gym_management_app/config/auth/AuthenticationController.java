@@ -26,7 +26,13 @@ public class AuthenticationController {
 
     @PostMapping("forgot-password")
     public ResponseEntity<?> forgotPassword(@RequestBody ForgotPasswordRequest request) {
-        authenticationService.sendEmail(request.getEmail(),"Reset password", "Here is a link where you reset your password:");
+        authenticationService.sendResetPasswordEmail(request.getEmail());
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("reset-password")
+    public ResponseEntity<?> resetPassword(@RequestBody ResetPasswordRequest request) {
+        authenticationService.resetPassword(request.getToken(), request.getNewPassword());
         return ResponseEntity.ok().build();
     }
 
