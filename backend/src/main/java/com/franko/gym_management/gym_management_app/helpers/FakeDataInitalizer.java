@@ -44,6 +44,9 @@ public class FakeDataInitalizer implements CommandLineRunner {
     private TestimonialRepository testimonialRepository;
 
     @Autowired
+    private TestimonialUserRepository testimonialUserRepository;
+
+    @Autowired
     private Faker faker;
 
     @Autowired
@@ -62,6 +65,7 @@ public class FakeDataInitalizer implements CommandLineRunner {
             insertStatuses();
             insertFakeUsersTrainerRole(2);
             insertFakeUsersMemberRole(10);
+            insertUserTestimonials();
         }
     }
 
@@ -244,6 +248,30 @@ public class FakeDataInitalizer implements CommandLineRunner {
         }
 
     }
+    // FIXED TO INSERT 2 TESTIMONIALS FOR USERS
+    private void insertUserTestimonials(){
 
+        User userOne = userRepository.getReferenceById(1L);
+        User userTwo = userRepository.getReferenceById(2L);
+
+        Testimonial testimonialOne = testimonialRepository.getReferenceById(1L);
+        Testimonial testimonialTwo = testimonialRepository.getReferenceById(2L);
+
+        var testimonialUserOne = TestimonialUser
+                .builder()
+                .user(userOne)
+                .testimonials(testimonialOne)
+                .build();
+
+        var testimonialUserTwo = TestimonialUser
+                .builder()
+                .user(userTwo)
+                .testimonials(testimonialTwo)
+                .build();
+
+        testimonialUserRepository.save(testimonialUserOne);
+        testimonialUserRepository.save(testimonialUserTwo);
+
+    }
 
 }
