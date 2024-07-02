@@ -2,6 +2,7 @@ package com.franko.gym_management.gym_management_app.config.auth;
 
 import com.franko.gym_management.gym_management_app.config.jwt.JwtService;
 import com.franko.gym_management.gym_management_app.enums.Role;
+import com.franko.gym_management.gym_management_app.exceptions.EmailExistsException;
 import com.franko.gym_management.gym_management_app.exceptions.UnauthorizedException;
 import com.franko.gym_management.gym_management_app.model.User;
 import com.franko.gym_management.gym_management_app.repository.UserRepository;
@@ -12,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -35,6 +37,13 @@ public class AuthenticationService {
     private final static String LOCAL_DEV_URL = "http://localhost:3000/";
 
     public AuthenticationResponse register(RegisterRequest request) {
+
+
+        Optional<User> userByEmail = repository.findByEmail(request.getEmail());
+
+        if(userByEmail.isPresent()){
+            throw new EmailExistsException("User with entered email already exists");
+        }
 
         var user = User
                 .builder()

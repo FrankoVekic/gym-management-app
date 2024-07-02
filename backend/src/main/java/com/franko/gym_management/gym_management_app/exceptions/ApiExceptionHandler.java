@@ -19,6 +19,17 @@ import java.security.SignatureException;
 @ControllerAdvice
 public class ApiExceptionHandler {
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(value = {EmailExistsException.class})
+    public ResponseEntity<ExceptionResponse> handleEmailWhenRegister(EmailExistsException e){
+        ExceptionResponse exception = ExceptionResponse
+                .builder()
+                .httpStatus(HttpStatus.BAD_REQUEST)
+                .message(e.getMessage())
+                .build();
+        return ResponseEntity.status(exception.getHttpStatus()).body(exception);
+    }
+
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(value = {BadCredentialsException.class})
     public ResponseEntity<ExceptionResponse> handleBadCredentials(BadCredentialsException e) {

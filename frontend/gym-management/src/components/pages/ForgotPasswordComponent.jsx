@@ -30,7 +30,7 @@ const ForgotPasswordComponent = () => {
                     <div className="p-4 border rounded">
                         <h2>Forgot Password</h2>
                         <Form onSubmit={handleSubmit}>
-                            <Form.Group controlId="formBasicEmail">
+                            <Form.Group className='m-5' controlId="formBasicEmail">
                                 <Form.Label>Email address</Form.Label>
                                 <Form.Control
                                     type="email"
