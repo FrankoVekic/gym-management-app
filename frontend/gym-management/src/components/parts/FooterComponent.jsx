@@ -2,7 +2,7 @@ import React from 'react';
 import Statics from '../static utils/Statics';
 const FooterComponent = () => {
     return (
-        <footer className="footer text-center text-lg-start text-white">
+        <footer className="footer text-center text-lg-start text-white mt-5">
             <div className="container p-4 pb-0">
                 <section className="">
                     <div className="row">

@@ -52,13 +52,14 @@ const RegisterComponent = () => {
   }
 
   return (
-    <section className="vh-100">
+    <section className="w-auto p-3 mt-5">
       <div className="container-fluid h-custom">
         <div className="row d-flex justify-content-center align-items-center h-100">
           <div className="col-md-9 col-lg-6 col-xl-5">
-            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp" className="img-fluid" alt="Sample image" />
+            <img src="https://img.freepik.com/premium-vector/account-login-line-icon-new-user-register_1948-2986.jpg?w=1480" className="img-fluid" alt="Sample image" />
           </div>
-          <div className="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+          <div className="col-md-8 col-lg-6 col-xl-4 offset-xl-1 container">
+          <h2 className='fw-bolder m-5'>Register a New Account</h2>
             <Formik
               initialValues={{ firstname: '', lastname: '', email: '', password: '' }}
               onSubmit={handleSubmit}
@@ -134,8 +135,8 @@ const RegisterComponent = () => {
                   <div className="text-center text-lg-start mt-4 pt-2">
                     <Button
                       type="submit"
-                      className="btn btn-primary btn-lg"
-                      style={{ paddingLeft: '2.5rem', paddingRight: '2.5rem' }}
+                      className="btn btn-primary btn-lg mt-3"
+                      style={{ paddingLeft: '5.5rem', paddingRight: '5.5rem' }}
                       disabled={isSubmitting}
                     >
                       {isSubmitting ? 'Registering...' : 'Register'}
