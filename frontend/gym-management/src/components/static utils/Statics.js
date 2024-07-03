@@ -21,27 +21,27 @@ const Statics = {
     contactHeaderDesc: 'We will get back to you as soon as possible.',
 
     // navbar
-    navbarTitle: 'FitnessFit',
+    navbarTitle: 'FitnessPro',
     navbarHome: 'Home',
     navbarAbout: 'About',
     navbarContact: 'Contact',
-    navbarServices: 'Services',
+    navbarTraining: 'Training',
     navbarLogin: 'Login',
     navBarTrainerDash: 'Dashboard',
     navbarTrainerManage: 'Manage',
 
     // footer data
-    firmName: 'FitnessFit',
+    firmName: 'FitnessPro',
     copyright: `© ${new Date().getFullYear()} Copyright: `,
     websiteUrl: 'http://localhost:3000/',
     firmAddress: '31000 Osijek, Croatia',
     firmStreet: 'Ulica rijeke dubrovačke 8',
     mobileNumber: 'Mobile: +385 92 537 2120',
     phoneNumber: 'Telephone: +385 (1) 651 4423',
-    infoEmail: 'info@fitnessfit.com',
-    supportEmail: 'support@fitnessfit.com',
-    applicationEmail: 'application@fitnessfit.com',
-    footerDescription: 'At FitnessFit, your health is our priority. Our mission is to provide you with the best services and support on your journey to better health and a fitter body. Join us today and embark on the path to your fitness goals with expert guidance and the support of our community.',
+    infoEmail: 'info@fitnesspro.com',
+    supportEmail: 'support@fitnesspro.com',
+    applicationEmail: 'application@fitnesspro.com',
+    footerDescription: 'At FitnessPro, your health is our priority. Our mission is to provide you with the best services and support on your journey to better health and a fitter body. Join us today and embark on the path to your fitness goals with expert guidance and the support of our community.',
 
     // contact form data
     contactFormEntryTitle: "Get in Touch",
