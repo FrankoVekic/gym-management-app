@@ -2,7 +2,6 @@ package com.franko.gym_management.gym_management_app.model;
 
 
 import com.franko.gym_management.gym_management_app.enums.StatusType;
-import com.franko.gym_management.gym_management_app.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.*;
 

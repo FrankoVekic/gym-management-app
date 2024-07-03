@@ -11,10 +11,10 @@ import ContactComponent from '../pages/ContactComponent';
 import RegisterComponent from '../pages/RegisterComponent';
 import ForgotPasswordComponent from '../pages/ForgotPasswordComponent';
 import ResetPasswordComponent from '../pages/ResetPasswordComponent';
+import TrainingPackagesSelectionComponent from '../pages/TrainingPackagesSelectionComponent'
 
 export default function GymApp() {
     return (
-    //    <AuthProvider>
             <BrowserRouter>
             <AuthProvider>
                 <div className="GymApp">
@@ -26,6 +26,7 @@ export default function GymApp() {
                             <Route path="/register" element={<RegisterComponent />} />
                             <Route path="/forgot-password" element={<ForgotPasswordComponent />} />
                             <Route path="/reset-password" element={<ResetPasswordComponent/>} />
+                            <Route path="/training-packages" element={<TrainingPackagesSelectionComponent/>} />
                             <Route path="/about" element={<AboutComponent/>} />
                             <Route path="contact" element={<ContactComponent />} />
                             <Route path="*" element={<ErrorComponent />} />
@@ -34,7 +35,6 @@ export default function GymApp() {
                     <FooterComponent />
                 </div>
                 </AuthProvider>
-            </BrowserRouter>
-     //   
+            </BrowserRouter>  
     );
 }
