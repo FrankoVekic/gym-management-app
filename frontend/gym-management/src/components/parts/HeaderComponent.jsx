@@ -31,6 +31,9 @@ export default function HeaderComponent() {
             <li className="nav-item">
                 <Link className="nav-link text-blue" to="/about">{Statics.navbarAbout}</Link>
             </li>
+            <li className="nav-item">
+                <button className="nav-link text-blue" onClick={logout}>Logout</button>
+            </li>
         </>
     );
 
@@ -46,6 +49,10 @@ export default function HeaderComponent() {
             <li className="nav-item">
                 <Link className="nav-link text-blue" to="/trainer-management">{Statics.navbarTrainerManage}</Link>
             </li>
+            <li className="nav-item">
+                <button className="nav-link text-blue" onClick={logout}>Logout</button>
+            </li>
+
         </>
     );
 
@@ -86,11 +93,6 @@ export default function HeaderComponent() {
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
                         {renderLinksBasedOnRole()}
-                        {authState && authState.user && (
-                            <li className="nav-item">
-                                <button className="nav-link text-blue" onClick={logout}>Logout</button>
-                            </li>
-                        )}
                     </ul>
                 </div>
             </div>
