@@ -29,6 +29,9 @@ export default function HeaderComponent() {
                 <Link className="nav-link text-blue" to="/contact">{Statics.navbarContact}</Link>
             </li>
             <li className="nav-item">
+                <Link className="nav-link text-blue" aria-current="page" to="/blog">{Statics.navbarBlog}</Link>
+            </li>
+            <li className="nav-item">
                 <Link className="nav-link text-blue" to="/about">{Statics.navbarAbout}</Link>
             </li>
             <li className="nav-item">
@@ -42,6 +45,9 @@ export default function HeaderComponent() {
         <>
             <li className="nav-item">
                 <Link className="nav-link text-blue" aria-current="page" to="/">{Statics.navbarHome}</Link>
+            </li>
+            <li className="nav-item">
+                <Link className="nav-link text-blue" aria-current="page" to="/blog">{Statics.navbarBlog}</Link>
             </li>
             <li className="nav-item">
                 <Link className="nav-link text-blue" to="/trainer-dashboard">{Statics.navBarTrainerDash}</Link>
