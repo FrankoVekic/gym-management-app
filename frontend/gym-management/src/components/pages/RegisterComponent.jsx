@@ -26,26 +26,33 @@ const RegisterComponent = () => {
 
     // firstname validation
     if (!values.firstname.trim()) {
-        errors.firstname = 'First name is required';
+      errors.firstname = 'First name is required';
     }
 
     // lastname validation
     if (!values.lastname.trim()) {
-        errors.lastname = 'Last name is required';
+      errors.lastname = 'Last name is required';
     }
 
     // email validation
     if (!values.email.trim()) {
-        errors.email = 'Email is required';
+      errors.email = 'Email is required';
     } else if (!/^\S+@\S+\.\S+$/.test(values.email)) {
-        errors.email = 'Invalid email address';
+      errors.email = 'Invalid email address';
     }
 
     // password validation
     if (!values.password.trim()) {
-        errors.password = 'Password is required';
+      errors.password = 'Password is required';
     } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}/.test(values.password)) {
-        errors.password = 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character, and be at least 8 characters long';
+      errors.password = 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character, and be at least 8 characters long';
+    }
+
+    if (!values.repeatPassword.trim()) {
+      errors.repeatPassword = 'Confirm password field is required';
+    }
+    else if(values.repeatPassword !== values.password){
+      errors.repeatPassword = 'Password fields do not match'
     }
 
     return errors;
@@ -59,9 +66,9 @@ const RegisterComponent = () => {
             <img src="https://img.freepik.com/premium-vector/account-login-line-icon-new-user-register_1948-2986.jpg?w=1480" className="img-fluid" alt="Sample image" />
           </div>
           <div className="col-md-8 col-lg-6 col-xl-4 offset-xl-1 container">
-          <h2 className='fw-bolder m-5'>Register a New Account</h2>
+            <h2 className='fw-bolder m-5'>Register a New Account</h2>
             <Formik
-              initialValues={{ firstname: '', lastname: '', email: '', password: '' }}
+              initialValues={{ firstname: '', lastname: '', email: '', password: '', repeatPassword: '' }}
               onSubmit={handleSubmit}
               validate={validateForm}
               validateOnChange={false}
@@ -69,7 +76,7 @@ const RegisterComponent = () => {
             >
               {({ values, handleChange, handleSubmit, isSubmitting, errors }) => (
                 <Form onSubmit={handleSubmit}>
-                  
+
                   <div className="form-floating mb-4">
                     <Form.Control
                       type="text"
@@ -84,7 +91,7 @@ const RegisterComponent = () => {
                     <Form.Label htmlFor="firstname">First Name</Form.Label>
                     <Form.Control.Feedback type="invalid">{errors.firstname}</Form.Control.Feedback>
                   </div>
-                  
+
                   <div className="form-floating mb-4">
                     <Form.Control
                       type="text"
@@ -128,6 +135,21 @@ const RegisterComponent = () => {
                     />
                     <Form.Label htmlFor="password">Password</Form.Label>
                     <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
+                  </div>
+
+                  <div className="form-floating mb-3">
+                    <Form.Control
+                      type="password"
+                      id="repeatPassword"
+                      placeholder="Repeat password"
+                      name="repeatPassword"
+                      value={values.repeatPassword}
+                      onChange={handleChange}
+                      isInvalid={!!errors.repeatPassword}
+                      className="form-control form-control-lg"
+                    />
+                    <Form.Label htmlFor="password">Confirm Password</Form.Label>
+                    <Form.Control.Feedback type="invalid">{errors.repeatPassword}</Form.Control.Feedback>
                   </div>
 
                   {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
