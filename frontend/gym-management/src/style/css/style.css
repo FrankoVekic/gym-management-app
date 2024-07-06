@@ -60,6 +60,14 @@
     height: 500px;
 }
 
+.header-bg-training-packages{
+    background-image: url('/src/style/images/trainingpackages.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 500px;
+}
+
 .custom-prev-icon,
 .custom-next-icon {
     display: inline-block;

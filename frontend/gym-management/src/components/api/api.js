@@ -47,3 +47,8 @@ export const forgotPassword = ({email}) => {
 export const resetPassword = ({ token, newPassword }) => {
     return axios.post(`${API_URL}/public/api/auth/reset-password`, { token, newPassword });
 }
+
+// GET TRAINING PACKAGE BY ID
+export const getTrainingPackageById = (id) => {
+    return axios.get(`${API_URL}/public/trainingPackages/${id}`);
+};

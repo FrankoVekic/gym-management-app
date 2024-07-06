@@ -1,6 +1,7 @@
 package com.franko.gym_management.gym_management_app.serviceImpl;
 
 import com.franko.gym_management.gym_management_app.dto.TrainingPackageDto;
+import com.franko.gym_management.gym_management_app.exceptions.ResourceNotFoundException;
 import com.franko.gym_management.gym_management_app.mapper.TrainingPackageMapper;
 import com.franko.gym_management.gym_management_app.model.TrainingPackage;
 import com.franko.gym_management.gym_management_app.repository.TrainingPackageRepository;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,6 +26,17 @@ public class TrainingPackageServiceImpl implements TrainingPackageService {
                 .stream()
                 .map(TrainingPackageMapper::mapToTrainingPackageDto)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public TrainingPackageDto getTrainingPackageById(Long id) {
+        Optional<TrainingPackage> trainingPackageOptional = trainingPackageRepository.findById(id);
+
+        if (trainingPackageOptional.isPresent()) {
+            return TrainingPackageMapper.mapToTrainingPackageDto(trainingPackageOptional.get());
+        } else {
+            throw new ResourceNotFoundException("Training package not found with id " + id);
+        }
     }
 
     @Override

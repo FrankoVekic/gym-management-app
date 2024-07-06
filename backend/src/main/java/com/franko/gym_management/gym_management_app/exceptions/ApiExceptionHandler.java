@@ -21,7 +21,7 @@ public class ApiExceptionHandler {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(value = {EmailExistsException.class})
-    public ResponseEntity<ExceptionResponse> handleEmailWhenRegister(EmailExistsException e){
+    public ResponseEntity<ExceptionResponse> handleEmailWhenRegister(EmailExistsException e) {
         ExceptionResponse exception = ExceptionResponse
                 .builder()
                 .httpStatus(HttpStatus.BAD_REQUEST)
@@ -69,6 +69,17 @@ public class ApiExceptionHandler {
         ExceptionResponse exception = ExceptionResponse
                 .builder()
                 .httpStatus(e.getStatus())
+                .message(e.getMessage())
+                .build();
+        return ResponseEntity.status(exception.getHttpStatus()).body(exception);
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(value = {ResourceNotFoundException.class})
+    public ResponseEntity<ExceptionResponse> handleResourceNotFoundException(ResourceNotFoundException e) {
+        ExceptionResponse exception = ExceptionResponse
+                .builder()
+                .httpStatus(HttpStatus.NOT_FOUND)
                 .message(e.getMessage())
                 .build();
         return ResponseEntity.status(exception.getHttpStatus()).body(exception);

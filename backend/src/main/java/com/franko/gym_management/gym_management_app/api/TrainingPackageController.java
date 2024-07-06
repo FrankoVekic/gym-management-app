@@ -27,4 +27,10 @@ public class TrainingPackageController {
         return new ResponseEntity<>(savedTrainingPackage, org.springframework.http.HttpStatus.CREATED);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<TrainingPackageDto> getTrainingPackageById(@PathVariable Long id) {
+        TrainingPackageDto trainingPackage = trainingPackageService.getTrainingPackageById(id);
+        return ResponseEntity.ok(trainingPackage);
+    }
+
 }

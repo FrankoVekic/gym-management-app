@@ -8,5 +8,7 @@ public interface TrainingPackageService {
 
     List<TrainingPackageDto> getTrainingPackages();
 
+    TrainingPackageDto getTrainingPackageById(Long id);
+
     TrainingPackageDto createTrainingPackage(TrainingPackageDto trainingPackageDto);
 }

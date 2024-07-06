@@ -15,6 +15,9 @@ const Statics = {
     aboutPageDescription: 'Here you will find some interesting things about FitnessPro.',
     chartDescription: 'Since our inception in 2010, we have steadily grown our community of members who are dedicated to achieving their fitness goals. Each year, our family of members has expanded, driven by our commitment to providing exceptional fitness programs and personalized training experiences. Our journey from a small fitness center to a thriving community hub reflects our unwavering dedication to helping individuals lead healthier, happier lives.',
 
+    // training packages page
+    trainingPackagesTitle: 'Training Packages',
+    trainingPackagesDescription: 'Here are our training packages, if you have any questions contact us for information',
 
     // contact page
     contactHeaderTitle: 'Contact Us',

@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { getTrainingPackages } from '../api/api';
+import { getTrainingPackages } from '../../api/api';
+import { useNavigate } from 'react-router-dom';
 
 const TrainingPackagesSelectionComponent = () => {
     const [packages, setPackages] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         getTrainingPackages()
@@ -13,6 +15,10 @@ const TrainingPackagesSelectionComponent = () => {
                 console.error('There was an error fetching the training packages!', error);
             });
     }, []);
+
+    const handleChoosePlan = (id) => {
+        navigate(`/training-package-detail/${id}`);
+    };
 
     return (
         <section className="bg-light py-5 border-bottom">
@@ -32,7 +38,12 @@ const TrainingPackagesSelectionComponent = () => {
                                             <li key={index}><i className="bi bi-check text-primary"></i> {feature}</li>
                                         ))}
                                     </ul>
-                                    <button className="btn btn-outline-primary">Choose plan</button>
+                                    <button
+                                        className="btn btn-outline-primary"
+                                        onClick={() => handleChoosePlan(pkg.id)}
+                                    >
+                                        Choose plan
+                                    </button>
                                 </div>
                             </div>
                         </div>
