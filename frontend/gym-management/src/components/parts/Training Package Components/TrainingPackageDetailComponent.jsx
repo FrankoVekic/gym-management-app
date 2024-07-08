@@ -53,19 +53,17 @@ const TrainingPackageDetailComponent = () => {
         <div className="container my-5">
             <div className="row justify-content-center">
                 <div className="col-md-5">
-                    <div className="d-flex justify-content-start mb-3">
-                        <Button variant="primary" onClick={handleBackClick}>Back</Button>
-                    </div>
                     <div className="card">
                         <div className="card-body">
-                            <h2 className="card-title">{trainingPackage.name}</h2>
-                            <p className="card-text">€{trainingPackage.price} / mo.</p>
-                            <ul className="list-unstyled mb-4">
-                                {trainingPackage.features.split(',').map((feature, index) => (
-                                    <li key={index}><i className="bi bi-check text-primary"></i> {feature}</li>
-                                ))}
-                            </ul>
-                            <button className="btn btn-primary">Pay</button>
+                            <div className="d-flex justify-content-start mb-3">
+                                <Button variant="primary" onClick={handleBackClick}>Back</Button>
+                            </div>
+                            <h2 className="card-title training-package-title">{trainingPackage.name}</h2>
+                            <p className="card-text training-package-price">€{trainingPackage.price} / mo.</p>
+                            <p className="training-package-features">{trainingPackage.features}</p>
+                            <div className="payment-button">
+                                <button className="btn btn-primary">Pay</button>
+                            </div>
                         </div>
                     </div>
                 </div>

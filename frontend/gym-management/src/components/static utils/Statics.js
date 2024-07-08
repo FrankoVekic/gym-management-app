@@ -23,6 +23,11 @@ const Statics = {
     contactHeaderTitle: 'Contact Us',
     contactHeaderDesc: 'We will get back to you as soon as possible.',
 
+    // blog page
+    blogPageTitle: 'Blogs and Discussions',
+    blogPageDescription: 'If you have anything to ask or share with the community, do it here.',
+
+
     // navbar
     navbarTitle: 'FitnessPro',
     navbarHome: 'Home',

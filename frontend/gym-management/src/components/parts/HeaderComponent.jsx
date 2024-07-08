@@ -26,13 +26,13 @@ export default function HeaderComponent() {
                 </ul>
             </li>
             <li className="nav-item">
-                <Link className="nav-link text-blue" to="/contact">{Statics.navbarContact}</Link>
-            </li>
-            <li className="nav-item">
-                <Link className="nav-link text-blue" aria-current="page" to="/blog">{Statics.navbarBlog}</Link>
+                <Link className="nav-link text-blue" aria-current="page" to="/blogs">{Statics.navbarBlog}</Link>
             </li>
             <li className="nav-item">
                 <Link className="nav-link text-blue" to="/about">{Statics.navbarAbout}</Link>
+            </li>
+            <li className="nav-item">
+                <Link className="nav-link text-blue" to="/contact">{Statics.navbarContact}</Link>
             </li>
             <li className="nav-item">
                 <button className="nav-link text-blue" onClick={logout}>Logout</button>

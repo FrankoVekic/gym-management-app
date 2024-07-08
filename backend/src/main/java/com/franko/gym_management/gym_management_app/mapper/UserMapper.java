@@ -1,7 +1,9 @@
 package com.franko.gym_management.gym_management_app.mapper;
 
+import com.franko.gym_management.gym_management_app.dto.BlogDto;
 import com.franko.gym_management.gym_management_app.dto.UserCreationDto;
 import com.franko.gym_management.gym_management_app.dto.UserDto;
+import com.franko.gym_management.gym_management_app.model.Blog;
 import com.franko.gym_management.gym_management_app.model.User;
 import org.springframework.stereotype.Component;
 
@@ -20,6 +22,17 @@ public class UserMapper {
                 .email(userDto.getEmail())
                 .password(userDto.getPassword())
                 .role(userDto.getRole())
+                .image(userDto.getImage())
+                .build();
+    }
+
+    public static User mapToUser(UserDto userDto) {
+        if(userDto == null) return null;
+
+        return User.builder()
+                .firstName(userDto.getFirstName())
+                .lastName(userDto.getLastName())
+                .email(userDto.getEmail())
                 .image(userDto.getImage())
                 .build();
     }

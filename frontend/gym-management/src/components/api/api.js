@@ -52,3 +52,14 @@ export const resetPassword = ({ token, newPassword }) => {
 export const getTrainingPackageById = (id) => {
     return axios.get(`${API_URL}/public/trainingPackages/${id}`);
 };
+
+
+// GET ALL BLOGS
+export const getAllBlogs = () => {
+    return axios.get(`${API_URL}/public/blogs/getAllBlogs`);
+}
+
+// GET BLOG BY ID
+export const getBlogById = (id) => {
+    return axios.get(`${API_URL}/public/blogs/${id}`);
+};

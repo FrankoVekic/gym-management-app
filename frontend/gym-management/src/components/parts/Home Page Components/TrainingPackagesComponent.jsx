@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { getTrainingPackages } from '../../api/api';
+import { useNavigate } from 'react-router-dom';
+
 
 const TrainingPackagesComponent = () => {
     const [packages, setPackages] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         getTrainingPackages()
@@ -18,6 +21,10 @@ const TrainingPackagesComponent = () => {
         display: 'flex',
         flexDirection: 'column',
         height: '100%'
+    };
+
+    const handleChoosePlan = (id) => {
+        navigate(`/training-package-detail/${id}`);
     };
 
     return (
@@ -42,7 +49,12 @@ const TrainingPackagesComponent = () => {
                                             <li className="mb-2" key={index}><i className="bi bi-check text-primary"></i> {feature}</li>
                                         ))}
                                     </ul>
-                                    <div className="d-grid"><a className="btn btn-outline-primary" href="#!">Choose plan</a></div>
+                                    <div className="d-grid">                                    <button
+                                        className="btn btn-outline-primary"
+                                        onClick={() => handleChoosePlan(pkg.id)}
+                                    >
+                                        Choose plan
+                                    </button></div>
                                 </div>
                             </div>
                         </div>
