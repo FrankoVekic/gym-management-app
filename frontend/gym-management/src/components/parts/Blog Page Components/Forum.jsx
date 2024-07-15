@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getAllBlogs } from '../../api/api';
 import { Link } from 'react-router-dom';
+import Statics from '../../static utils/Statics';
 
 const Forum = () => {
     const [blogs, setBlogs] = useState([]);
@@ -19,7 +20,7 @@ const Forum = () => {
     }, []);
 
     return (
-        <div className="container forumBody mt-5"> 
+        <div className="container forumBody mt-5">
             <div className="main-body p-0">
                 <div className="inner-wrapper">
                     <div className="inner-sidebar">
@@ -70,7 +71,7 @@ const Forum = () => {
                     </div>
 
                     <div className="inner-main">
-                        <div className="inner-main-header d-flex align-items-center"> 
+                        <div className="inner-main-header d-flex align-items-center">
                             <span className="input-icon input-icon-sm ml-auto w-auto">
                                 <input
                                     type="text"
@@ -79,31 +80,36 @@ const Forum = () => {
                                 />
                             </span>
                         </div>
-
                         <div className="inner-main-body p-2 p-sm-3 collapse forum-content show">
                             {blogs.map(blog => (
                                 <div className="card mb-2" key={blog.id}>
                                     <div className="card-body p-2 p-sm-3">
                                         <div className="media forum-item">
                                             <Link to={`/blogs/${blog.id}`} data-toggle="collapse" data-target=".forum-content">
-                                                <img
-                                                    src={ "https://bootdey.com/img/Content/avatar/avatar1.png"}
-                                                    className="mr-3 rounded-circle"
-                                                    width="60"
-                                                    alt={blog.author.firstName}
-                                                />
+                                                <div
+                                                    className="avatar-wrapper"
+                                                    style={{
+                                                        backgroundImage: `url(${Statics.imagesUsersLogoUrl}${blog.author.image})`,
+                                                        width: "60px",
+                                                        height: "60px",
+                                                        backgroundPosition: "center",
+                                                        backgroundSize: "cover",
+                                                        borderRadius: "50%",
+                                                        overflow: "hidden",
+                                                    }}
+                                                ></div>
                                             </Link>
                                             <div className="media-body">
                                                 <h6>
                                                     <Link to={`/blogs/${blog.id}`} className="text-body">
-                                                        {blog.title}
+                                                        <h5>{blog.title}</h5>
                                                     </Link>
                                                 </h6>
                                                 <p className="text-secondary">
                                                     {blog.content}
                                                 </p>
                                                 <p className="text-muted">
-                                                    <a href="">{`${blog.author.firstName} ${blog.author.lastName}`}</a> 
+                                                    <a href="">{`${blog.author.firstName} ${blog.author.lastName}`}</a>
                                                     <span className="text-secondary"> {new Date(blog.createdAt).toLocaleString()}</span>
                                                 </p>
                                             </div>

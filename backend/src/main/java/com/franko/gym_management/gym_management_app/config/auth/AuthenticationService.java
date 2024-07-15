@@ -51,6 +51,7 @@ public class AuthenticationService {
                 .lastName(request.getLastname())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
+                .image("noLogo.png")
                 .role(Role.MEMBER)
                 .build();
 
