@@ -25,11 +25,12 @@ const Forum = () => {
                 <div className="inner-wrapper">
                     <div className="inner-sidebar">
                         <div className="inner-sidebar-header justify-content-center">
-                            <button
+                            <Link
+                                to='new-discussion'
                                 className="btn btn-primary"
                                 type="button">
                                 NEW DISCUSSION
-                            </button>
+                            </Link>
                         </div>
                         <div className="inner-sidebar-body p-0">
                             <div className="p-3 h-100" data-simplebar="init">
@@ -58,7 +59,7 @@ const Forum = () => {
                                                             Most Commented
                                                         </a>
                                                         <a href="" className="nav-link nav-link-faded">
-                                                            No replies yet
+                                                            No Replies Yet
                                                         </a>
                                                     </nav>
                                                 </div>

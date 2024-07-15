@@ -15,6 +15,7 @@ import TrainingPackagesComponent from '../pages/TrainingPackagesComponent';
 import TrainingPackageDetailComponent from '../parts/Training Package Components/TrainingPackageDetailComponent';
 import BlogComponent from '../pages/BlogComponent';
 import BlogDetail from '../parts/Blog Page Components/BlogDetail';
+import BlogCreation from '../parts/Blog Page Components/BlogCreation';
 
 export default function GymApp() {
     return (
@@ -31,6 +32,7 @@ export default function GymApp() {
                             <Route path="/reset-password" element={<ResetPasswordComponent/>} />
                             <Route path="/blogs" element={<BlogComponent/>} />
                             <Route path="/blogs/:id" element={<BlogDetail/>} />
+                            <Route path="/blogs/new-discussion" element={<BlogCreation/>} />
                             <Route path="/training-packages" element={<TrainingPackagesComponent/>} />
                             <Route path="/training-package-detail/:id" element={<TrainingPackageDetailComponent/>} />
                             <Route path="/about" element={<AboutComponent/>} />
