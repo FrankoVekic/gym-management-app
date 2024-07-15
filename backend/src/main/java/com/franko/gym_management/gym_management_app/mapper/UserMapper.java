@@ -1,9 +1,7 @@
 package com.franko.gym_management.gym_management_app.mapper;
 
-import com.franko.gym_management.gym_management_app.dto.BlogDto;
 import com.franko.gym_management.gym_management_app.dto.UserCreationDto;
 import com.franko.gym_management.gym_management_app.dto.UserDto;
-import com.franko.gym_management.gym_management_app.model.Blog;
 import com.franko.gym_management.gym_management_app.model.User;
 import org.springframework.stereotype.Component;
 

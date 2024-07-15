@@ -1,6 +1,6 @@
 package com.franko.gym_management.gym_management_app.serviceImpl;
 
-import com.franko.gym_management.gym_management_app.dto.BlogDto;
+import com.franko.gym_management.gym_management_app.dto.BlogCreationDto;
 import com.franko.gym_management.gym_management_app.mapper.BlogMapper;
 import com.franko.gym_management.gym_management_app.model.Blog;
 import com.franko.gym_management.gym_management_app.repository.BlogRepository;
@@ -19,14 +19,14 @@ public class BlogServiceImpl implements BlogService {
     private BlogRepository blogRepository;
 
     @Override
-    public BlogDto createBlog(BlogDto blogDto) {
+    public BlogCreationDto createBlog(BlogCreationDto blogDto) {
         Blog blog = BlogMapper.mapToBlog(blogDto);
         Blog savedBlog = blogRepository.save(blog);
         return BlogMapper.mapToBlogDto(savedBlog);
     }
 
     @Override
-    public List<BlogDto> getAllBlogs() {
+    public List<BlogCreationDto> getAllBlogs() {
         List<Blog> blogs = blogRepository.findAllByOrderByIdDesc();
 
         return blogs
@@ -38,7 +38,7 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public BlogDto getBlogById(Long blogID) {
+    public BlogCreationDto getBlogById(Long blogID) {
         Blog blog = blogRepository.findById(blogID)
                 .orElseThrow(() -> new RuntimeException("Blog not found"));
         return BlogMapper.mapToBlogDto(blog);

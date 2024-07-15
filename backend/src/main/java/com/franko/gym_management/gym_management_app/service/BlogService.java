@@ -1,16 +1,16 @@
 package com.franko.gym_management.gym_management_app.service;
 
 
-import com.franko.gym_management.gym_management_app.dto.BlogDto;
+import com.franko.gym_management.gym_management_app.dto.BlogCreationDto;
 
 import java.util.List;
 
 public interface BlogService {
 
-    BlogDto createBlog(BlogDto blogDto);
+    BlogCreationDto createBlog(BlogCreationDto blogDto);
 
-    List<BlogDto> getAllBlogs();
+    List<BlogCreationDto> getAllBlogs();
 
-    BlogDto getBlogById(Long id);
+    BlogCreationDto getBlogById(Long id);
 
 }
