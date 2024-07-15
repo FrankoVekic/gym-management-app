@@ -13,7 +13,7 @@ public class BlogMapper {
         blog.setTitle(blogDto.getTitle());
         blog.setContent(blogDto.getContent());
         blog.setCreatedAt(blogDto.getCreatedAt());
-        blog.setAuthor(UserMapper.mapToUser(blogDto.getAuthor()));
+        blog.setAuthor(blogDto.getAuthor());
 
         if (blogDto.getComments() != null) {
             blog.setComments(blogDto.getComments().stream()
@@ -30,13 +30,13 @@ public class BlogMapper {
         blogDto.setTitle(blog.getTitle());
         blogDto.setContent(blog.getContent());
         blogDto.setCreatedAt(blog.getCreatedAt());
-        blogDto.setAuthor(UserMapper.mapToUserDto(blog.getAuthor()));
+        blogDto.setAuthor(blog.getAuthor());
 
-
-         blogDto.setComments(blog.getComments().stream()
-                 .map(CommentMapper::mapToCommentDto)
-                 .collect(Collectors.toList()));
-
+        if (blogDto.getComments() != null) {
+            blogDto.setComments(blog.getComments().stream()
+                    .map(CommentMapper::mapToCommentDto)
+                    .collect(Collectors.toList()));
+        }
         return blogDto;
     }
 }

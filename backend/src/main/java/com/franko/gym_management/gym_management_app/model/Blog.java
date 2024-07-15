@@ -33,7 +33,7 @@ public class Blog {
     private User author;
 
     @CreationTimestamp
-    @Column(name = "created_at", nullable = false, updatable = false)
+    @Column(name = "created_at", updatable = false)
     private Date createdAt;
 
     @CreationTimestamp
