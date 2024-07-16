@@ -36,7 +36,7 @@ public class Blog {
     @Column(name = "created_at", updatable = false)
     private Date createdAt;
 
-    @Temporal(TemporalType.TIMESTAMP)
+    @CreationTimestamp
     @Column(name = "updated_at")
     private Date updatedAt;
 
