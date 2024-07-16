@@ -34,21 +34,21 @@ public class BlogMapper {
         blogDto.setAuthor(blog.getAuthor());
 
 
-        if (blogDto.getComments() != null) {
-            blogDto.setComments(blog.getComments().stream()
+        blogDto.setComments(blog.getComments().stream()
                     .map(CommentMapper::mapToCommentDto)
                     .collect(Collectors.toList()));
-        }
 
         return blogDto;
     }
 
     public static BlogResponseDto mapToResponseDtoFromObject(Blog blog){
+
         return BlogResponseDto
                 .builder()
                 .title(blog.getTitle())
                 .content(blog.getContent())
                 .author(UserMapper.mapToUserDto(blog.getAuthor()))
+                .comments(blog.getComments())
                 .build();
     }
 

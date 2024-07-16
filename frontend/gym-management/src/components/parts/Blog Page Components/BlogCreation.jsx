@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Form, Button, Alert} from 'react-bootstrap';
+import { Form, Button, Alert, Modal } from 'react-bootstrap';
 import { Formik } from 'formik';
 import { AuthContext } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -120,7 +120,7 @@ const BlogCreation = () => {
                       style={{ paddingLeft: '5.5rem', paddingRight: '5.5rem' }}
                       disabled={isSubmitting}
                     >
-                      {isSubmitting ? 'Submitting...' : 'Submit'}
+                      {isSubmitting ? 'Posting...' : 'Post'}
                     </Button>
                   </div>
                 </Form>

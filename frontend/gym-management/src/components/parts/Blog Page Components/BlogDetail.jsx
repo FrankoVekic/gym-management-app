@@ -23,7 +23,7 @@ const BlogDetail = () => {
             try {
                 const response = await getBlogById(id);
                 setBlog(response.data);
-                setComments(response.data.comments);
+                setComments(response.data.comments || []);
                 setLoading(false);
             } catch (error) {
                 console.error('Error fetching blog:', error);
@@ -31,9 +31,10 @@ const BlogDetail = () => {
                 setLoading(false);
             }
         };
-
+    
         fetchBlog();
     }, [id]);
+    
 
     // TODO: IMPLEMENT ADDING COMMENT WHEN USER IS LOGGED IN
     const handleAddComment = () => {
