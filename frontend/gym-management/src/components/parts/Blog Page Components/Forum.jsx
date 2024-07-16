@@ -70,7 +70,6 @@ const Forum = () => {
                             </div>
                         </div>
                     </div>
-
                     <div className="inner-main">
                         <div className="inner-main-header d-flex align-items-center">
                             <span className="input-icon input-icon-sm ml-auto w-auto">
@@ -87,10 +86,10 @@ const Forum = () => {
                                     <div className="card-body p-2 p-sm-3">
                                         <div className="media forum-item">
                                             <Link to={`/blogs/${blog.id}`} data-toggle="collapse" data-target=".forum-content">
-                                                <div
+                                            <div
                                                     className="avatar-wrapper"
                                                     style={{
-                                                        backgroundImage: `url(${Statics.imagesUsersLogoUrl}${blog.author.image})`,
+                                                        backgroundImage: `${blog.author.image ? `url(${Statics.imagesUsersLogoUrl}${blog.author.image})` : `url(${Statics.noImageUrl})`}`,
                                                         width: "60px",
                                                         height: "60px",
                                                         backgroundPosition: "center",
@@ -127,7 +126,6 @@ const Forum = () => {
                                                     </Link>
                                                 </div>
                                             )}
-
                                         </div>
                                     </div>
                                 </div>

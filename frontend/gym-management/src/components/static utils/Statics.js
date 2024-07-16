@@ -63,6 +63,7 @@ const Statics = {
     // urls
     imagesBaseUrl: 'http://localhost:8080/images/',
     imagesUsersLogoUrl: 'http://localhost:8080/images/users/logos/',
+    noImageUrl: 'http://localhost:8080/images/users/logos/noLogo.png',
 
     // errors
     errorMessage: 'Oops! Something went wrong.',

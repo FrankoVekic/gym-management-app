@@ -108,6 +108,8 @@ const BlogDetail = () => {
                         </div>
                     ))
                 )}
+
+                {/* TODO: Change pagination counter */}
                 <div className="pagination justify-content-center align-items-center">
                     {Array.from({ length: Math.ceil(comments.length / commentsPerPage) }, (_, i) => (
                         <button key={i + 1} onClick={() => paginate(i + 1)} className={`page-link ${currentPage === i + 1 ? 'active' : ''}`}>
