@@ -7,7 +7,7 @@ function App() {
       <link
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css"
-        crossorigin="anonymous"
+        crossOrigin="anonymous"
       />
       <GymApp />
 

@@ -63,3 +63,8 @@ export const getAllBlogs = () => {
 export const getBlogById = (id) => {
     return axios.get(`${API_URL}/public/blogs/${id}`);
 };
+
+// CREATE NEW BLOG
+export const createNewBlog = (values) => {
+    return axios.post(`${API_URL}/public/blogs/addBlog`, values);
+};

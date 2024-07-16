@@ -1,23 +1,42 @@
 import React, { useContext, useState } from 'react';
-import { Form, Button, Alert } from 'react-bootstrap';
+import { Form, Button, Alert} from 'react-bootstrap';
 import { Formik } from 'formik';
 import { AuthContext } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { createNewBlog } from '../../api/api';
 
 const BlogCreation = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
+  const { authState } = useContext(AuthContext);
 
   const handleSubmit = async (values, { setSubmitting }) => {
-    try {
-      //await addNewBlog(values);
-      setErrorMessage('');
-      navigate('/');
-    } catch (error) {
-      setErrorMessage('Creating a new blog failed');
-    } finally {
+
+    // TODO: add Modal, remove window.confirm
+    if(window.confirm('Are you sure you want to post this blog?')){
+      try {
+        const blogData = {
+          title: values.title,
+          content: values.content,
+          author: {
+            id: authState.user.userID,
+            role: authState.user.role,
+          },
+        };
+  
+        await createNewBlog(blogData);
+        setErrorMessage('');
+        navigate('/blogs');
+      } catch (error) {
+        setErrorMessage('Creating a new blog failed');
+      } finally {
+        setSubmitting(false);
+      }
+    }
+    else {
       setSubmitting(false);
     }
+
   };
 
   function validateForm(values) {
