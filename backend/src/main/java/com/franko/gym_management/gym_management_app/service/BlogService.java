@@ -10,8 +10,8 @@ public interface BlogService {
 
     BlogResponseDto createBlog(BlogDto blogDto);
 
-    List<BlogDto> getAllBlogs();
+    List<BlogResponseDto> getAllBlogs();
 
-    BlogDto getBlogById(Long id);
+    BlogResponseDto getBlogById(Long id);
 
 }

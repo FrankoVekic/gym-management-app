@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -15,9 +16,11 @@ import java.util.List;
 @NoArgsConstructor
 public class BlogResponseDto {
 
+    private Long id;
     private String title;
     private String content;
     private UserDto author;
-    private List<Comment> comments;
+    private Date createdAt;
+    private List<CommentDto> comments;
 
 }

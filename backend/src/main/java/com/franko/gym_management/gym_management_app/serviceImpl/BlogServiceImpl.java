@@ -35,22 +35,22 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public List<BlogDto> getAllBlogs() {
+    public List<BlogResponseDto> getAllBlogs() {
         List<Blog> blogs = blogRepository.findAllByOrderByIdDesc();
 
         return blogs
                 .stream()
-                .map(BlogMapper::mapToBlogDto)
+                .map(BlogMapper::mapToResponseDtoFromObject)
                 .collect(Collectors
                         .toList());
 
     }
 
     @Override
-    public BlogDto getBlogById(Long blogID) {
+    public BlogResponseDto getBlogById(Long blogID) {
         Blog blog = blogRepository.findById(blogID)
                 .orElseThrow(() -> new RuntimeException("Blog not found"));
-        return BlogMapper.mapToBlogDto(blog);
+        return BlogMapper.mapToResponseDtoFromObject(blog);
     }
 
 }

@@ -11,15 +11,15 @@ const FooterComponent = () => {
                             <p>{Statics.footerDescription}</p>
                         </div>
                         <div className="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3" style={{ textAlign: 'center' }}>
-                            <h6 className="text-uppercase mb-4 font-weight-bold">Useful Links</h6>
-                            <p><a className="text-white" href="/">Register for Training</a></p>
+                            <h6 className="text-uppercase mb-4 font-weight-bold">TRAINING</h6>
+                            <p><a className="text-white" href="/">Available Trainings</a></p>
                             <p><a className="text-white" href="/">View Training Schedule</a></p>
-                            <p><a className="text-white" href="/">Account Login</a></p>
-                            <p><a className="text-white" href="/">Contact Us</a></p>
+                            <p><a className="text-white" href="/training-packages">Training Packages</a></p>
+                            <p><a className="text-white" href="/contact">Contact Us</a></p>
                         </div>
                         <div className="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3" style={{ textAlign: 'center' }}>
                             <h6 className="text-uppercase mb-4 font-weight-bold">Resources</h6>
-                            <p><a className="text-white" href="/">Blog</a></p>
+                            <p><a className="text-white" href="/blogs">Blogs</a></p>
                             <p><a className="text-white" href="/">FAQs</a></p>
                             <p><a className="text-white" href="/">Customer Reviews</a></p>
                             <p><a className="text-white" href="/">Terms and Conditions</a></p>

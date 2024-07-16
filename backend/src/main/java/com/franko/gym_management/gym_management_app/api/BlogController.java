@@ -18,14 +18,14 @@ public class BlogController {
     private BlogService blogService;
 
     @GetMapping("getAllBlogs")
-    public ResponseEntity<List<BlogDto>> getBlogs() {
-        List<BlogDto> blogs = blogService.getAllBlogs();
+    public ResponseEntity<List<BlogResponseDto>> getBlogs() {
+        List<BlogResponseDto> blogs = blogService.getAllBlogs();
         return ResponseEntity.ok(blogs);
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<BlogDto> getUserById(@PathVariable("id") Long blogID) {
-        BlogDto blog = blogService.getBlogById(blogID);
+    public ResponseEntity<BlogResponseDto> getUserById(@PathVariable("id") Long blogID) {
+        BlogResponseDto blog = blogService.getBlogById(blogID);
         return ResponseEntity.ok(blog);
     }
 
