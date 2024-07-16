@@ -19,7 +19,7 @@ public class BlogDto {
     private Long id;
     private String title;
     private String content;
-    private UserDto author;
+    private User author;
     private Date createdAt;
     private List<CommentDto> comments;
 

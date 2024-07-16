@@ -1,6 +1,7 @@
 package com.franko.gym_management.gym_management_app.serviceImpl;
 
 import com.franko.gym_management.gym_management_app.dto.BlogDto;
+import com.franko.gym_management.gym_management_app.dto.BlogResponseDto;
 import com.franko.gym_management.gym_management_app.mapper.BlogMapper;
 import com.franko.gym_management.gym_management_app.model.Blog;
 import com.franko.gym_management.gym_management_app.repository.BlogRepository;
@@ -19,10 +20,10 @@ public class BlogServiceImpl implements BlogService {
     private BlogRepository blogRepository;
 
     @Override
-    public BlogDto createBlog(BlogDto blogDto) {
+    public BlogResponseDto createBlog(BlogDto blogDto) {
         Blog blog = BlogMapper.mapToBlog(blogDto);
         Blog savedBlog = blogRepository.save(blog);
-        return BlogMapper.mapToBlogDto(savedBlog);
+        return BlogMapper.mapToResponseDtoFromObject(savedBlog);
     }
 
     @Override

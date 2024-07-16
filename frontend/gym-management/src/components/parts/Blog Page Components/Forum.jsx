@@ -114,11 +114,20 @@ const Forum = () => {
                                                     <span className="text-secondary"> {new Date(blog.createdAt).toLocaleString()}</span>
                                                 </p>
                                             </div>
-                                            <div className="text-muted small text-center align-self-center">
-                                                <Link to={`/blogs/${blog.id}`}>
-                                                    <i className="far fa-comment ml-2"></i> {blog.comments.length} Comments
-                                                </Link>
-                                            </div>
+                                            {blog.comments && blog.comments.length > 0 ? (
+                                                <div className="text-muted small text-center align-self-center">
+                                                    <Link to={`/blogs/${blog.id}`}>
+                                                        <i className="far fa-comment ml-2"></i> {blog.comments.length} Comments
+                                                    </Link>
+                                                </div>
+                                            ) : (
+                                                <div className="text-muted small text-center align-self-center">
+                                                    <Link to={`/blogs/${blog.id}`}>
+                                                        <i className="far fa-comment ml-2"></i> 0 Comments
+                                                    </Link>
+                                                </div>
+                                            )}
+
                                         </div>
                                     </div>
                                 </div>

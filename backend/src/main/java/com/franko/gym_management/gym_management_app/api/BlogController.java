@@ -1,8 +1,10 @@
 package com.franko.gym_management.gym_management_app.api;
 
 import com.franko.gym_management.gym_management_app.dto.BlogDto;
+import com.franko.gym_management.gym_management_app.dto.BlogResponseDto;
 import com.franko.gym_management.gym_management_app.service.BlogService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,5 +27,11 @@ public class BlogController {
     public ResponseEntity<BlogDto> getUserById(@PathVariable("id") Long blogID) {
         BlogDto blog = blogService.getBlogById(blogID);
         return ResponseEntity.ok(blog);
+    }
+
+    @PostMapping("addBlog")
+    public ResponseEntity<BlogResponseDto> createBlog(@RequestBody BlogDto blogDto){
+        BlogResponseDto blog = blogService.createBlog(blogDto);
+        return new ResponseEntity<>(blog, HttpStatus.CREATED);
     }
 }
