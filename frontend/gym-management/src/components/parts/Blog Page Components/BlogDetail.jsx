@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getBlogById } from '../../api/api';
 import { Spinner, Alert, Button } from 'react-bootstrap';
-import { AuthContext} from '../../context/AuthContext';
+import { AuthContext } from '../../context/AuthContext';
 import { addCommentToBlog } from '../../api/api';
 import { useContext } from 'react';
 
@@ -48,7 +48,7 @@ const BlogDetail = () => {
             content: newComment,
             blog: { id: id },
             user: {
-                id: authState.user.userID, 
+                id: authState.user.userID,
             }
         };
 
@@ -87,57 +87,59 @@ const BlogDetail = () => {
     }
 
     return (
-        <div className="blog-detail-container mt-5">
-            <div className="blog-header">
-                <div className="d-flex justify-content-start mb-3">
-                    <Button variant="primary" onClick={handleBackClick}>Back</Button>
+        <div className='mb-3'>
+            <div className="blog-detail-container mt-5">
+                <div className="blog-header">
+                    <div className="d-flex justify-content-start mb-3">
+                        <Button variant="primary" onClick={handleBackClick}>Back</Button>
+                    </div>
+                    <h1 className="blog-title">{blog.title}</h1>
+                    <p className="blog-meta">
+                        By <span className="blog-author">{`${blog.author.firstName} ${blog.author.lastName + " "}`}</span>
+                        on <span className="blog-date">{new Date(blog.createdAt).toLocaleString()}</span>
+                    </p>
                 </div>
-                <h1 className="blog-title">{blog.title}</h1>
-                <p className="blog-meta">
-                    By <span className="blog-author">{`${blog.author.firstName} ${blog.author.lastName + " "}`}</span>
-                    on <span className="blog-date">{new Date(blog.createdAt).toLocaleString()}</span>
-                </p>
-            </div>
-            <div className="blog-content">
-                <p>{blog.content}</p>
-            </div>
-            <div className="comments-section">
-                <h3>Comments</h3>
-                {currentComments.length === 0 ? (
-                    <p>No comments yet. Be the first to comment!</p>
-                ) : (
-                    currentComments.map(comment => (
-                        <div key={comment.id} className="comment">
-                            <p className="comment-content">{comment.content}</p>
-                            <p className="comment-meta">
-                                By <span className="comment-author">{`${comment.user.firstName} ${comment.user.lastName + " "}`}</span>
-                                on <span className="comment-date">{new Date(comment.createdAt).toLocaleString()}</span>
-                            </p>
-                        </div>
-                    ))
-                )}
+                <div className="blog-content">
+                    <p>{blog.content}</p>
+                </div>
+                <div className="comments-section">
+                    <h3>Comments</h3>
+                    {currentComments.length === 0 ? (
+                        <p>No comments yet. Be the first to comment!</p>
+                    ) : (
+                        currentComments.map(comment => (
+                            <div key={comment.id} className="comment">
+                                <p className="comment-content">{comment.content}</p>
+                                <p className="comment-meta">
+                                    By <span className="comment-author">{`${comment.user.firstName} ${comment.user.lastName + " "}`}</span>
+                                    on <span className="comment-date">{new Date(comment.createdAt).toLocaleString()}</span>
+                                </p>
+                            </div>
+                        ))
+                    )}
 
-                {/* TODO: Change pagination counter */}
-                <div className="pagination justify-content-center align-items-center">
-                    {Array.from({ length: Math.ceil(comments.length / commentsPerPage) }, (_, i) => (
-                        <button key={i + 1} onClick={() => paginate(i + 1)} className={`page-link ${currentPage === i + 1 ? 'active' : ''}`}>
-                            {i + 1}
+                    {/* TODO: Change pagination counter */}
+                    <div className="pagination justify-content-center align-items-center">
+                        {Array.from({ length: Math.ceil(comments.length / commentsPerPage) }, (_, i) => (
+                            <button key={i + 1} onClick={() => paginate(i + 1)} className={`page-link ${currentPage === i + 1 ? 'active' : ''}`}>
+                                {i + 1}
+                            </button>
+                        ))}
+                    </div>
+                    <div className="add-comment-section mt-2">
+                        <h4>Add a Comment</h4>
+                        <textarea
+                            className="form-control"
+                            rows="3"
+                            value={newComment}
+                            onChange={(e) => setNewComment(e.target.value)}
+                            placeholder="Write your comment here..."></textarea>
+                        <button
+                            className="btn btn-primary mt-2"
+                            onClick={handleAddComment}>
+                            Add Comment
                         </button>
-                    ))}
-                </div>
-                <div className="add-comment-section mt-2">
-                    <h4>Add a Comment</h4>
-                    <textarea
-                        className="form-control"
-                        rows="3"
-                        value={newComment}
-                        onChange={(e) => setNewComment(e.target.value)}
-                        placeholder="Write your comment here..."></textarea>
-                    <button
-                        className="btn btn-primary mt-2"
-                        onClick={handleAddComment}>
-                        Add Comment
-                    </button>
+                    </div>
                 </div>
             </div>
         </div>

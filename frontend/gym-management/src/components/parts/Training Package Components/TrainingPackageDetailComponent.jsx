@@ -50,19 +50,21 @@ const TrainingPackageDetailComponent = () => {
     }
 
     return (
-        <div className="container my-5">
-            <div className="row justify-content-center">
-                <div className="col-md-5">
-                    <div className="card">
-                        <div className="card-body">
-                            <div className="d-flex justify-content-start mb-3">
-                                <Button variant="primary" onClick={handleBackClick}>Back</Button>
-                            </div>
-                            <h2 className="card-title training-package-title">{trainingPackage.name}</h2>
-                            <p className="card-text training-package-price">€{trainingPackage.price} / mo.</p>
-                            <p className="training-package-features">{trainingPackage.features}</p>
-                            <div className="payment-button">
-                                <button className="btn btn-primary">Pay</button>
+        <div>
+            <div className="container my-5">
+                <div className="row justify-content-center">
+                    <div className="col-md-5">
+                        <div className="card">
+                            <div className="card-body">
+                                <div className="d-flex justify-content-start mb-3">
+                                    <Button variant="primary" onClick={handleBackClick}>Back</Button>
+                                </div>
+                                <h2 className="card-title training-package-title">{trainingPackage.name}</h2>
+                                <p className="card-text training-package-price">€{trainingPackage.price} / mo.</p>
+                                <p className="training-package-features">{trainingPackage.features}</p>
+                                <div className="payment-button">
+                                    <button className="btn btn-primary">Pay</button>
+                                </div>
                             </div>
                         </div>
                     </div>
