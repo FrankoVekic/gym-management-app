@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useRef ,useState, useEffect } from 'react';
 import { getAllBlogs } from '../../api/api';
 import { Link } from 'react-router-dom';
 import Statics from '../../static utils/Statics';
@@ -17,6 +17,14 @@ const Forum = () => {
         };
 
         fetchBlogs();
+    }, []);
+
+    const forumRef = useRef(null);
+
+    useEffect(() => {
+        if (forumRef.current) {
+            forumRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
     }, []);
 
     return (
@@ -70,7 +78,7 @@ const Forum = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="inner-main">
+                    <div id="forum" ref={forumRef} className="inner-main">
                         <div className="inner-main-header d-flex align-items-center">
                             <span className="input-icon input-icon-sm ml-auto w-auto">
                                 <input
