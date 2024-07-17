@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getTrainingPackageById } from '../../api/api';
 import { Spinner, Alert, Button } from 'react-bootstrap';
+import URLSaver from '../URLSaver';
 
 const TrainingPackageDetailComponent = () => {
     const { id } = useParams();
@@ -43,7 +44,7 @@ const TrainingPackageDetailComponent = () => {
     if (error) {
         return (
             <div className="d-flex flex-column align-items-center" style={{ height: '80vh' }}>
-                <Button variant="secondary" onClick={handleBackClick} className="mb-3">Back</Button>
+                <URLSaver />
                 <Alert variant="danger">{error}</Alert>
             </div>
         );
@@ -57,7 +58,7 @@ const TrainingPackageDetailComponent = () => {
                         <div className="card">
                             <div className="card-body">
                                 <div className="d-flex justify-content-start mb-3">
-                                    <Button variant="primary" onClick={handleBackClick}>Back</Button>
+                                    <URLSaver />
                                 </div>
                                 <h2 className="card-title training-package-title">{trainingPackage.name}</h2>
                                 <p className="card-text training-package-price">€{trainingPackage.price} / mo.</p>

@@ -5,6 +5,7 @@ import { Spinner, Alert, Button } from 'react-bootstrap';
 import { AuthContext } from '../../context/AuthContext';
 import { addCommentToBlog } from '../../api/api';
 import { useContext } from 'react';
+import URLSaver from '../URLSaver';
 
 const BlogDetail = () => {
     const { id } = useParams();
@@ -88,10 +89,11 @@ const BlogDetail = () => {
 
     return (
         <div className='mb-3'>
+
             <div className="blog-detail-container mt-5">
                 <div className="blog-header">
                     <div className="d-flex justify-content-start mb-3">
-                        <Button variant="primary" onClick={handleBackClick}>Back</Button>
+                        <URLSaver />
                     </div>
                     <h1 className="blog-title">{blog.title}</h1>
                     <p className="blog-meta">
