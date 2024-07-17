@@ -48,7 +48,7 @@ export default function HeaderComponent() {
                 <Link className="nav-link text-blue" aria-current="page" to="/">{Statics.navbarHome}</Link>
             </li>
             <li className="nav-item">
-                <Link className="nav-link text-blue" aria-current="page" to="/blog">{Statics.navbarBlog}</Link>
+                <Link className="nav-link text-blue" aria-current="page" to="/blogs">{Statics.navbarBlog}</Link>
             </li>
             <li className="nav-item">
                 <Link className="nav-link text-blue" to="/trainer-dashboard">{Statics.navBarTrainerDash}</Link>

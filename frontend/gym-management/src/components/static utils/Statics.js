@@ -37,7 +37,7 @@ const Statics = {
     navbarLogin: 'Login',
     navBarTrainerDash: 'Dashboard',
     navbarTrainerManage: 'Manage',
-    navbarBlog: 'Blog',
+    navbarBlog: 'Blogs',
 
     // footer data
     firmName: 'FitnessPro',

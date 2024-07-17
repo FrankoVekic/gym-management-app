@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Form, Button, Alert, Modal } from 'react-bootstrap';
+import { Form, Button, Alert } from 'react-bootstrap';
 import { Formik } from 'formik';
 import { AuthContext } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
