@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class BlogDto {
     private String title;
     private String content;
     private User author;
-    private Date createdAt;
+    private LocalDateTime createdAt;
     private List<CommentDto> comments;
 
 }

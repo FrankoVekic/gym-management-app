@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -34,11 +35,11 @@ public class Blog {
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
-    private Date createdAt;
+    private LocalDateTime createdAt;
 
     @CreationTimestamp
     @Column(name = "updated_at")
-    private Date updatedAt;
+    private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "blog")
     private List<Comment> comments;

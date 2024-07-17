@@ -53,7 +53,6 @@ export const getTrainingPackageById = (id) => {
     return axios.get(`${API_URL}/public/trainingPackages/${id}`);
 };
 
-
 // GET ALL BLOGS
 export const getAllBlogs = () => {
     return axios.get(`${API_URL}/public/blogs/getAllBlogs`);
@@ -68,3 +67,8 @@ export const getBlogById = (id) => {
 export const createNewBlog = (values) => {
     return axios.post(`${API_URL}/public/blogs/addBlog`, values);
 };
+
+// CREATE NEW COMMENT ON A BLOG
+export const addCommentToBlog = (values) => {
+    return axios.post(`${API_URL}/public/comments/addComment`, values);
+}

@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getBlogById } from '../../api/api';
 import { Spinner, Alert, Button } from 'react-bootstrap';
+import { AuthContext} from '../../context/AuthContext';
+import { addCommentToBlog } from '../../api/api';
+import { useContext } from 'react';
 
 const BlogDetail = () => {
     const { id } = useParams();
@@ -13,6 +16,7 @@ const BlogDetail = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const commentsPerPage = 3;
+    const { authState } = useContext(AuthContext);
 
     const handleBackClick = () => {
         navigate('/blogs');
@@ -31,28 +35,32 @@ const BlogDetail = () => {
                 setLoading(false);
             }
         };
-    
+
         fetchBlog();
     }, [id]);
-    
+
 
     // TODO: IMPLEMENT ADDING COMMENT WHEN USER IS LOGGED IN
-    const handleAddComment = () => {
+    const handleAddComment = async () => {
         if (newComment.trim() === '') return;
 
-        const comment = {
-            id: comments.length + 1,
+        const commentData = {
             content: newComment,
+            blog: { id: id },
             user: {
-                firstName: 'User',
-                lastName: 'User'  
-            },
-            createdAt: new Date().toISOString()
+                id: authState.user.userID, 
+            }
         };
 
-        setComments([...comments, comment]);
-        setNewComment('');
+        try {
+            const response = await addCommentToBlog(commentData);
+            setComments([...comments, response.data]);
+            setNewComment('');
+        } catch (error) {
+            console.error('Error adding comment:', error);
+        }
     };
+
 
     const indexOfLastComment = currentPage * commentsPerPage;
     const indexOfFirstComment = indexOfLastComment - commentsPerPage;
@@ -86,7 +94,7 @@ const BlogDetail = () => {
                 </div>
                 <h1 className="blog-title">{blog.title}</h1>
                 <p className="blog-meta">
-                    By <span className="blog-author">{`${blog.author.firstName} ${blog.author.lastName  + " "}`}</span> 
+                    By <span className="blog-author">{`${blog.author.firstName} ${blog.author.lastName + " "}`}</span>
                     on <span className="blog-date">{new Date(blog.createdAt).toLocaleString()}</span>
                 </p>
             </div>
@@ -102,7 +110,7 @@ const BlogDetail = () => {
                         <div key={comment.id} className="comment">
                             <p className="comment-content">{comment.content}</p>
                             <p className="comment-meta">
-                                By <span className="comment-author">{`${comment.user.firstName} ${comment.user.lastName + " "}`}</span> 
+                                By <span className="comment-author">{`${comment.user.firstName} ${comment.user.lastName + " "}`}</span>
                                 on <span className="comment-date">{new Date(comment.createdAt).toLocaleString()}</span>
                             </p>
                         </div>
@@ -119,14 +127,14 @@ const BlogDetail = () => {
                 </div>
                 <div className="add-comment-section mt-2">
                     <h4>Add a Comment</h4>
-                    <textarea 
-                        className="form-control" 
-                        rows="3" 
-                        value={newComment} 
-                        onChange={(e) => setNewComment(e.target.value)} 
+                    <textarea
+                        className="form-control"
+                        rows="3"
+                        value={newComment}
+                        onChange={(e) => setNewComment(e.target.value)}
                         placeholder="Write your comment here..."></textarea>
-                    <button 
-                        className="btn btn-primary mt-2" 
+                    <button
+                        className="btn btn-primary mt-2"
                         onClick={handleAddComment}>
                         Add Comment
                     </button>

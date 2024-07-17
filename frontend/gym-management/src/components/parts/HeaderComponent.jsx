@@ -6,12 +6,13 @@ import logo from '../../style/images/logo.png'
 import Statics from '../static utils/Statics';
 import { AuthContext } from "../context/AuthContext";
 
+
 export default function HeaderComponent() {
     const { authState, logout } = useContext(AuthContext);
 
     const renderMemberLinks = () => (
         <>
-            <li className="nav-item">
+            <li className="nav-item">                
                 <Link className="nav-link text-blue" aria-current="page" to="/">{Statics.navbarHome}</Link>
             </li>
             <li className="nav-item dropdown">
