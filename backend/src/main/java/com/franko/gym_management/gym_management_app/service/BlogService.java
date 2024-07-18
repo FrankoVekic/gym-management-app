@@ -20,6 +20,10 @@ public interface BlogService {
 
     List<BlogResponseDto> getBlogsWithLeastComments();
 
+    List<BlogResponseDto> getSearchedBlogs(String title);
+
     BlogResponseDto getBlogById(Long id);
+
+
 
 }

@@ -17,8 +17,6 @@ public class BlogController {
     @Autowired
     private BlogService blogService;
 
-
-
     @GetMapping("getAllBlogs")
     public ResponseEntity<List<BlogResponseDto>> getBlogs(@RequestParam (required = false) String filter) {
 
@@ -45,6 +43,13 @@ public class BlogController {
             blogs = blogService.getAllBlogs();
         }
         return ResponseEntity.ok(blogs);
+    }
+
+    @GetMapping("search")
+    public ResponseEntity<List<BlogResponseDto>> getSearchedBlogs(@RequestParam("title") String title){
+        List<BlogResponseDto> blogs = blogService.getSearchedBlogs(title);
+        return ResponseEntity.ok(blogs);
+
     }
 
     @GetMapping("{id}")

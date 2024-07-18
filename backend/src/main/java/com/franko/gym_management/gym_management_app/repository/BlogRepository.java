@@ -1,9 +1,9 @@
 package com.franko.gym_management.gym_management_app.repository;
 
 import com.franko.gym_management.gym_management_app.model.Blog;
-import com.franko.gym_management.gym_management_app.model.Testimonial;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -24,6 +24,9 @@ public interface BlogRepository extends JpaRepository<Blog,Long> {
 
     @Query(value = "SELECT b.*, COUNT(c.id) AS comment_count FROM blog b LEFT JOIN comment c ON b.id = c.blog_id GROUP BY b.id ORDER BY comment_count ASC",  nativeQuery = true)
     List<Blog> getBlogsWithLeastComments();
+
+    @Query(value = "SELECT * FROM BLOG WHERE title like %:title%", nativeQuery = true)
+    List<Blog> getSearchedBlogs(@Param("title")String title);
 
 
 

@@ -79,3 +79,10 @@ export const getFilteredBlogs = (filter) => {
         params: {filter}
     });
 }
+
+// GET BLOGS BY SEARCHING TITLE
+export const getSearchedBlogs = (title) => {
+    return axios.get(`${API_URL}/public/blogs/search`, {
+        params: {title}
+    });
+}

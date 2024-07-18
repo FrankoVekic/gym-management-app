@@ -92,6 +92,16 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
+    public List<BlogResponseDto> getSearchedBlogs(String title) {
+        List<Blog> blogs = blogRepository.getSearchedBlogs(title);
+
+        return blogs
+                .stream()
+                .map(BlogMapper::mapToResponseDtoFromObject)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public BlogResponseDto getBlogById(Long blogID) {
         Blog blog = blogRepository.findById(blogID)
                 .orElseThrow(() -> new RuntimeException("Blog not found"));
