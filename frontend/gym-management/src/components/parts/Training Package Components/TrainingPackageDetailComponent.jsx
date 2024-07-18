@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { getTrainingPackageById } from '../../api/api';
-import { Spinner, Alert, Button } from 'react-bootstrap';
+import { Spinner, Alert} from 'react-bootstrap';
 import URLSaver from '../URLSaver';
 
 const TrainingPackageDetailComponent = () => {
     const { id } = useParams();
-    const navigate = useNavigate();
     const [trainingPackage, setTrainingPackage] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
@@ -26,10 +25,6 @@ const TrainingPackageDetailComponent = () => {
                 setLoading(false);
             });
     }, [id]);
-
-    const handleBackClick = () => {
-        navigate('/training-packages');
-    };
 
     if (loading) {
         return (

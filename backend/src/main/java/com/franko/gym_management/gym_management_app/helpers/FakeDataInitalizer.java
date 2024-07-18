@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Component
@@ -47,6 +48,12 @@ public class FakeDataInitalizer implements CommandLineRunner {
     private TestimonialUserRepository testimonialUserRepository;
 
     @Autowired
+    private BlogRepository blogRepository;
+
+    @Autowired
+    private CommentRepository commentRepository;
+
+    @Autowired
     private Faker faker;
 
     @Autowired
@@ -66,13 +73,50 @@ public class FakeDataInitalizer implements CommandLineRunner {
             insertFakeUsersTrainerRole(2);
             insertFakeUsersMemberRole(10);
             insertUserTestimonials();
+            insertBlogs();
         }
+    }
+
+    private void insertBlogs() {
+
+        Long number = 1L;
+
+        for (int i = 1; i < 6; i++) {
+
+            User author = getRandomUser(number).get();
+
+            Blog blog = Blog
+                    .builder()
+                    .title(faker.lorem().fixedString(15))
+                    .content(faker.lorem().fixedString(80))
+                    .author(author)
+                    .build();
+            number++;
+
+            blogRepository.save(blog);
+
+
+            Comment comment = Comment
+                    .builder()
+                    .content(faker.lorem().fixedString(35))
+                    .blog(blog)
+                    .user(author)
+                    .build();
+
+            commentRepository.save(comment);
+
+        }
+    }
+
+    private Optional<User> getRandomUser(Long i) {
+        Long randomUserId = i;
+        return userRepository.findById(randomUserId);
     }
 
     private void insertTestimonials(int numberOfTestimonials) {
         int testimonialCounter = 0;
 
-        while(testimonialCounter < numberOfTestimonials){
+        while (testimonialCounter < numberOfTestimonials) {
             var testimonial = Testimonial
                     .builder()
                     .content(faker.lorem().fixedString(100))
@@ -248,8 +292,9 @@ public class FakeDataInitalizer implements CommandLineRunner {
         }
 
     }
+
     // FIXED TO INSERT 2 TESTIMONIALS FOR USERS
-    private void insertUserTestimonials(){
+    private void insertUserTestimonials() {
 
         User userOne = userRepository.getReferenceById(1L);
         User userTwo = userRepository.getReferenceById(2L);
