@@ -12,6 +12,14 @@ public interface BlogService {
 
     List<BlogResponseDto> getAllBlogs();
 
+    List<BlogResponseDto> getBlogsFromLastWeek();
+
+    List<BlogResponseDto> getBlogsFromLastMonth();
+
+    List<BlogResponseDto> getMostCommentedBlogs();
+
+    List<BlogResponseDto> getBlogsWithLeastComments();
+
     BlogResponseDto getBlogById(Long id);
 
 }

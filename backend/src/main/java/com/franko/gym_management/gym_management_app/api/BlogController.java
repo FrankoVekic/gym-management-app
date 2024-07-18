@@ -17,9 +17,33 @@ public class BlogController {
     @Autowired
     private BlogService blogService;
 
+
+
     @GetMapping("getAllBlogs")
-    public ResponseEntity<List<BlogResponseDto>> getBlogs() {
-        List<BlogResponseDto> blogs = blogService.getAllBlogs();
+    public ResponseEntity<List<BlogResponseDto>> getBlogs(@RequestParam (required = false) String filter) {
+
+        List<BlogResponseDto> blogs;
+
+        if(filter !=null){
+            switch (filter){
+                case "lastWeek":
+                    blogs = blogService.getBlogsFromLastWeek();
+                    break;
+                case "lastMonth":
+                    blogs = blogService.getBlogsFromLastMonth();
+                    break;
+                case "mostComments":
+                    blogs = blogService.getMostCommentedBlogs();
+                    break;
+                case "leastComments":
+                    blogs = blogService.getBlogsWithLeastComments();
+                    break;
+                default :
+                    blogs = blogService.getAllBlogs();
+            }
+        }else {
+            blogs = blogService.getAllBlogs();
+        }
         return ResponseEntity.ok(blogs);
     }
 

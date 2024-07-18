@@ -1,15 +1,16 @@
-import React, { useRef ,useState, useEffect } from 'react';
-import { getAllBlogs } from '../../api/api';
+import React, { useRef, useState, useEffect } from 'react';
+import { getFilteredBlogs } from '../../api/api';
 import { Link } from 'react-router-dom';
 import Statics from '../../static utils/Statics';
 
 const Forum = () => {
     const [blogs, setBlogs] = useState([]);
+    const [filter, setFilter] = useState("");
 
     useEffect(() => {
         const fetchBlogs = async () => {
             try {
-                const response = await getAllBlogs();
+                const response = await getFilteredBlogs(filter);
                 setBlogs(response.data);
             } catch (error) {
                 console.error('Error fetching blogs:', error);
@@ -17,7 +18,7 @@ const Forum = () => {
         };
 
         fetchBlogs();
-    }, []);
+    }, [filter]);
 
     const forumRef = useRef(null);
 
@@ -26,6 +27,13 @@ const Forum = () => {
             forumRef.current.scrollIntoView({ behavior: 'smooth' });
         }
     }, []);
+
+    const handleFilterChange = (selectedFilter) => {
+        setFilter(selectedFilter);
+    };
+
+    const isActive = (currentFilter) =>
+        filter === currentFilter ? "active" : "";
 
     return (
         <div className="container forumBody mt-5">
@@ -54,21 +62,46 @@ const Forum = () => {
                                             >
                                                 <div className="simplebar-content" style={{ padding: '16px' }}>
                                                     <nav className="nav nav-pills nav-gap-y-1 flex-column">
-                                                        <a href="" className="nav-link nav-link-faded">
+                                                        <button
+                                                            className={`nav-link nav-link-faded ${isActive(
+                                                                ""
+                                                            )}`}
+                                                            onClick={() => handleFilterChange("")}
+                                                        >
                                                             All Discussions
-                                                        </a>
-                                                        <a href="" className="nav-link nav-link-faded">
-                                                            From This Week
-                                                        </a>
-                                                        <a href="" className="nav-link nav-link-faded">
-                                                            From This Month
-                                                        </a>
-                                                        <a href="" className="nav-link nav-link-faded">
+                                                        </button>
+                                                        <button
+                                                            className={`nav-link nav-link-faded ${isActive(
+                                                                "lastWeek"
+                                                            )}`}
+                                                            onClick={() => handleFilterChange("lastWeek")}
+                                                        >
+                                                            From Last Week
+                                                        </button>
+                                                        <button
+                                                            className={`nav-link nav-link-faded ${isActive(
+                                                                "lastMonth"
+                                                            )}`}
+                                                            onClick={() => handleFilterChange("lastMonth")}
+                                                        >
+                                                            From Last Month
+                                                        </button>
+                                                        <button
+                                                            className={`nav-link nav-link-faded ${isActive(
+                                                                "mostComments"
+                                                            )}`}
+                                                            onClick={() => handleFilterChange("mostComments")}
+                                                        >
                                                             Most Commented
-                                                        </a>
-                                                        <a href="" className="nav-link nav-link-faded">
-                                                            No Replies Yet
-                                                        </a>
+                                                        </button>
+                                                        <button
+                                                            className={`nav-link nav-link-faded ${isActive(
+                                                                "leastComments"
+                                                            )}`}
+                                                            onClick={() => handleFilterChange("leastComments")}
+                                                        >
+                                                            Least Commented
+                                                        </button>
                                                     </nav>
                                                 </div>
                                             </div>
@@ -94,7 +127,7 @@ const Forum = () => {
                                     <div className="card-body p-2 p-sm-3">
                                         <div className="media forum-item">
                                             <Link to={`/blogs/${blog.id}`} data-toggle="collapse" data-target=".forum-content">
-                                            <div
+                                                <div
                                                     className="avatar-wrapper"
                                                     style={{
                                                         backgroundImage: `${blog.author.image ? `url(${Statics.imagesUsersLogoUrl}${blog.author.image})` : `url(${Statics.noImageUrl})`}`,

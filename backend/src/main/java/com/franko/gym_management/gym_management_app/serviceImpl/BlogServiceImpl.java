@@ -47,6 +47,51 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
+    public List<BlogResponseDto> getBlogsFromLastWeek() {
+
+        List<Blog> blogs = blogRepository.findFromThisWeek();
+
+        return blogs
+                .stream()
+                .map(BlogMapper::mapToResponseDtoFromObject)
+                .collect(Collectors.toList());
+
+    }
+
+    @Override
+    public List<BlogResponseDto> getBlogsFromLastMonth() {
+        List<Blog> blogs = blogRepository.findFromThisMonth();
+
+        return blogs
+                .stream()
+                .map(BlogMapper::mapToResponseDtoFromObject)
+                .collect(Collectors.toList());
+
+    }
+
+    @Override
+    public List<BlogResponseDto> getMostCommentedBlogs() {
+        List<Blog> blogs = blogRepository.getBlogsWithMostComments();
+
+        return blogs
+                .stream()
+                .map(BlogMapper::mapToResponseDtoFromObject)
+                .collect(Collectors.toList());
+
+    }
+
+    @Override
+    public List<BlogResponseDto> getBlogsWithLeastComments() {
+        List<Blog> blogs = blogRepository.getBlogsWithLeastComments();
+
+        return blogs
+                .stream()
+                .map(BlogMapper::mapToResponseDtoFromObject)
+                .collect(Collectors.toList());
+
+    }
+
+    @Override
     public BlogResponseDto getBlogById(Long blogID) {
         Blog blog = blogRepository.findById(blogID)
                 .orElseThrow(() -> new RuntimeException("Blog not found"));

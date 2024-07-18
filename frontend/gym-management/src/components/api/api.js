@@ -72,3 +72,10 @@ export const createNewBlog = (values) => {
 export const addCommentToBlog = (values) => {
     return axios.post(`${API_URL}/public/comments/addComment`, values);
 }
+
+// GET FILTERED BLOGS
+export const getFilteredBlogs = (filter) => {
+    return axios.get(`${API_URL}/public/blogs/getAllBlogs`, {
+        params: {filter}
+    });
+}
