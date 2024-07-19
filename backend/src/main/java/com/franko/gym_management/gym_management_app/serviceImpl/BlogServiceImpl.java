@@ -93,6 +93,7 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public List<BlogResponseDto> getSearchedBlogs(String title) {
+
         List<Blog> blogs = blogRepository.getSearchedBlogs(title);
 
         return blogs

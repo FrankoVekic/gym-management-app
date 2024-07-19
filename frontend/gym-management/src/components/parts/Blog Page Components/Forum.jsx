@@ -1,24 +1,30 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { getFilteredBlogs } from '../../api/api';
+import { getFilteredBlogs, getSearchedBlogs } from '../../api/api';
 import { Link } from 'react-router-dom';
 import Statics from '../../static utils/Statics';
 
 const Forum = () => {
     const [blogs, setBlogs] = useState([]);
     const [filter, setFilter] = useState("");
+    const [searchText, setSearchText] = useState("");
+
+    const fetchBlogs = async () => {
+        try {
+            let response;
+            if (searchText) {
+                response = await getSearchedBlogs(searchText);
+            } else {
+                response = await getFilteredBlogs(filter);
+            }
+            setBlogs(response.data);
+        } catch (error) {
+            console.error("Error fetching blogs:", error);
+        }
+    };
 
     useEffect(() => {
-        const fetchBlogs = async () => {
-            try {
-                const response = await getFilteredBlogs(filter);
-                setBlogs(response.data);
-            } catch (error) {
-                console.error('Error fetching blogs:', error);
-            }
-        };
-
         fetchBlogs();
-    }, [filter]);
+    }, [filter, searchText]);
 
     const forumRef = useRef(null);
 
@@ -113,13 +119,9 @@ const Forum = () => {
                     </div>
                     <div id="forum" ref={forumRef} className="inner-main">
                         <div className="inner-main-header d-flex align-items-center">
-                            <span className="input-icon input-icon-sm ml-auto w-auto">
-                                <input
-                                    type="text"
-                                    className="form-control form-control-sm bg-gray-200 border-gray-200 shadow-none mb-4 mt-4"
-                                    placeholder="Search forum"
-                                />
-                            </span>
+                            <div class="input-group rounded">
+                                <input type="search" value={searchText} onChange={(e) => setSearchText(e.target.value)} class="form-control rounded" placeholder="Search" />
+                            </div>
                         </div>
                         <div className="inner-main-body p-2 p-sm-3 collapse forum-content show">
                             {blogs.map(blog => (

@@ -25,8 +25,9 @@ public interface BlogRepository extends JpaRepository<Blog,Long> {
     @Query(value = "SELECT b.*, COUNT(c.id) AS comment_count FROM blog b LEFT JOIN comment c ON b.id = c.blog_id GROUP BY b.id ORDER BY comment_count ASC",  nativeQuery = true)
     List<Blog> getBlogsWithLeastComments();
 
-    @Query(value = "SELECT * FROM BLOG WHERE title like %:title%", nativeQuery = true)
+    @Query(value = "SELECT b.* FROM BLOG b WHERE LOWER(b.title) LIKE LOWER(CONCAT('%', :title, '%')) ORDER BY b.created_at DESC", nativeQuery = true)
     List<Blog> getSearchedBlogs(@Param("title")String title);
+
 
 
 
