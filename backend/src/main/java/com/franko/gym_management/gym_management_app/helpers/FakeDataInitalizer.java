@@ -261,6 +261,18 @@ public class FakeDataInitalizer implements CommandLineRunner {
 
         int trainerCounter = 1;
 
+        var exampleUser = User
+                .builder()
+                .firstName("Franko")
+                .lastName("Vekić")
+                .email("test@gmail.com")
+                .image("")
+                .password(passwordEncoder.encode("test123"))
+                .role(Role.TRAINER)
+                .build();
+
+        userRepository.save(exampleUser);
+
         while (trainerCounter <= numberOfTrainerUsers) {
             var user = User
                     .builder()
