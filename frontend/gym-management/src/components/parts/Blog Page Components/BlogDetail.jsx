@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { getBlogById } from '../../api/api';
-import { Spinner, Alert, Button } from 'react-bootstrap';
+import { Spinner, Alert } from 'react-bootstrap';
 import { AuthContext } from '../../context/AuthContext';
 import { addCommentToBlog } from '../../api/api';
 import { useContext } from 'react';
@@ -9,7 +9,6 @@ import URLSaver from '../URLSaver';
 
 const BlogDetail = () => {
     const { id } = useParams();
-    const navigate = useNavigate();
     const [blog, setBlog] = useState(null);
     const [newComment, setNewComment] = useState('');
     const [comments, setComments] = useState([]);
@@ -18,10 +17,6 @@ const BlogDetail = () => {
     const [error, setError] = useState(null);
     const commentsPerPage = 3;
     const { authState } = useContext(AuthContext);
-
-    const handleBackClick = () => {
-        navigate('/blogs');
-    };
 
     useEffect(() => {
         const fetchBlog = async () => {
