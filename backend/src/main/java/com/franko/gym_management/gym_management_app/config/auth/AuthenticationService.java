@@ -144,4 +144,20 @@ public class AuthenticationService {
         repository.save(user);
     }
 
+    public void changePassword(String email, String oldPassword, String newPassword) {
+        if (newPassword == null || newPassword.isEmpty()) {
+            throw new IllegalArgumentException("New password cannot be empty");
+        }
+
+        User user = repository.findByEmail(email)
+                .orElseThrow(() -> new UnauthorizedException("User with this email does not exist.", HttpStatus.NOT_FOUND));
+
+        if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
+            throw new UnauthorizedException("Invalid old password");
+        }
+
+        user.setPassword(passwordEncoder.encode(newPassword));
+        repository.save(user);
+    }
+
 }

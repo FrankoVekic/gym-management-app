@@ -86,3 +86,8 @@ export const getSearchedBlogs = (title) => {
         params: {title}
     });
 }
+
+// RESET CHANGE
+export const changePassword = ({ email, oldPassword, newPassword }) => {
+    return axios.post(`${API_URL}/public/api/auth/change-password`, { email, oldPassword, newPassword });
+}
