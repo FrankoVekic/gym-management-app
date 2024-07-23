@@ -2,7 +2,9 @@ package com.franko.gym_management.gym_management_app.serviceImpl;
 
 
 import com.franko.gym_management.gym_management_app.dto.MemberDto;
+import com.franko.gym_management.gym_management_app.dto.MemberProfileDto;
 import com.franko.gym_management.gym_management_app.dto.MemberResponseDto;
+import com.franko.gym_management.gym_management_app.exceptions.ResourceNotFoundException;
 import com.franko.gym_management.gym_management_app.mapper.MemberMapper;
 import com.franko.gym_management.gym_management_app.model.Member;
 import com.franko.gym_management.gym_management_app.repository.MemberRepository;
@@ -18,8 +20,8 @@ import java.util.stream.Collectors;
 @Service
 public class MemberServiceImpl implements MemberService {
 
-        @Autowired
-        private MemberRepository memberRepository;
+    @Autowired
+    private MemberRepository memberRepository;
 
 
     @Override
@@ -64,5 +66,29 @@ public class MemberServiceImpl implements MemberService {
             members.add(dto);
         }
 
-        return members;    }
+        return members;
+    }
+
+    @Override
+    public MemberProfileDto getMemberProfile(Long id) {
+
+        List<Object[]> result = memberRepository.getProfileDetails(id);
+
+        if (result.isEmpty()) {
+            throw new ResourceNotFoundException("No member found on ID: " + id);
+        }
+
+        Object[] userData = result.getFirst();
+
+        return MemberProfileDto
+                .builder()
+                .firstName((String) userData[0])
+                .lastName((String) userData[1])
+                .email((String) userData[2])
+                .image((String) userData[3])
+                .role((String) userData[4])
+                .trainingPackageName((String) userData[5])
+                .status((String) userData[6])
+                .build();
+    }
 }

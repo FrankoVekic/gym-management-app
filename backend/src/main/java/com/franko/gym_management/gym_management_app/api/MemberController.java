@@ -2,6 +2,7 @@ package com.franko.gym_management.gym_management_app.api;
 
 
 import com.franko.gym_management.gym_management_app.dto.MemberDto;
+import com.franko.gym_management.gym_management_app.dto.MemberProfileDto;
 import com.franko.gym_management.gym_management_app.dto.MemberResponseDto;
 import com.franko.gym_management.gym_management_app.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/public/members/")
@@ -54,6 +56,12 @@ public class MemberController {
         return ResponseEntity.ok(list);
     }
 
+    @PostMapping("getMemberProfile")
+    public ResponseEntity<MemberProfileDto> getMemberProfile(@RequestBody Map<String, Long> payload) {
+        Long userId = payload.get("userId");
+        MemberProfileDto memberProfile = memberService.getMemberProfile(userId);
+        return ResponseEntity.ok(memberProfile);
+    }
 
 
 }

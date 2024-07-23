@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { getBlogById } from '../../api/api';
 import { Spinner, Alert } from 'react-bootstrap';
 import { AuthContext } from '../../context/AuthContext';
 import { addCommentToBlog } from '../../api/api';
-import { useContext } from 'react';
 import URLSaver from '../URLSaver';
 
 const BlogDetail = () => {

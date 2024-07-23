@@ -92,7 +92,7 @@ export const getSearchedBlogs = (title) => {
     });
 }
 
-// RESET CHANGE
+// CHANGE PASSWORD WITH CURRENT PASSWORD
 export const changePassword = ({ email, oldPassword, newPassword }) => {
     return axios.post(`${API_URL}/public/api/auth/change-password`, { email, oldPassword, newPassword });
 }
@@ -120,5 +120,10 @@ export const getUpcomingTrainingSessions = () => {
 // GET MEMBERS WITH STATUSES AND TRAINING PACKAGES
 export const getMemberStatusesAndTrainingPackages = () => {
     return axios.get(`${API_URL}/public/members/memberStatuses`);
+}
+
+// GET MEMBER PROFILE
+export const getMemberProfile = (userId) => {
+    return axios.post(`${API_URL}/public/members/getMemberProfile`, { userId });
 }
 

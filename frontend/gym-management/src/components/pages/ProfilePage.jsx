@@ -3,6 +3,7 @@ import ProfileContent from "../parts/Profile Page Components/ProfileContent";
 import Overview from "../parts/Profile Page Components/OverView";
 import ChangePasswordForm from "../parts/Profile Page Components/ChangePasswordForm";
 import ProfileNavbar from "../parts/Profile Page Components/ProfileNavbar";
+import ProfileCard from "../parts/Profile Page Components/ProfileCard";
 
 
 const ProfilePage = () => {
@@ -25,44 +26,7 @@ const ProfilePage = () => {
                 </div>
                 <div className="container">
                     <div className="row gy-4 gy-lg-0">
-                        <div className="col-12 col-lg-4 col-xl-3">
-                            <div className="row gy-4">
-                                <div className="col-12">
-                                    <div className="card widget-card border-light shadow-sm">
-                                        <div className="card-header text-bg-primary">
-                                            Welcome, Firstname Lastname
-                                        </div>
-                                        <div className="card-body">
-                                            <div className="text-center mb-3">
-                                                <img
-                                                    src="./assets/img/profile-img-1.jpg"
-                                                    className="img-fluid rounded-circle"
-                                                    alt="Luna John"
-                                                />
-                                            </div>
-                                            <h5 className="text-center mb-1">Firstname Lastname</h5>
-                                            <p className="text-center text-secondary mb-4">
-                                                Role
-                                            </p>
-                                            <ul className="list-group list-group-flush mb-4">
-                                                <li className="list-group-item d-flex justify-content-between align-items-center">
-                                                    <h6 className="m-0">Status</h6>
-                                                    <span></span>
-                                                </li>
-                                                <li className="list-group-item d-flex justify-content-between align-items-center">
-                                                    <h6 className="m-0">Joined Date</h6>
-                                                    <span></span>
-                                                </li>
-                                                <li className="list-group-item d-flex justify-content-between align-items-center">
-                                                    <h6 className="m-0">Training Type </h6>
-                                                    <span></span>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                       <ProfileCard/>
                         <div className="col-12 col-lg-8 col-xl-9">
                             <div className="card widget-card border-light shadow-sm">
                                 <div className="card-body p-4">
