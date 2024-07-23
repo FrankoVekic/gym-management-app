@@ -12,6 +12,7 @@ const ChangePasswordForm = () => {
   const { authState } = useContext(AuthContext);
 
 
+  // TODO: WHEN REFRESHED PAGE, THROWS SUB IS NULL
   const userEmail = authState.user.sub;
 
   const handleSubmit = async (e) => {
