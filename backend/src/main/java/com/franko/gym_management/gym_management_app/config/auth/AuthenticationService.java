@@ -113,7 +113,7 @@ public class AuthenticationService {
                 + resetUrl + "\n\n"
                 + "If you did not request a password reset, please ignore this email.\n\n"
                 + "Best regards,\n"
-                + "Your FitnessFit Team";
+                + "Your FitnessPro Team";
 
         sendEmail(email, "Reset Password", emailBody);
     }

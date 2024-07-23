@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { getTestimonialUsers} from '../../api/api'
+import { getTwoTestimonialUsers} from '../../api/api'
 import Statics from '../../static utils/Statics';
 
 const TestimonialComponent = () => {
     const [testimonials, setTestimonials] = useState([]);
 
     useEffect(() => {
-        getTestimonialUsers()
+        getTwoTestimonialUsers()
             .then(response => {
                 setTestimonials(response.data);
             })

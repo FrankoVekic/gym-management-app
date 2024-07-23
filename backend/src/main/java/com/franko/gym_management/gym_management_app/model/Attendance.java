@@ -4,9 +4,8 @@ package com.franko.gym_management.gym_management_app.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Getter
-@Setter
-@ToString
+@Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "attendances")

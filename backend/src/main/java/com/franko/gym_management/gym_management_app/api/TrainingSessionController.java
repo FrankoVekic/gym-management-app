@@ -1,6 +1,7 @@
 package com.franko.gym_management.gym_management_app.api;
 
 import com.franko.gym_management.gym_management_app.dto.TrainingSessionDto;
+import com.franko.gym_management.gym_management_app.dto.TrainingSessionResponseDto;
 import com.franko.gym_management.gym_management_app.service.TrainingSessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,6 +26,17 @@ public class TrainingSessionController {
     @PostMapping("addTrainingSession")
     public ResponseEntity<TrainingSessionDto> createTrainingSession(@RequestBody TrainingSessionDto trainingSessionDto){
         TrainingSessionDto savedTrainingSession = trainingSessionService.createTrainingSession(trainingSessionDto);
-        return new ResponseEntity(savedTrainingSession, HttpStatus.CREATED);
+        return new ResponseEntity<>(savedTrainingSession, HttpStatus.CREATED);
+    }
+
+    @GetMapping("trainingSessionsCount")
+    public ResponseEntity<Long> getTotalTrainingSessions() {
+        long count = trainingSessionService.getTotalTrainingSessionsCount();
+        return ResponseEntity.ok(count);
+    }
+
+    @GetMapping("upcomingTrainingSessions")
+    public List<TrainingSessionResponseDto> getUpcomingTrainingSessions() {
+        return trainingSessionService.getUpcomingTrainingSessions();
     }
 }

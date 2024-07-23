@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -45,6 +46,12 @@ public class FakeDataInitalizer implements CommandLineRunner {
     private TestimonialRepository testimonialRepository;
 
     @Autowired
+    private AttendanceRepository attendanceRepository;
+
+    @Autowired
+    private TrainingSessionTrainerRepository trainingSessionTrainerRepository;
+
+    @Autowired
     private TestimonialUserRepository testimonialUserRepository;
 
     @Autowired
@@ -61,12 +68,14 @@ public class FakeDataInitalizer implements CommandLineRunner {
 
     @Value("${spring.jpa.hibernate.ddl-auto}")
     private String ddlAuto;
+    @Autowired
+    private TrainingSessionRepository trainingSessionRepository;
 
     @Override
     public void run(String... args) throws Exception {
         if ("create-drop".equals(ddlAuto)) {
 
-            insertTestimonials(2);
+            insertTestimonials(5);
             insertTrainingPackages();
             insertTrainingTypes();
             insertStatuses();
@@ -74,7 +83,155 @@ public class FakeDataInitalizer implements CommandLineRunner {
             insertFakeUsersMemberRole(10);
             insertUserTestimonials();
             insertBlogs();
+            insertTrainingSessions();
+            insertTrainingSessionTrainers();
+            insertAttendance();
         }
+    }
+
+    private void insertAttendance() {
+
+        Member memberOne = memberRepository.getReferenceById(1L);
+        Member memberTwo = memberRepository.getReferenceById(2L);
+        Member memberThree = memberRepository.getReferenceById(3L);
+        Member memberFour = memberRepository.getReferenceById(4L);
+        Member memberFive = memberRepository.getReferenceById(5L);
+        Member memberSix = memberRepository.getReferenceById(6L);
+        Member memberSeven = memberRepository.getReferenceById(7L);
+
+        TrainingSession sessionOne = trainingSessionRepository.getReferenceById(1L);
+        TrainingSession sessionTwo = trainingSessionRepository.getReferenceById(2L);
+        TrainingSession sessionThree = trainingSessionRepository.getReferenceById(3L);
+
+        List<Attendance> attendanceList = new ArrayList<>();
+
+        attendanceList.add(
+                Attendance
+                        .builder()
+                        .member(memberOne)
+                        .trainingSession(sessionOne)
+                        .build()
+        );
+        attendanceList.add(
+                Attendance
+                        .builder()
+                        .member(memberTwo)
+                        .trainingSession(sessionOne)
+                        .build()
+        );
+        attendanceList.add(
+                Attendance
+                        .builder()
+                        .member(memberThree)
+                        .trainingSession(sessionOne)
+                        .build()
+        );
+        attendanceList.add(
+                Attendance
+                        .builder()
+                        .member(memberFour)
+                        .trainingSession(sessionTwo)
+                        .build()
+        );
+        attendanceList.add(
+                Attendance
+                        .builder()
+                        .member(memberFive)
+                        .trainingSession(sessionTwo)
+                        .build()
+        );
+        attendanceList.add(
+                Attendance
+                        .builder()
+                        .member(memberSix)
+                        .trainingSession(sessionOne)
+                        .build()
+        );
+        attendanceList.add(
+                Attendance
+                        .builder()
+                        .member(memberSeven)
+                        .trainingSession(sessionThree)
+                        .build()
+        );
+
+        attendanceRepository.saveAll(attendanceList);
+
+    }
+
+    private void insertTrainingSessionTrainers() {
+
+        Trainer trainerOne = trainerRepository.getReferenceById(1L);
+        Trainer trainerTwo = trainerRepository.getReferenceById(2L);
+
+        TrainingSession sessionOne = trainingSessionRepository.getReferenceById(1L);
+        TrainingSession sessionTwo = trainingSessionRepository.getReferenceById(2L);
+        TrainingSession sessionThree = trainingSessionRepository.getReferenceById(3L);
+
+        List<TrainingSessionTrainer> sessions = new ArrayList<>();
+
+        sessions.add(
+                TrainingSessionTrainer
+                        .builder()
+                        .trainingSession(sessionOne)
+                        .trainer(trainerOne)
+                        .build()
+        );
+
+        sessions.add(
+                TrainingSessionTrainer
+                        .builder()
+                        .trainingSession(sessionTwo)
+                        .trainer(trainerTwo)
+                        .build()
+        );
+
+        sessions.add(
+                TrainingSessionTrainer
+                        .builder()
+                        .trainingSession(sessionThree)
+                        .trainer(trainerOne)
+                        .build()
+        );
+
+        trainingSessionTrainerRepository.saveAll(sessions);
+    }
+
+    private void insertTrainingSessions() {
+
+
+        TrainingType t1 = trainingTypeRepository.getReferenceById(1L);
+        TrainingType t2 = trainingTypeRepository.getReferenceById(2L);
+        TrainingType t3 = trainingTypeRepository.getReferenceById(3L);
+
+        List<TrainingSession> trainingSessions = new ArrayList<>();
+
+        trainingSessions.add(
+                TrainingSession
+                        .builder()
+                        .date(LocalDateTime.now().plusDays(2))
+                        .trainingType(t1)
+                        .build()
+        );
+
+        trainingSessions.add(
+                TrainingSession
+                        .builder()
+                        .date(LocalDateTime.now().plusDays(2))
+                        .trainingType(t2)
+                        .build()
+        );
+
+        trainingSessions.add(
+                TrainingSession
+                        .builder()
+                        .date(LocalDateTime.now().plusDays(2))
+                        .trainingType(t3)
+                        .build()
+        );
+
+        trainingSessionRepository.saveAll(trainingSessions);
+
     }
 
     private void insertBlogs() {
@@ -245,9 +402,13 @@ public class FakeDataInitalizer implements CommandLineRunner {
 
             Status activeStatus = statusRepository.getReferenceById(1L);
 
+            TrainingPackage trainingPackage = trainingPackageRepository.getReferenceById(3L);
+
+
             Member member = Member
                     .builder()
                     .user(savedMember)
+                    .trainingPackage(trainingPackage)
                     .status(activeStatus)
                     .build();
 
@@ -263,8 +424,8 @@ public class FakeDataInitalizer implements CommandLineRunner {
 
         var exampleUser = User
                 .builder()
-                .firstName("Franko")
-                .lastName("Vekić")
+                .firstName("Test")
+                .lastName("Testich")
                 .email("test@gmail.com")
                 .image("")
                 .password(passwordEncoder.encode("test123"))
@@ -305,14 +466,19 @@ public class FakeDataInitalizer implements CommandLineRunner {
 
     }
 
-    // FIXED TO INSERT 2 TESTIMONIALS FOR USERS
     private void insertUserTestimonials() {
-
+        // Pretpostavimo da imamo 5 korisnika i 5 svjedočanstava u bazi podataka.
         User userOne = userRepository.getReferenceById(1L);
         User userTwo = userRepository.getReferenceById(2L);
+        User userThree = userRepository.getReferenceById(3L);
+        User userFour = userRepository.getReferenceById(4L);
+        User userFive = userRepository.getReferenceById(5L);
 
         Testimonial testimonialOne = testimonialRepository.getReferenceById(1L);
         Testimonial testimonialTwo = testimonialRepository.getReferenceById(2L);
+        Testimonial testimonialThree = testimonialRepository.getReferenceById(3L);
+        Testimonial testimonialFour = testimonialRepository.getReferenceById(4L);
+        Testimonial testimonialFive = testimonialRepository.getReferenceById(5L);
 
         var testimonialUserOne = TestimonialUser
                 .builder()
@@ -326,9 +492,30 @@ public class FakeDataInitalizer implements CommandLineRunner {
                 .testimonials(testimonialTwo)
                 .build();
 
+        var testimonialUserThree = TestimonialUser
+                .builder()
+                .user(userThree)
+                .testimonials(testimonialThree)
+                .build();
+
+        var testimonialUserFour = TestimonialUser
+                .builder()
+                .user(userFour)
+                .testimonials(testimonialFour)
+                .build();
+
+        var testimonialUserFive = TestimonialUser
+                .builder()
+                .user(userFive)
+                .testimonials(testimonialFive)
+                .build();
+
         testimonialUserRepository.save(testimonialUserOne);
         testimonialUserRepository.save(testimonialUserTwo);
-
+        testimonialUserRepository.save(testimonialUserThree);
+        testimonialUserRepository.save(testimonialUserFour);
+        testimonialUserRepository.save(testimonialUserFive);
     }
+
 
 }

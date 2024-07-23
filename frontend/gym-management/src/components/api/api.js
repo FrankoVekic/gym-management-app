@@ -9,8 +9,13 @@ export const createContactEntry = (contactFormEntry) => {
 };
 
 // GET TWO TESTIMONIALS
-export const getTestimonialUsers = () => {
+export const getTwoTestimonialUsers = () => {
     return axios.get(`${API_URL}/public/testimonialsUsers/getTwoTestemonialsUsers`);
+}
+
+// GET ALL TESTIMONIALS
+export const getTestimonialUsers = () => {
+    return axios.get(`${API_URL}/public/testimonialsUsers/getTestimonialUsers`);
 }
 
 // GET TRAINING PACKAGES (FOR NOW ONLY 3 ARE IN DB BUT QUERY IS NOT LIMITED TO 3)
@@ -91,3 +96,29 @@ export const getSearchedBlogs = (title) => {
 export const changePassword = ({ email, oldPassword, newPassword }) => {
     return axios.post(`${API_URL}/public/api/auth/change-password`, { email, oldPassword, newPassword });
 }
+
+// GET COUNT OF MEMBERS
+export const getMembersCount = () => {
+    return axios.get(`${API_URL}/public/members/membersCount`);
+}
+
+// GET COUNT OF TRANING SESSIONS
+export const getTraningSessionsCount = () => {
+    return axios.get(`${API_URL}/public/trainingSessions/trainingSessionsCount`);
+}
+
+// GET TOTAL PAID FOR TRAINING PACKAGES
+export const getTotalPaid = () => {
+    return axios.get(`${API_URL}/public/members/total-paid`);
+}
+
+// GET UPCOMING TRAINING SESSIONS (TRAINING TYPE, DATE, TRAINER, NUMBER OF MEMBERS)
+export const getUpcomingTrainingSessions = () => {
+    return axios.get(`${API_URL}/public/trainingSessions/upcomingTrainingSessions`);
+}
+
+// GET MEMBERS WITH STATUSES AND TRAINING PACKAGES
+export const getMemberStatusesAndTrainingPackages = () => {
+    return axios.get(`${API_URL}/public/members/memberStatuses`);
+}
+

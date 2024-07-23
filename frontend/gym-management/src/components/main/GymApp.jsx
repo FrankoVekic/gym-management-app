@@ -18,6 +18,8 @@ import BlogDetail from '../parts/Blog Page Components/BlogDetail';
 import BlogCreation from '../parts/Blog Page Components/BlogCreation';
 import ManageComponent from '../pages/ManageComponent';
 import ProfilePage from '../pages/ProfilePage';
+import TrainerDashboard from '../pages/TrainerDashboard';
+
 
 export default function GymApp() {
     return (
@@ -38,9 +40,12 @@ export default function GymApp() {
                             <Route path="/training-packages" element={<TrainingPackagesComponent/>} />
                             <Route path="/training-package-detail/:id" element={<TrainingPackageDetailComponent/>} />
                             <Route path="/about" element={<AboutComponent/>} />
+
                             <Route path="/contact" element={<ContactComponent />} />
                             <Route path="/trainer-management" element={<ManageComponent />} />
                             <Route path="/profile-page" element={<ProfilePage />} />
+                            <Route path="trainer-dashboard" element={<TrainerDashboard />} />
+
                             <Route path="*" element={<ErrorComponent />} />
                         </Routes>
                     </div>
