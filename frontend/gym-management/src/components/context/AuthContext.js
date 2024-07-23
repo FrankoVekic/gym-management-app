@@ -1,76 +1,69 @@
-import React, {createContext, useState, useEffect} from "react";
-import { jwtDecode } from "jwt-decode";
-import { authenticate } from "../api/api";
+import React, { createContext, useState, useEffect } from "react";
+import {jwtDecode} from "jwt-decode";
+import { authenticate, registerUser } from "../api/api";
 import { useNavigate } from "react-router-dom";
-import { registerUser } from "../api/api";
+
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-    const navigate = useNavigate();
-    const [authState, setAuthState] = useState({
-        token: null,
-        user: null,
-    });
 
-    const logout = () => {
-        localStorage.removeItem('token');
-        setAuthState({
-            token: null,
-            user: null,
-        });
-        navigate("/");
-    };
+  const navigate = useNavigate();
+  const [authState, setAuthState] = useState({ token: null, user: null });
 
-    const setTokenAndAutoLogout = (token) => {
-        const decodedToken = jwtDecode(token);
-        const currentTime = Date.now() / 1000;
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      const decodedToken = jwtDecode(token);
+      if (isTokenExpired(decodedToken)) {
+        logout();
+      } else {
+        setAuthState({ token, user: decodedToken });
+      }
+    }
+  }, []);
 
-        if (decodedToken.exp < currentTime) {
-            logout();
-        } else {
-            setAuthState({
-                token,
-                user: decodedToken,
-            });
+  const isTokenExpired = (decodedToken) => {
+    const currentTime = Date.now() / 1000;
+    return decodedToken.exp < currentTime;
+  };
 
-            const timeout = decodedToken.exp * 1000 - Date.now();
-            setTimeout(logout, timeout);
-        }
-    };
+  const login = async (values) => {
 
-    useEffect(() => {
-        const token = localStorage.getItem('token');
-        if (token) {
-            setTokenAndAutoLogout(token);
-        }
-    }, []);
+    try {
+      const response = await authenticate(values);
+      const token = response.data.token;
+      localStorage.setItem("token", token);
+      const decodedToken = jwtDecode(token);
+      
+      setAuthState({ token, user: decodedToken });
+    } catch (error) {
 
-    const login = async (values) => {
-        try {
-            const response = await authenticate(values);
-            const token = response.data.token;
-            localStorage.setItem('token', token);
-            setTokenAndAutoLogout(token);
-        } catch (error) {
-            throw new Error('Invalid email or password');
-        }
-    };
+      throw new Error("Invalid email or password");
+    }
+  };
 
-    const register = async (values) => {
-        try {
-            const response = await registerUser(values);
-            const token = response.data.token;
-            localStorage.setItem('token', token);
-            setTokenAndAutoLogout(token);
-        } catch (error) {
-            throw new Error('Registration failed');
-        }
-    };
+  const register = async (values) => {
+    try {
+      const response = await registerUser(values);
+      const token = response.data.token;
+      localStorage.setItem("token", token);
+      const decodedToken = jwtDecode(token);
+      setAuthState({ token, user: decodedToken });
+    } catch (error) {
+      throw new Error("Registration failed");
+    }
+  };
 
-    return (
-        <AuthContext.Provider value={{ authState, login, logout, register }}>
-            {children}
-        </AuthContext.Provider>
-    );
+  const logout = () => {
+    localStorage.removeItem("token");
+    setAuthState({ token: null, user: null });
+    navigate("/");
+  };
+
+  return (
+    <AuthContext.Provider value={{ authState, login, logout, register }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
