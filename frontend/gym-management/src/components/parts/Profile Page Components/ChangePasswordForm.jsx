@@ -1,58 +1,88 @@
-import React from "react";
-
+import React, { useContext, useState } from "react";
+import { Form, Button, Alert } from "react-bootstrap";
+import { changePassword } from "../../api/api";
+import { AuthContext } from "../../context/AuthContext";
 
 const ChangePasswordForm = () => {
-    return (
-        <div>
-            <div
-                className="tab-pane fade"
-                id="password-tab-pane"
-                role="tabpanel"
-                aria-labelledby="password-tab"
-                tabIndex={0}
-            >
-                <form action="#!">
-                    <div className="row gy-3 gy-xxl-4">
-                        <div className="col-12">
-                            <label htmlFor="currentPassword" className="form-label">
-                                Current Password
-                            </label>
-                            <input
-                                type="password"
-                                className="form-control"
-                                id="currentPassword"
-                            />
-                        </div>
-                        <div className="col-12">
-                            <label htmlFor="newPassword" className="form-label">
-                                New Password
-                            </label>
-                            <input
-                                type="password"
-                                className="form-control"
-                                id="newPassword"
-                            />
-                        </div>
-                        <div className="col-12">
-                            <label htmlFor="confirmPassword" className="form-label">
-                                Confirm Password
-                            </label>
-                            <input
-                                type="password"
-                                className="form-control"
-                                id="confirmPassword"
-                            />
-                        </div>
-                        <div className="col-12">
-                            <button type="submit" className="btn btn-primary">
-                                Change Password
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    );
+  const [oldPassword, setOldPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const { authState } = useContext(AuthContext);
+
+
+  const userEmail = authState.user.sub;
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+
+    if(oldPassword === newPassword){
+        setErrorMessage('New password cannot be the same as old password')
+        return;
+    }
+
+    if (newPassword !== confirmPassword) {
+      setErrorMessage('Passwords do not match');
+      return;
+    }
+
+    try {
+      await changePassword({ email: userEmail, oldPassword, newPassword });
+      setSuccessMessage('Password reset successfully.');
+      setErrorMessage('');
+    } catch (error) {
+      setErrorMessage('Failed to reset password.');
+      setSuccessMessage('');
+    }
+
+  };
+
+  return (
+    <div>
+        <Form onSubmit={handleSubmit}>
+            <Form.Group controlId="formCurrentPassword">
+                <Form.Label>Current Password</Form.Label>
+                <Form.Control
+                    type="password"
+                    placeholder="Enter current password"
+                    value={oldPassword}
+                    onChange={(e) => setOldPassword(e.target.value)}
+                    required
+                />
+            </Form.Group>
+
+            <Form.Group controlId="formNewPassword">
+                <Form.Label>New Password</Form.Label>
+                <Form.Control
+                    type="password"
+                    placeholder="Enter new password"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    required
+                />
+            </Form.Group>
+
+            <Form.Group controlId="formConfirmPassword">
+                <Form.Label>Confirm Password</Form.Label>
+                <Form.Control
+                    type="password"
+                    placeholder="Confirm new password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    required
+                />
+            </Form.Group>
+            {errorMessage && <Alert className='m-5' variant="warning">{errorMessage}</Alert>}
+            {successMessage && <Alert className='m-5' variant="success">{successMessage}</Alert>}
+
+            <Button variant="primary" type="submit" className="mt-3">
+                Change Password
+            </Button>
+        </Form>
+    </div>
+  );
 }
 
 export default ChangePasswordForm;

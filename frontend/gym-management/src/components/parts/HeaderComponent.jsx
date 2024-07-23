@@ -36,6 +36,9 @@ export default function HeaderComponent() {
                 <Link className="nav-link text-blue" to="/contact">{Statics.navbarContact}</Link>
             </li>
             <li className="nav-item">
+                <Link className="nav-link text-blue" to="/profile-page">Profile</Link>
+            </li>
+            <li className="nav-item">
                 <button className="nav-link text-blue" onClick={logout}>Logout</button>
             </li>
         </>
@@ -55,6 +58,9 @@ export default function HeaderComponent() {
             </li>
             <li className="nav-item">
                 <Link className="nav-link text-blue" to="/trainer-management">{Statics.navbarTrainerManage}</Link>
+            </li>
+            <li className="nav-item">
+                <Link className="nav-link text-blue" to="/profile-page">Profile</Link>
             </li>
             <li className="nav-item">
                 <button className="nav-link text-blue" onClick={logout}>Logout</button>
