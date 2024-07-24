@@ -467,7 +467,7 @@ public class FakeDataInitalizer implements CommandLineRunner {
     }
 
     private void insertUserTestimonials() {
-        // Pretpostavimo da imamo 5 korisnika i 5 svjedočanstava u bazi podataka.
+
         User userOne = userRepository.getReferenceById(1L);
         User userTwo = userRepository.getReferenceById(2L);
         User userThree = userRepository.getReferenceById(3L);

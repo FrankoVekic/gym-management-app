@@ -2,9 +2,14 @@ package com.franko.gym_management.gym_management_app.config.auth;
 
 import com.franko.gym_management.gym_management_app.config.jwt.JwtService;
 import com.franko.gym_management.gym_management_app.enums.Role;
+import com.franko.gym_management.gym_management_app.enums.StatusType;
 import com.franko.gym_management.gym_management_app.exceptions.EmailExistsException;
 import com.franko.gym_management.gym_management_app.exceptions.UnauthorizedException;
+import com.franko.gym_management.gym_management_app.model.Member;
+import com.franko.gym_management.gym_management_app.model.Status;
 import com.franko.gym_management.gym_management_app.model.User;
+import com.franko.gym_management.gym_management_app.repository.MemberRepository;
+import com.franko.gym_management.gym_management_app.repository.StatusRepository;
 import com.franko.gym_management.gym_management_app.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +38,8 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final MemberRepository memberRepository;
+    private final StatusRepository statusRepository;
 
     private final static String LOCAL_DEV_URL = "http://localhost:3000/";
 
@@ -41,7 +48,7 @@ public class AuthenticationService {
 
         Optional<User> userByEmail = repository.findByEmail(request.getEmail());
 
-        if(userByEmail.isPresent()){
+        if (userByEmail.isPresent()) {
             throw new EmailExistsException("User with entered email already exists");
         }
 
@@ -56,6 +63,17 @@ public class AuthenticationService {
                 .build();
 
         repository.save(user);
+
+
+        Status status = statusRepository.getReferenceById(2L);
+
+        var member = Member
+                .builder()
+                .status(status)
+                .user(user)
+                .build();
+
+        memberRepository.save(member);
 
         var jwtToken = jwtService.generateToken(user, user.getId(), user.getRole().name());
 

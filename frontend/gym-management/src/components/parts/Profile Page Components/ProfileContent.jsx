@@ -71,9 +71,13 @@ const ProfileContent = () => {
                         <div className="col-12">
                             {/* TODO: IF IMAGE DOESNT EXIST, JUST ADD INPUT TO ADD PICTURE*/}
                             <img
-                                src={`${Statics.imagesUsersLogoUrl}${profile.image}`}
+                                src={profile.image ? `${Statics.imagesUsersLogoUrl}${profile.image}` : Statics.noImageUrl}
                                 className="img-fluid"
                                 alt={`${profile.firstName} ${profile.lastName}`}
+                                style={{
+                                    maxWidth: "150px",
+                                    maxHeight: "150px"
+                                }}
                             />
                         </div>
                         <div className="col-12">

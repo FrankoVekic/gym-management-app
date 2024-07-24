@@ -57,7 +57,6 @@ const ChangePasswordForm = () => {
     };
 
     return (
-        <div>
             <div
                 className="tab-pane fade"
                 id="password-tab-pane"
@@ -101,12 +100,11 @@ const ChangePasswordForm = () => {
                     {errorMessage && <Alert className='m-5' variant="warning">{errorMessage}</Alert>}
                     {successMessage && <Alert className='m-5' variant="success">{successMessage}</Alert>}
 
-                    <Button variant="primary" type="submit" className="mt-3">
+                    <Button variant="primary" type="submit" className="mt-5">
                         Change Password
                     </Button>
                 </Form>
             </div>
-        </div>
     );
 }
 
