@@ -23,7 +23,6 @@ const ProfileContent = () => {
                 const decodedToken = jwtDecode(token);
                 const userId = decodedToken.userID;
 
-                // Pretend API call to get profile data
                 const response = await getMemberProfile(userId);
                 setProfile(response.data);
                 setFormData({
@@ -70,6 +69,7 @@ const ProfileContent = () => {
                             Profile Image
                         </label>
                         <div className="col-12">
+                            {/* TODO: IF IMAGE DOESNT EXIST, JUST ADD INPUT TO ADD PICTURE*/}
                             <img
                                 src={`${Statics.imagesUsersLogoUrl}${profile.image}`}
                                 className="img-fluid"

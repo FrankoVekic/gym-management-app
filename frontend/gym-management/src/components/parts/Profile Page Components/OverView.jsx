@@ -62,37 +62,37 @@ const Overview = () => {
                     <div className="p-2">First Name</div>
                 </div>
                 <div className="col-7 col-md-9 bg-light border-start border-bottom border-white border-3">
-                    <div className="p-2">{user.firstName}</div>
+                    <div className="p-2">{user.firstName !== null ? user.firstName : "-"}</div>
                 </div>
                 <div className="col-5 col-md-3 bg-light border-bottom border-white border-3">
                     <div className="p-2">Last Name</div>
                 </div>
                 <div className="col-7 col-md-9 bg-light border-start border-bottom border-white border-3">
-                    <div className="p-2">{user.lastName}</div>
+                    <div className="p-2">{user.lastName !== null ? user.lastName : "-"}</div>
                 </div>
                 <div className="col-5 col-md-3 bg-light border-bottom border-white border-3">
                     <div className="p-2">Email</div>
                 </div>
                 <div className="col-7 col-md-9 bg-light border-start border-bottom border-white border-3">
-                    <div className="p-2">{user.email}</div>
+                    <div className="p-2">{user.email !== null ? user.email : "-"}</div>
                 </div>
                 <div className="col-5 col-md-3 bg-light border-bottom border-white border-3">
                     <div className="p-2">Role</div>
                 </div>
                 <div className="col-7 col-md-9 bg-light border-start border-bottom border-white border-3">
-                    <div className="p-2">{user.role}</div>
+                    <div className="p-2">{user.role !== null ? user.role : "-"}</div>
                 </div>
                 <div className="col-5 col-md-3 bg-light border-bottom border-white border-3">
                     <div className="p-2">Training Package</div>
                 </div>
                 <div className="col-7 col-md-9 bg-light border-start border-bottom border-white border-3">
-                    <div className="p-2">{user.trainingPackageName}</div>
+                    <div className="p-2">{user.trainingPackageName !== null ? user.trainingPackageName : "-"}</div>
                 </div>
                 <div className="col-5 col-md-3 bg-light border-bottom border-white border-3">
                     <div className="p-2">Status</div>
                 </div>
                 <div className="col-7 col-md-9 bg-light border-start border-bottom border-white border-3">
-                    <div className="p-2">{user.status}</div>
+                    <div className="p-2">{user.status !== null ? user.status : "-"}</div>
                 </div>
             </div>
         </div>

@@ -120,7 +120,7 @@ const Forum = () => {
                     <div id="forum" ref={forumRef} className="inner-main">
                         <div className="inner-main-header d-flex align-items-center">
                             <div className="input-group rounded">
-                                <input type="search" value={searchText} onChange={(e) => setSearchText(e.target.value)} class="form-control rounded" placeholder="Search" />
+                                <input type="search" value={searchText} onChange={(e) => setSearchText(e.target.value)} className="form-control rounded" placeholder="Search" />
                             </div>
                         </div>
                         <div className="inner-main-body p-2 p-sm-3 collapse forum-content show">

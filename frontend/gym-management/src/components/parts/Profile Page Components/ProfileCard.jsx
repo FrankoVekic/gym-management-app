@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { getMemberProfile } from "../../api/api";
-import {jwtDecode} from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 import Statics from '../../static utils/Statics';
 
 const ProfileCard = () => {
@@ -54,9 +54,13 @@ const ProfileCard = () => {
                         <div className="card-body">
                             <div className="text-center mb-3">
                                 <img
-                                    src={`${Statics.imagesUsersLogoUrl}${profile.image}`}
+                                    src={profile.image ? `${Statics.imagesUsersLogoUrl}${profile.image}` : Statics.noImageUrl}
                                     className="img-fluid rounded-circle"
                                     alt={`${profile.firstName} ${profile.lastName}`}
+                                    style={{
+                                        maxWidth: "300px",
+                                        maxHeight: "300px"
+                                    }}
                                 />
                             </div>
                             <h5 className="text-center mb-1">{profile.firstName} {profile.lastName}</h5>

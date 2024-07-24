@@ -44,6 +44,7 @@ const ChangePasswordForm = () => {
             return;
         }
 
+        if(window.confirm('Are you sure you want to change your password?')){
         try {
             await changePassword({ email: userEmail, oldPassword, newPassword });
             setSuccessMessage('Password changed successfully.');
@@ -52,6 +53,7 @@ const ChangePasswordForm = () => {
             setErrorMessage('Failed to change password.');
             setSuccessMessage('');
         }
+    }
     };
 
     return (
@@ -65,7 +67,7 @@ const ChangePasswordForm = () => {
             >
                 <Form onSubmit={handleSubmit}>
                     <Form.Group controlId="formCurrentPassword">
-                        <Form.Label>Current Password</Form.Label>
+                        <Form.Label className="mt-5">Current Password</Form.Label>
                         <Form.Control
                             type="password"
                             placeholder="Enter current password"
@@ -76,7 +78,7 @@ const ChangePasswordForm = () => {
                     </Form.Group>
 
                     <Form.Group controlId="formNewPassword">
-                        <Form.Label>New Password</Form.Label>
+                        <Form.Label  className="mt-5">New Password</Form.Label>
                         <Form.Control
                             type="password"
                             placeholder="Enter new password"
@@ -87,7 +89,7 @@ const ChangePasswordForm = () => {
                     </Form.Group>
 
                     <Form.Group controlId="formConfirmPassword">
-                        <Form.Label>Confirm Password</Form.Label>
+                        <Form.Label  className="mt-5">Confirm Password</Form.Label>
                         <Form.Control
                             type="password"
                             placeholder="Confirm new password"
