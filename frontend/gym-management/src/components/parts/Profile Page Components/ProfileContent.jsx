@@ -5,6 +5,7 @@ import { jwtDecode } from "jwt-decode";
 import { getMemberProfile } from "../../api/api";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Button, Alert } from "react-bootstrap";
+import { updateUserProfile } from "../../api/api";
 
 const ProfileContent = () => {
     const { authState } = useContext(AuthContext);
@@ -13,6 +14,7 @@ const ProfileContent = () => {
     const [image, setImage] = useState(null);
     const [errorMessage, setErrorMessage] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
+    const [userIds, setUserId] = useState(null);
 
     useEffect(() => {
         const fetchProfile = async () => {
@@ -24,6 +26,7 @@ const ProfileContent = () => {
                 }
                 const decodedToken = jwtDecode(token);
                 const userId = decodedToken.userID;
+                setUserId(userId);
                 const response = await getMemberProfile(userId);
                 setProfile(response.data);
             } catch (error) {
@@ -34,6 +37,19 @@ const ProfileContent = () => {
         };
         fetchProfile();
     }, [authState]);
+
+    const handleSubmit = async (values) => {
+        if(window.confirm('Are you sure you want to change your changes?')){
+        try {
+            await updateUserProfile({ id: userIds, firstname: values.firstName, lastname: values.lastName, email: values.email });
+            setSuccessMessage("Profile updated successfully.");
+            setErrorMessage("");
+        } catch (error) {
+            setErrorMessage("Failed to update profile.");
+            setSuccessMessage("");
+        }
+    }
+    };
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -73,14 +89,7 @@ const ProfileContent = () => {
                     lastName: profile.lastName || "",
                     email: profile.email || "",
                 }}
-                onSubmit={async (values) => {
-                    try {
-                        // await updateProfile(values);
-                        setSuccessMessage("Profile updated successfully");
-                    } catch (error) {
-                        setErrorMessage("Failed to update profile.");
-                    }
-                }}
+                onSubmit={handleSubmit}
             >
                 {({ handleSubmit }) => (
                     <Form onSubmit={handleSubmit} className="row gy-3 gy-xxl-4">
