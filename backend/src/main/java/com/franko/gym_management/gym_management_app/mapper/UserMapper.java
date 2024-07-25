@@ -1,8 +1,6 @@
 package com.franko.gym_management.gym_management_app.mapper;
 
-import com.franko.gym_management.gym_management_app.dto.BlogDto;
-import com.franko.gym_management.gym_management_app.dto.UserCreationDto;
-import com.franko.gym_management.gym_management_app.dto.UserDto;
+import com.franko.gym_management.gym_management_app.dto.*;
 import com.franko.gym_management.gym_management_app.model.Blog;
 import com.franko.gym_management.gym_management_app.model.User;
 import org.springframework.stereotype.Component;
@@ -71,5 +69,25 @@ public class UserMapper {
         return users.stream()
                 .map(UserMapper::mapToUserDto)
                 .collect(Collectors.toList());
+    }
+
+    public static UserProfileUpdateDto mapToProfileUpdateDto(User user){
+
+        return UserProfileUpdateDto
+                .builder()
+                .firstname(user.getFirstName())
+                .lastname(user.getLastName())
+                .email(user.getEmail())
+                .build();
+    }
+
+    public static UserProfileUpdateResponse mapToUserProfileResponse (User user){
+
+        return UserProfileUpdateResponse
+                .builder()
+                .firstname(user.getFirstName())
+                .lastname(user.getLastName())
+                .email(user.getEmail())
+                .build();
     }
 }

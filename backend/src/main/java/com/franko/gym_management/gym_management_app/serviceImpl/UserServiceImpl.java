@@ -2,6 +2,8 @@ package com.franko.gym_management.gym_management_app.serviceImpl;
 
 import com.franko.gym_management.gym_management_app.dto.UserCreationDto;
 import com.franko.gym_management.gym_management_app.dto.UserDto;
+import com.franko.gym_management.gym_management_app.dto.UserProfileUpdateDto;
+import com.franko.gym_management.gym_management_app.dto.UserProfileUpdateResponse;
 import com.franko.gym_management.gym_management_app.mapper.UserMapper;
 import com.franko.gym_management.gym_management_app.model.User;
 import com.franko.gym_management.gym_management_app.repository.UserRepository;
@@ -29,7 +31,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDto> addMultipleUsers(List<UserCreationDto> users) {
 
-        if(users == null || users.isEmpty()) return null;
+        if (users == null || users.isEmpty()) return null;
 
         List<User> userList = users.stream().map(UserMapper::mapToUser).collect(Collectors.toList());
         List<User> savedUserList = userRepository.saveAll(userList);
@@ -74,8 +76,22 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUser(Long id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User with ID: "+ id + " doesn't exist."));
+                .orElseThrow(() -> new RuntimeException("User with ID: " + id + " doesn't exist."));
 
         userRepository.delete(user);
+    }
+
+    @Override
+    public UserProfileUpdateResponse updateUserProfile(Long id, String firstname, String lastname, String email) {
+        User existingUser = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        existingUser.setFirstName(firstname);
+        existingUser.setLastName(lastname);
+        existingUser.setEmail(email);
+
+        User updatedUser = userRepository.save(existingUser);
+
+        return UserMapper.mapToUserProfileResponse(updatedUser);
     }
 }
