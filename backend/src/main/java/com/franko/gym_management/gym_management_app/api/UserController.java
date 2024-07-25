@@ -51,7 +51,7 @@ public class UserController {
     }
 
     @PutMapping("updateUserProfile")
-    public ResponseEntity<?> changePassword(@RequestBody UserProfileUpdateDto userDto) {
+    public ResponseEntity<?> updateUsersProfile(@RequestBody UserProfileUpdateDto userDto) {
 
         UserProfileUpdateResponse user = userService.updateUserProfile
                 (
@@ -62,8 +62,6 @@ public class UserController {
                 );
 
         return ResponseEntity.ok(user);
-
-
     }
 
     @DeleteMapping("{id}")
