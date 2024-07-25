@@ -57,10 +57,6 @@ const ProfileCard = () => {
                                     src={profile.image ? `${Statics.imagesUsersLogoUrl}${profile.image}` : Statics.noImageUrl}
                                     className="img-fluid rounded-circle"
                                     alt={`${profile.firstName} ${profile.lastName}`}
-                                    style={{
-                                        maxWidth: "300px",
-                                        maxHeight: "300px"
-                                    }}
                                 />
                             </div>
                             <h5 className="text-center mb-1">{profile.firstName} {profile.lastName}</h5>
