@@ -23,6 +23,6 @@ public interface UserService {
 
     void deleteUser(Long id);
 
-    UserProfileUpdateResponse updateUserProfile(Long id, String firstname, String lastname, String email);
+    UserProfileUpdateResponse updateUserProfile(Long id, String firstname, String lastname);
 
 }

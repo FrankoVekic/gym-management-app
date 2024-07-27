@@ -41,9 +41,10 @@ const ProfileContent = () => {
     const handleSubmit = async (values) => {
         if(window.confirm('Are you sure you want to change your changes?')){
         try {
-            await updateUserProfile({ id: userIds, firstname: values.firstName, lastname: values.lastName, email: values.email });
+            await updateUserProfile({ id: userIds, firstname: values.firstName, lastname: values.lastName});
             setSuccessMessage("Profile updated successfully.");
             setErrorMessage("");
+            window.location.reload();
         } catch (error) {
             setErrorMessage("Failed to update profile.");
             setSuccessMessage("");
@@ -86,8 +87,7 @@ const ProfileContent = () => {
             <Formik
                 initialValues={{
                     firstName: profile.firstName || "",
-                    lastName: profile.lastName || "",
-                    email: profile.email || "",
+                    lastName: profile.lastName || ""
                 }}
                 onSubmit={handleSubmit}
             >
@@ -117,11 +117,6 @@ const ProfileContent = () => {
                             <label htmlFor="lastName" className="form-label">Last Name</label>
                             <Field type="text" className="form-control" id="lastName" name="lastName" />
                             <ErrorMessage name="lastName" component="div" className="text-danger" />
-                        </div>
-                        <div className="col-12 col-md-6 d-flex flex-column align-items-center">
-                            <label htmlFor="email" className="form-label">Email</label>
-                            <Field type="email" className="form-control" id="email" name="email" />
-                            <ErrorMessage name="email" component="div" className="text-danger" />
                         </div>
                         <div className="col-12 text-center">
                             <Button type="submit" className="btn btn-primary">Save Changes</Button>

@@ -128,7 +128,7 @@ export const getMemberProfile = (userId) => {
 }
 
 // UPDATE USER PROFILE
-export const updateUserProfile = ({ id, firstname, lastname, email }) => {
-    return axios.put(`${API_URL}/public/users/updateUserProfile`, { id, firstname, lastname, email  });
+export const updateUserProfile = ({ id, firstname, lastname}) => {
+    return axios.put(`${API_URL}/public/users/updateUserProfile`, { id, firstname, lastname });
 }
 

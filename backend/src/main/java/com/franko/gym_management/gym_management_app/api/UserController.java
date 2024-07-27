@@ -57,8 +57,7 @@ public class UserController {
                 (
                         userDto.getId(),
                         userDto.getFirstname(),
-                        userDto.getLastname(),
-                        userDto.getEmail()
+                        userDto.getLastname()
                 );
 
         return ResponseEntity.ok(user);
