@@ -23,6 +23,7 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
+  // TODO: CHECK WHY TOKEN DOESNT EXPIRE
   const isTokenExpired = (decodedToken) => {
     const currentTime = Date.now() / 1000;
     return decodedToken.exp < currentTime;
