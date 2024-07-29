@@ -37,11 +37,13 @@ public class Blog {
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    @CreationTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "blog")
     private List<Comment> comments;
+
+    @Column
+    private LocalDateTime deletedAt;
 
 }
