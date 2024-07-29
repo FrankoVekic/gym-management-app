@@ -86,7 +86,6 @@ public class UserMapper {
                 .builder()
                 .firstname(user.getFirstName())
                 .lastname(user.getLastName())
-                .email(user.getEmail())
                 .build();
     }
 }

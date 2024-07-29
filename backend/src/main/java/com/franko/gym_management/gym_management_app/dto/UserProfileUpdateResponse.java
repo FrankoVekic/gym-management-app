@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UserProfileUpdateResponse {
 
-    private String firstname, lastname, email;
+    private String firstname, lastname;
 
 }
