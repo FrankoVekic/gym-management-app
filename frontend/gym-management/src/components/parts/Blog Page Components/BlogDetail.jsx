@@ -4,6 +4,7 @@ import { getBlogById } from '../../api/api';
 import { Spinner, Alert } from 'react-bootstrap';
 import { AuthContext } from '../../context/AuthContext';
 import { addCommentToBlog } from '../../api/api';
+import { jwtDecode } from 'jwt-decode';
 import URLSaver from '../URLSaver';
 
 const BlogDetail = () => {
@@ -16,8 +17,12 @@ const BlogDetail = () => {
     const [error, setError] = useState(null);
     const commentsPerPage = 3;
     const { authState } = useContext(AuthContext);
+    const token = localStorage.getItem("token");
+    const decodedToken = jwtDecode(token);
+    
 
     useEffect(() => {
+
         const fetchBlog = async () => {
             try {
                 const response = await getBlogById(id);
@@ -85,16 +90,24 @@ const BlogDetail = () => {
         <div className='mb-3'>
 
             <div className="blog-detail-container mt-5">
-                <div className="blog-header">
+                <div className="blog-header d-flex justify-content-between align-items-center">
                     <div className="d-flex justify-content-start mb-3">
                         <URLSaver />
                     </div>
-                    <h1 className="blog-title">{blog.title}</h1>
-                    <p className="blog-meta">
-                        By <span className="blog-author">{`${blog.author.firstName} ${blog.author.lastName + " "}`}</span>
-                        on <span className="blog-date">{new Date(blog.createdAt).toLocaleString()}</span>
-                    </p>
+                    <div className="d-flex justify-content-end mb-3">
+                        {blog.author.id === decodedToken.userID && (
+                            <>
+                                <button className="btn btn-success me-2"><i className="bi bi-pen"></i> Update</button>
+                                <button className="btn btn-danger"><i className="bi bi-trash"></i> Delete</button>
+                            </>
+                        )}
+                    </div>
                 </div>
+                <h1 className="blog-title">{blog.title}</h1>
+                <p className="blog-meta">
+                    By <span className="blog-author">{`${blog.author.firstName} ${blog.author.lastName + " "}`}</span>
+                    on <span className="blog-date">{new Date(blog.createdAt).toLocaleString()}</span>
+                </p>
                 <div className="blog-content">
                     <p>{blog.content}</p>
                 </div>
