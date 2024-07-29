@@ -20,7 +20,7 @@ const TrainerProtectedRoute = () => {
                         if (decodedToken.role === 'TRAINER') {
                             setIsAuthenticated(true);
                         } else {
-                            setRedirectTo('/'); 
+                            setRedirectTo('/unauthorized'); 
                         }
                     } else {
                         setRedirectTo('/login'); 
@@ -31,7 +31,7 @@ const TrainerProtectedRoute = () => {
                     localStorage.removeItem('token'); 
                 }
             } else {
-                setRedirectTo('/'); 
+                setRedirectTo('/unauthorized'); 
             }
             setLoading(false); 
         };

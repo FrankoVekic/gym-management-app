@@ -68,7 +68,12 @@ const Statics = {
     // errors
     errorMessage: 'Oops! Something went wrong.',
     errorDescriptionUp: 'You seem to have stumbled upon a page that no longer exists.',
-    errorDescriptionDown: 'You might have spelled the page URL incorrectly.'
+    errorDescriptionDown: 'You might have spelled the page URL incorrectly.',
+
+    // unauthorized
+    unauthorizedMessage: 'Oops! Access Denied.',
+    unauthorizedDescriptionUp: "You don't have access to this page.",
+    unauthorizedDescriptionDown: 'Contact administrator if you keep having this problem.'
 
 };
 

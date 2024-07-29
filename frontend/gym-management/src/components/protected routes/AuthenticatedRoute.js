@@ -6,6 +6,7 @@ const AuthenticatedRoute = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [loading, setLoading] = useState(true); 
     const token = localStorage.getItem('token');
+    const [redirectTo, setRedirectTo] = useState(null); 
     const location = useLocation();
 
     useEffect(() => {
@@ -19,14 +20,14 @@ const AuthenticatedRoute = () => {
                         setIsAuthenticated(true);
                     } else {
                         localStorage.removeItem('token'); 
-                        setIsAuthenticated(false);
+                        setRedirectTo('/login'); 
                     }
                 } catch (error) {
                     localStorage.removeItem('token'); 
-                    setIsAuthenticated(false);
+                    setRedirectTo('/'); 
                 }
             } else {
-                setIsAuthenticated(false); 
+                setRedirectTo('/unauthorized');
             }
             setLoading(false); 
         };
@@ -36,6 +37,10 @@ const AuthenticatedRoute = () => {
 
     if (loading) {
         return <div>Loading...</div>; 
+    }
+
+    if (redirectTo) {
+        return <Navigate to={redirectTo} state={{ from: location }} replace />;
     }
 
     return isAuthenticated ? <Outlet /> : <Navigate to="/" state={{ from: location }} replace />;

@@ -21,7 +21,7 @@ const MemberProtectedRoute = () => {
                         if (decodedToken.role === 'MEMBER') {
                             setIsAuthenticated(true);
                         } else {
-                            setRedirectTo('/error'); 
+                            setRedirectTo('/unauthorized'); 
                         }
                     } else {
                         setRedirectTo('/login'); 
@@ -30,7 +30,7 @@ const MemberProtectedRoute = () => {
                     setRedirectTo('/'); 
                 }
             } else {
-                setRedirectTo('/'); 
+                setRedirectTo('/unauthorized'); 
             }
             setLoading(false); 
         };
