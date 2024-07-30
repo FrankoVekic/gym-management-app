@@ -132,3 +132,8 @@ export const updateUserProfile = ({ id, firstname, lastname}) => {
     return axios.put(`${API_URL}/public/users/updateUserProfile`, { id, firstname, lastname });
 }
 
+// CHANGE BLOG DELETED AT STATUS (DELETE BLOG)
+export const deleteBlog = (id) => {
+    return axios.post(`${API_URL}/public/blogs/deleteBlog`, { id });    
+}
+

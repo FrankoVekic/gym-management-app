@@ -2,6 +2,7 @@ package com.franko.gym_management.gym_management_app.api;
 
 import com.franko.gym_management.gym_management_app.dto.BlogDto;
 import com.franko.gym_management.gym_management_app.dto.BlogResponseDto;
+import com.franko.gym_management.gym_management_app.dto.DeleteBlogRequestDto;
 import com.franko.gym_management.gym_management_app.service.BlogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -53,8 +54,8 @@ public class BlogController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<BlogResponseDto> getUserById(@PathVariable("id") Long blogID) {
-        BlogResponseDto blog = blogService.getBlogById(blogID);
+    public ResponseEntity<BlogResponseDto> getBlogById(@PathVariable("id") Long id) {
+        BlogResponseDto blog = blogService.getBlogById(id);
         return ResponseEntity.ok(blog);
     }
 
@@ -62,5 +63,14 @@ public class BlogController {
     public ResponseEntity<BlogResponseDto> createBlog(@RequestBody BlogDto blogDto){
         BlogResponseDto blog = blogService.createBlog(blogDto);
         return new ResponseEntity<>(blog, HttpStatus.CREATED);
+    }
+
+    @PostMapping("deleteBlog")
+    public ResponseEntity<String> deleteBlog(@RequestBody DeleteBlogRequestDto deleteBlogRequestDto){
+
+        blogService.softDeleteById(deleteBlogRequestDto.getId());
+
+        return ResponseEntity.ok().build();
+
     }
 }

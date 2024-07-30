@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -104,9 +105,21 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public BlogResponseDto getBlogById(Long blogID) {
-        Blog blog = blogRepository.findById(blogID)
-                .orElseThrow(() -> new RuntimeException("Blog not found"));
+        Blog blog = blogRepository.getBlogById(blogID);
+
+        if(blog == null){
+            throw new RuntimeException("Blog not found");
+        }
+
         return BlogMapper.mapToResponseDtoFromObject(blog);
+    }
+
+    @Override
+    public void softDeleteById(Long id) {
+
+        Blog blog = blogRepository.findById(id).orElseThrow(() -> new RuntimeException("Blog not found"));
+
+        blogRepository.softDeleteById(id);
     }
 
 }

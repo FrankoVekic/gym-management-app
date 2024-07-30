@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { getBlogById } from '../../api/api';
 import { Spinner, Alert } from 'react-bootstrap';
 import { AuthContext } from '../../context/AuthContext';
 import { addCommentToBlog } from '../../api/api';
 import { jwtDecode } from 'jwt-decode';
 import URLSaver from '../URLSaver';
+import { deleteBlog } from '../../api/api';
+
 
 const BlogDetail = () => {
     const { id } = useParams();
@@ -19,7 +21,12 @@ const BlogDetail = () => {
     const { authState } = useContext(AuthContext);
     const token = localStorage.getItem("token");
     const decodedToken = jwtDecode(token);
-    
+    const navigate = useNavigate();
+    const [showMessage, setShowMessage] = useState(false);
+    const indexOfLastComment = currentPage * commentsPerPage;
+    const indexOfFirstComment = indexOfLastComment - commentsPerPage;
+    const currentComments = comments.slice(indexOfFirstComment, indexOfLastComment);
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     useEffect(() => {
 
@@ -39,8 +46,22 @@ const BlogDetail = () => {
         fetchBlog();
     }, [id]);
 
+    const handleDeleteBlog = async () => {
 
-    // TODO: IMPLEMENT ADDING COMMENT WHEN USER IS LOGGED IN
+        if (window.confirm('Are you sure you want to delete this blog?')) {
+            setShowMessage(true);
+            try {
+                await deleteBlog(id);
+
+                setTimeout(() => {
+                    navigate("/blogs");
+                }, 2000);
+            } catch (error) {
+                setError('Error while deleting blog. Please try again later.');
+            }
+        }
+    }
+
     const handleAddComment = async () => {
         if (newComment.trim() === '') return;
 
@@ -62,12 +83,6 @@ const BlogDetail = () => {
     };
 
 
-    const indexOfLastComment = currentPage * commentsPerPage;
-    const indexOfFirstComment = indexOfLastComment - commentsPerPage;
-    const currentComments = comments.slice(indexOfFirstComment, indexOfLastComment);
-
-    const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
     if (loading) {
         return (
             <div className="d-flex justify-content-center align-items-center mt-5">
@@ -86,6 +101,14 @@ const BlogDetail = () => {
         );
     }
 
+    if (showMessage) {
+        return (
+            <div className="d-flex justify-content-center align-items-center mt-5">
+                <Alert variant="success">Blog was successfully deleted.</Alert>
+            </div>
+        );
+    }
+
     return (
         <div className='mb-3'>
 
@@ -97,8 +120,8 @@ const BlogDetail = () => {
                     <div className="d-flex justify-content-end mb-3">
                         {blog.author.id === decodedToken.userID && (
                             <>
-                                <button className="btn btn-success me-2"><i className="bi bi-pen"></i> Update</button>
-                                <button className="btn btn-danger"><i className="bi bi-trash"></i> Delete</button>
+                                <button className="btn btn-success me-2" ><i className="bi bi-pen"></i> </button>
+                                <button className="btn btn-danger" onClick={handleDeleteBlog}><i className="bi bi-trash"></i> </button>
                             </>
                         )}
                     </div>
@@ -108,7 +131,7 @@ const BlogDetail = () => {
                     By <span className="blog-author">{`${blog.author.firstName} ${blog.author.lastName + " "}`}</span>
                     on <span className="blog-date">{new Date(blog.createdAt).toLocaleString()}</span>
                 </p>
-                <div className="blog-content">
+                <div className="blog-content m-5">
                     <p>{blog.content}</p>
                 </div>
                 <div className="comments-section">
