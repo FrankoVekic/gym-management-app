@@ -137,3 +137,8 @@ export const deleteBlog = (id) => {
     return axios.post(`${API_URL}/public/blogs/deleteBlog`, { id });    
 }
 
+// UPDATE BLOG
+export const updateBlog = ({ id, title, content}) => {
+    return axios.put(`${API_URL}/public/blogs/updateBlog`, { id, title, content });
+}
+
