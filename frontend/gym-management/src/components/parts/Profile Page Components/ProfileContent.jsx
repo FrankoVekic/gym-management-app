@@ -10,6 +10,7 @@ import { updateUserProfile } from "../../api/api";
 const ProfileContent = () => {
     const { authState } = useContext(AuthContext);
     const [profile, setProfile] = useState({});
+    const [loading, setLoading] = useState(true);
     const [image, setImage] = useState(null);
     const [errorMessage, setErrorMessage] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
@@ -29,8 +30,10 @@ const ProfileContent = () => {
                 const response = await getMemberProfile(userId);
                 setProfile(response.data);
             } catch (error) {
-                
-            } 
+                setErrorMessage("Failed to fetch profile.");
+            } finally {
+                setLoading(false);
+            }
         };
         fetchProfile();
     }, [authState]);
@@ -75,6 +78,9 @@ const ProfileContent = () => {
             setErrorMessage("Failed to update profile image.");
         }
     };
+
+    if (loading) return <p>Loading...</p>;
+    if (errorMessage) return <p>Error: {errorMessage}</p>;
 
     return (
         <div className="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabIndex={0}>

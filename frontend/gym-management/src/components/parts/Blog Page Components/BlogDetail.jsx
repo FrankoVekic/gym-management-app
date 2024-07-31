@@ -144,10 +144,12 @@ const BlogDetail = () => {
                 {
                     isEditing ? (
                         <input
-                            type="text"
-                            value={editedBlog.title}
-                            onChange={(e) => setEditedBlog({ ...editedBlog, title: e.target.value })}
-                        />
+                        type="text"
+                        value={editedBlog.title}
+                        onChange={(e) => setEditedBlog({ ...editedBlog, title: e.target.value })}
+                        style={isEditing ? { width: '100%', padding: '5px' } : null}
+                    />
+                    
                     )
                         : (
                             <h1 className="blog-title">{blog.title}</h1>
@@ -161,9 +163,10 @@ const BlogDetail = () => {
                     {
                         isEditing ? (
                             <textarea
-                                value={editedBlog.content}
-                                onChange={(e) => setEditedBlog({ ...editedBlog, content: e.target.value })}
-                            ></textarea>
+                            value={editedBlog.content}
+                            onChange={(e) => setEditedBlog({ ...editedBlog, content: e.target.value })}
+                            style={isEditing ? { width: '100%', padding: '5px', height: '100px' } : null}
+                        ></textarea>
                         )
                             : (
                                 <p>{blog.content}</p>
