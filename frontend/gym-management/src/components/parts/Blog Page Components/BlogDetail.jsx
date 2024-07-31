@@ -27,6 +27,8 @@ const BlogDetail = () => {
     const indexOfFirstComment = indexOfLastComment - commentsPerPage;
     const currentComments = comments.slice(indexOfFirstComment, indexOfLastComment);
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
+    const [isEditing, setIsEditing] = useState(false);
+    const [editedBlog, setEditedBlog] = useState({ title: '', content: '' });
 
     useEffect(() => {
 
@@ -82,6 +84,15 @@ const BlogDetail = () => {
         }
     };
 
+    const handleEdit = () => {
+        if (!isEditing) {
+            setEditedBlog({ title: blog.title, content: blog.content });
+        } else {
+            setBlog({ ...blog, title: editedBlog.title, content: editedBlog.content });
+            // add API to update blog
+        }
+        setIsEditing(!isEditing);
+    };
 
     if (loading) {
         return (
@@ -120,19 +131,44 @@ const BlogDetail = () => {
                     <div className="d-flex justify-content-end mb-3">
                         {blog.author.id === decodedToken.userID && (
                             <>
-                                <button className="btn btn-success me-2" ><i className="bi bi-pen"></i> </button>
-                                <button className="btn btn-danger" onClick={handleDeleteBlog}><i className="bi bi-trash"></i> </button>
+                                <button className="btn btn-success me-2" onClick={handleEdit}>
+                                    {!isEditing ? <i className="bi bi-pen"></i> : 'Save'}
+                                </button>
+                                <button className="btn btn-danger" onClick={handleDeleteBlog}>
+                                    <i className="bi bi-trash"></i>
+                                </button>
                             </>
                         )}
                     </div>
                 </div>
-                <h1 className="blog-title">{blog.title}</h1>
+                {
+                    isEditing ? (
+                        <input
+                            type="text"
+                            value={editedBlog.title}
+                            onChange={(e) => setEditedBlog({ ...editedBlog, title: e.target.value })}
+                        />
+                    )
+                        : (
+                            <h1 className="blog-title">{blog.title}</h1>
+                        )
+                }
                 <p className="blog-meta">
                     By <span className="blog-author">{`${blog.author.firstName} ${blog.author.lastName + " "}`}</span>
                     on <span className="blog-date">{new Date(blog.createdAt).toLocaleString()}</span>
                 </p>
                 <div className="blog-content m-5">
-                    <p>{blog.content}</p>
+                    {
+                        isEditing ? (
+                            <textarea
+                                value={editedBlog.content}
+                                onChange={(e) => setEditedBlog({ ...editedBlog, content: e.target.value })}
+                            ></textarea>
+                        )
+                            : (
+                                <p>{blog.content}</p>
+                            )
+                    }
                 </div>
                 <div className="comments-section">
                     <h3>Comments</h3>

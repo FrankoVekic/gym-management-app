@@ -7,16 +7,12 @@ import Statics from '../../static utils/Statics';
 const ProfileCard = () => {
     const { authState } = useContext(AuthContext);
     const [profile, setProfile] = useState({});
-    const [loading, setLoading] = useState(true);
-    const [errorMessage, setErrorMessage] = useState('');
 
     useEffect(() => {
         const fetchProfile = async () => {
             try {
                 const token = localStorage.getItem("token");
                 if (!token) {
-                    setErrorMessage('No token found. Please log in again.');
-                    setLoading(false);
                     return;
                 }
 
@@ -26,22 +22,11 @@ const ProfileCard = () => {
                 const response = await getMemberProfile(userId);
                 setProfile(response.data);
             } catch (error) {
-                setErrorMessage('Failed to fetch profile.');
-            } finally {
-                setLoading(false);
             }
         };
 
         fetchProfile();
     }, [authState]);
-
-    if (loading) {
-        return <div className="text-center">Loading...</div>;
-    }
-
-    if (errorMessage) {
-        return <div className="text-center text-danger">{errorMessage}</div>;
-    }
 
     return (
         <div className="col-12 col-lg-4 col-xl-3">
