@@ -19,6 +19,8 @@ public class TrainingSessionResponseDto {
     private LocalDateTime sessionDate;
     private Long numberOfPeople;
     private List<String> trainer;
+    private int duration;
+    private String description;
 
 
 }

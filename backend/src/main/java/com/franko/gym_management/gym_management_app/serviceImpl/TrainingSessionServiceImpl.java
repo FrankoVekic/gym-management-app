@@ -62,6 +62,9 @@ public class TrainingSessionServiceImpl implements TrainingSessionService {
             List<String> trainersList = Arrays.asList(trainersArray);
             dto.setTrainer(trainersList);
 
+            dto.setDuration(((Number) result[5]).intValue());
+            dto.setDescription((String) result[6]);
+
             sessions.add(dto);
         }
 
