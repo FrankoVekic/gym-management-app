@@ -1,8 +1,6 @@
 package com.franko.gym_management.gym_management_app.api;
 
-import com.franko.gym_management.gym_management_app.dto.BlogDto;
-import com.franko.gym_management.gym_management_app.dto.BlogResponseDto;
-import com.franko.gym_management.gym_management_app.dto.DeleteBlogRequestDto;
+import com.franko.gym_management.gym_management_app.dto.*;
 import com.franko.gym_management.gym_management_app.service.BlogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -72,5 +70,12 @@ public class BlogController {
 
         return ResponseEntity.ok().build();
 
+    }
+
+    @PutMapping("updateBlog")
+    public ResponseEntity<BlogResponseDto> updateBlog(@RequestBody BlogUpdateDto blogUpdateDto) {
+        
+        BlogResponseDto blog = blogService.updateBlog(blogUpdateDto);
+        return ResponseEntity.ok(blog);
     }
 }

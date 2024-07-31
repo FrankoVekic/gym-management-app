@@ -2,6 +2,7 @@ package com.franko.gym_management.gym_management_app.serviceImpl;
 
 import com.franko.gym_management.gym_management_app.dto.BlogDto;
 import com.franko.gym_management.gym_management_app.dto.BlogResponseDto;
+import com.franko.gym_management.gym_management_app.dto.BlogUpdateDto;
 import com.franko.gym_management.gym_management_app.mapper.BlogMapper;
 import com.franko.gym_management.gym_management_app.model.Blog;
 import com.franko.gym_management.gym_management_app.model.User;
@@ -120,6 +121,21 @@ public class BlogServiceImpl implements BlogService {
         Blog blog = blogRepository.findById(id).orElseThrow(() -> new RuntimeException("Blog not found"));
 
         blogRepository.softDeleteById(id);
+    }
+
+    @Override
+    public BlogResponseDto updateBlog(BlogUpdateDto blogUpdateDto) {
+
+        Blog blog = blogRepository.findById(blogUpdateDto.getId()).orElseThrow(() -> new RuntimeException("Blog not found"));
+
+        blog.setTitle(blogUpdateDto.getTitle());
+        blog.setContent(blogUpdateDto.getContent());
+
+       Blog savedBlog = blogRepository.save(blog);
+
+       return BlogMapper.mapToResponseDtoFromObject(savedBlog);
+
+
     }
 
 }
