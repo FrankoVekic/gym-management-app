@@ -1,6 +1,7 @@
 package com.franko.gym_management.gym_management_app.api;
 
 import com.franko.gym_management.gym_management_app.dto.AttendanceDto;
+import com.franko.gym_management.gym_management_app.dto.CheckAttendanceDto;
 import com.franko.gym_management.gym_management_app.service.AttendanceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,11 @@ public class AttendanceController {
     public ResponseEntity<AttendanceDto> createAttendance(@RequestBody AttendanceDto attendanceDto){
         AttendanceDto savedAttendance = attendanceService.createAttendance(attendanceDto);
         return new ResponseEntity<>(savedAttendance, org.springframework.http.HttpStatus.CREATED);
+    }
+
+    @GetMapping("checkAttendance")
+    public Long checkAttendance (@RequestBody CheckAttendanceDto checkAttendanceDto){
+        return attendanceService.checkAttendance(checkAttendanceDto);
     }
 
 }

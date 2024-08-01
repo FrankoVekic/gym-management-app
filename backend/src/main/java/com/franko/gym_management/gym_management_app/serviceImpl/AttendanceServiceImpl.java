@@ -1,9 +1,14 @@
 package com.franko.gym_management.gym_management_app.serviceImpl;
 
 import com.franko.gym_management.gym_management_app.dto.AttendanceDto;
+import com.franko.gym_management.gym_management_app.dto.CheckAttendanceDto;
 import com.franko.gym_management.gym_management_app.mapper.AttendanceMapper;
 import com.franko.gym_management.gym_management_app.model.Attendance;
+import com.franko.gym_management.gym_management_app.model.TrainingSession;
+import com.franko.gym_management.gym_management_app.model.User;
 import com.franko.gym_management.gym_management_app.repository.AttendanceRepository;
+import com.franko.gym_management.gym_management_app.repository.TrainingSessionRepository;
+import com.franko.gym_management.gym_management_app.repository.UserRepository;
 import com.franko.gym_management.gym_management_app.service.AttendanceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +21,12 @@ public class AttendanceServiceImpl implements AttendanceService {
 
     @Autowired
     private AttendanceRepository attendanceRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private TrainingSessionRepository trainingSessionRepository;
 
     @Override
     public List<AttendanceDto> getAttendances() {
@@ -31,5 +42,10 @@ public class AttendanceServiceImpl implements AttendanceService {
         Attendance attendance = AttendanceMapper.mapToAttendance(attendanceDto);
         Attendance savedAttendance = attendanceRepository.save(attendance);
         return AttendanceMapper.mapToAttendanceDto(savedAttendance);
+    }
+
+    @Override
+    public Long checkAttendance(CheckAttendanceDto checkAttendanceDto) {
+        return attendanceRepository.checkAttendance(checkAttendanceDto.getUserId(),checkAttendanceDto.getTrainingSessionId());
     }
 }
