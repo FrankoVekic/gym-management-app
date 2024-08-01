@@ -28,9 +28,10 @@ public class AttendanceController {
         return new ResponseEntity<>(savedAttendance, org.springframework.http.HttpStatus.CREATED);
     }
 
-    @GetMapping("checkAttendance")
-    public Long checkAttendance (@RequestBody CheckAttendanceDto checkAttendanceDto){
-        return attendanceService.checkAttendance(checkAttendanceDto);
+    @PostMapping("checkAttendance")
+    public ResponseEntity<Long> checkAttendance (@RequestBody CheckAttendanceDto checkAttendanceDto){
+       Long result = attendanceService.checkAttendance(checkAttendanceDto);
+       return ResponseEntity.ok(result);
     }
 
 }

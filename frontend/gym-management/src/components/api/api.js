@@ -144,6 +144,6 @@ export const updateBlog = ({ id, title, content}) => {
 
 // CHECK ATTENDANCE (give user id and training session id and its checks if user is already in that training session)
 export const checkAttendance = ({userId, trainingSessionId}) => {
-    return axios.get(`${API_URL}/public/attendances/checkAttendance`, {userId, trainingSessionId});
+    return axios.post(`${API_URL}/public/attendances/checkAttendance`, {userId, trainingSessionId});
 }
 
