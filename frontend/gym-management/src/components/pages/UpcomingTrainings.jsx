@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
-import { getUpcomingTrainingSessions } from '../api/api'; 
+import { getUpcomingTrainingSessions } from '../api/api';
 import { Button, Alert, Modal, Form, Spinner } from 'react-bootstrap';
 
 const UpcomingTrainings = () => {
@@ -13,6 +13,8 @@ const UpcomingTrainings = () => {
     const [showModal, setShowModal] = useState(false);
     const [selectedTraining, setSelectedTraining] = useState(null);
     const [filter, setFilter] = useState("");
+    const [currentPage, setCurrentPage] = useState(0);
+    const itemsPerPage = 6;
 
     useEffect(() => {
         const fetchTrainings = async () => {
@@ -53,19 +55,6 @@ const UpcomingTrainings = () => {
         setFilter(e.target.value);
     };
 
-    const handleSortChange = (e) => {
-        const value = e.target.value;
-        const sortedTrainings = [...filteredTrainings].sort((a, b) => {
-            if (value === "date") {
-                return new Date(a.sessionDate) - new Date(b.sessionDate);
-            } else if (value === "type") {
-                return a.trainingType.localeCompare(b.trainingType);
-            }
-            return 0;
-        });
-        setFilteredTrainings(sortedTrainings);
-    };
-
     const handleShowDetails = (training) => {
         setSelectedTraining(training);
         setShowModal(true);
@@ -78,7 +67,7 @@ const UpcomingTrainings = () => {
 
     const handleAttend = async () => {
         try {
-            //await registerForTraining(selectedTraining.id);
+            // await registerForTraining(selectedTraining.id);
             setSuccessMessage("Successfully registered for the training!");
         } catch (error) {
             setErrorMessage("Failed to register for the training.");
@@ -87,9 +76,21 @@ const UpcomingTrainings = () => {
         }
     };
 
+    const indexOfLastItem = (currentPage + 1) * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentTrainings = filteredTrainings.slice(indexOfFirstItem, indexOfLastItem);
+
+    const totalPages = Math.ceil(filteredTrainings.length / itemsPerPage);
+
+    const handlePageChange = (newPage) => {
+        if (newPage >= 0 && newPage < totalPages) {
+            setCurrentPage(newPage);
+        }
+    };
+
     if (loading) {
         return (
-            <div className="d-flex justify-content-center align-items-center" style={{ height: '100vh' }}>
+            <div className="d-flex justify-content-center align-items-center">
                 <Spinner animation="border" role="status">
                     <span className="sr-only">Loading...</span>
                 </Spinner>
@@ -112,19 +113,11 @@ const UpcomingTrainings = () => {
                     placeholder="Filter by training type or trainer"
                     value={filter}
                     onChange={handleFilterChange}
+                    className='mb-3'
                 />
-                <Form.Control
-                    as="select"
-                    className="mt-3"
-                    onChange={handleSortChange}
-                >
-                    <option value="">Sort by</option>
-                    <option value="date">Date</option>
-                    <option value="type">Type</option>
-                </Form.Control>
             </div>
             <div className="row">
-                {filteredTrainings.map(training => (
+                {currentTrainings.map(training => (
                     <div key={training.id} className="col-md-4 mb-4">
                         <div className="card h-100">
                             <div className="card-body d-flex flex-column">
@@ -132,8 +125,8 @@ const UpcomingTrainings = () => {
                                 <p className="card-text"><strong>Date:</strong> {new Date(training.sessionDate).toLocaleString()}</p>
                                 <p className="card-text"><strong>Trainer:</strong> {training.trainer.join(", ")}</p>
                                 <p className="card-text"><strong>Number of Members Coming:</strong> {training.numberOfPeople}</p>
-                                <Button 
-                                    onClick={() => handleShowDetails(training)} 
+                                <Button
+                                    onClick={() => handleShowDetails(training)}
                                     className="btn btn-primary mt-auto"
                                 >
                                     View Details
@@ -141,6 +134,13 @@ const UpcomingTrainings = () => {
                             </div>
                         </div>
                     </div>
+                ))}
+            </div>
+            <div className="d-flex justify-content-center">
+                {[...Array(totalPages).keys()].map(page => (
+                    <button key={page} onClick={() => handlePageChange(page)} className="btn btn-primary mx-1">
+                        {page + 1}
+                    </button>
                 ))}
             </div>
             {selectedTraining && (
@@ -155,7 +155,7 @@ const UpcomingTrainings = () => {
                         <p><strong>Number of Members:</strong> {selectedTraining.numberOfPeople}</p>
                         <p><strong>Duration:</strong> {selectedTraining.duration} minutes</p>
                     </Modal.Body>
-                    <Modal.Footer>
+                    <Modal.Footer className="d-flex justify-content-between">
                         <Button variant="primary" onClick={handleAttend}>
                             Attend
                         </Button>

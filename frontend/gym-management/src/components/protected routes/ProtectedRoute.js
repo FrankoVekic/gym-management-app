@@ -34,6 +34,7 @@ const ProtectedRoute = () => {
         checkAuth();
     }, [token]); 
 
+    // TODO: EDIT LOGINS WITH ALERTS
     if (loading) {
         return <div>Loading...</div>; 
     }

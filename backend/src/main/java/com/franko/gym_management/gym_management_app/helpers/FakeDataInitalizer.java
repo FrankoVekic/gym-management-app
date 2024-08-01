@@ -167,6 +167,11 @@ public class FakeDataInitalizer implements CommandLineRunner {
         TrainingSession sessionOne = trainingSessionRepository.getReferenceById(1L);
         TrainingSession sessionTwo = trainingSessionRepository.getReferenceById(2L);
         TrainingSession sessionThree = trainingSessionRepository.getReferenceById(3L);
+        TrainingSession sessionFour = trainingSessionRepository.getReferenceById(4L);
+        TrainingSession sessionFive = trainingSessionRepository.getReferenceById(5L);
+        TrainingSession sessionSix = trainingSessionRepository.getReferenceById(6L);
+        TrainingSession sessionSeven = trainingSessionRepository.getReferenceById(7L);
+        TrainingSession sessionEight = trainingSessionRepository.getReferenceById(8L);
 
         List<TrainingSessionTrainer> sessions = new ArrayList<>();
 
@@ -194,6 +199,42 @@ public class FakeDataInitalizer implements CommandLineRunner {
                         .build()
         );
 
+        sessions.add(
+                TrainingSessionTrainer
+                        .builder()
+                        .trainingSession(sessionFour)
+                        .trainer(trainerOne)
+                        .build()
+        );
+        sessions.add(
+                TrainingSessionTrainer
+                        .builder()
+                        .trainingSession(sessionFive)
+                        .trainer(trainerOne)
+                        .build()
+        );
+        sessions.add(
+                TrainingSessionTrainer
+                        .builder()
+                        .trainingSession(sessionSix)
+                        .trainer(trainerOne)
+                        .build()
+        );
+        sessions.add(
+                TrainingSessionTrainer
+                        .builder()
+                        .trainingSession(sessionSeven)
+                        .trainer(trainerTwo)
+                        .build()
+        );
+        sessions.add(
+                TrainingSessionTrainer
+                        .builder()
+                        .trainingSession(sessionEight)
+                        .trainer(trainerTwo)
+                        .build()
+        );
+
         trainingSessionTrainerRepository.saveAll(sessions);
     }
 
@@ -217,7 +258,7 @@ public class FakeDataInitalizer implements CommandLineRunner {
         trainingSessions.add(
                 TrainingSession
                         .builder()
-                        .date(LocalDateTime.now().plusDays(2))
+                        .date(LocalDateTime.now().plusDays(4))
                         .trainingType(t2)
                         .build()
         );
@@ -225,7 +266,46 @@ public class FakeDataInitalizer implements CommandLineRunner {
         trainingSessions.add(
                 TrainingSession
                         .builder()
-                        .date(LocalDateTime.now().plusDays(2))
+                        .date(LocalDateTime.now().plusDays(3))
+                        .trainingType(t3)
+                        .build()
+        );
+
+        trainingSessions.add(
+                TrainingSession
+                        .builder()
+                        .date(LocalDateTime.now().plusDays(6))
+                        .trainingType(t3)
+                        .build()
+        );
+
+        trainingSessions.add(
+                TrainingSession
+                        .builder()
+                        .date(LocalDateTime.now().plusDays(3))
+                        .trainingType(t3)
+                        .build()
+        );
+
+        trainingSessions.add(
+                TrainingSession
+                        .builder()
+                        .date(LocalDateTime.now().plusDays(3))
+                        .trainingType(t1)
+                        .build()
+        );
+
+        trainingSessions.add(
+                TrainingSession
+                        .builder()
+                        .date(LocalDateTime.now().plusDays(3))
+                        .trainingType(t2)
+                        .build()
+        );
+        trainingSessions.add(
+                TrainingSession
+                        .builder()
+                        .date(LocalDateTime.now().plusDays(3))
                         .trainingType(t3)
                         .build()
         );
