@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
-import { getUpcomingTrainingSessions } from '../api/api';
+import { getUpcomingTrainingSessions, checkAttendance } from '../api/api';
 import { Button, Alert, Modal, Form, Spinner } from 'react-bootstrap';
 
 const UpcomingTrainings = () => {
@@ -67,7 +67,7 @@ const UpcomingTrainings = () => {
 
     const handleAttend = async () => {
         try {
-            // await registerForTraining(selectedTraining.id);
+            // await registerForTraining(selectedTraining.sessionId);
             setSuccessMessage("Successfully registered for the training!");
         } catch (error) {
             setErrorMessage("Failed to register for the training.");
@@ -118,7 +118,7 @@ const UpcomingTrainings = () => {
             </div>
             <div className="row">
                 {currentTrainings.map(training => (
-                    <div key={training.id} className="col-md-4 mb-4">
+                    <div key={training.sessionId} className="col-md-4 mb-4">
                         <div className="card h-100">
                             <div className="card-body d-flex flex-column">
                                 <h5 className="card-title">{training.trainingType}</h5>
