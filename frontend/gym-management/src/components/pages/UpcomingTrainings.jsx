@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
-import { getUpcomingTrainingSessions, checkAttendance } from "../api/api";
+import { getUpcomingTrainingSessions, checkAttendance, registerUserForTraining } from "../api/api";
 import { Button, Alert, Modal, Form, Spinner } from "react-bootstrap";
 
 const UpcomingTrainings = () => {
@@ -26,6 +26,8 @@ const UpcomingTrainings = () => {
 
     const totalPages = Math.ceil(filteredTrainings.length / itemsPerPage);
 
+
+    
     useEffect(() => {
         const fetchTrainings = async () => {
             try {
@@ -90,16 +92,20 @@ const UpcomingTrainings = () => {
         setIsAttending(null);
     };
 
+    // TODO: Fix bug when user attends a training to change Number of members coming immediately
     // TODO: Check if i can avoid setting isAttending?
     const handleAttend = async () => {
-        try {
-            //await registerForTraining(selectedTraining.sessionId);
-            setSuccessMessage("Successfully registered for the training!");
-            setIsAttending(1); // Update state to show the user is attending
-        } catch (error) {
-            setErrorMessage("Failed to register for the training.");
-        } finally {
-            handleCloseModal();
+        if (window.confirm('Confirm: Are you sure you want to attend this Training?')) {
+            try {
+                await registerUserForTraining({ userId: authState.user.userID, trainingSessionId: selectedTraining.sessionId });
+                setSuccessMessage("Successfully registered for the training!");
+                setIsAttending(1); 
+                
+            } catch (error) {
+                setErrorMessage("Failed to register for the training.");
+            } finally {
+                handleCloseModal();
+            }
         }
     };
 
@@ -108,14 +114,13 @@ const UpcomingTrainings = () => {
         try {
             // await unregisterFromTraining(selectedTraining.sessionId);
             setSuccessMessage("Successfully unregistered from the training!");
-            setIsAttending(0); // Update state to show the user is not attending
+            setIsAttending(0); 
         } catch (error) {
             setErrorMessage("Failed to unregister from the training.");
         } finally {
             handleCloseModal();
         }
     };
-
 
     const handlePageChange = (newPage) => {
         if (newPage >= 0 && newPage < totalPages) {
@@ -157,7 +162,6 @@ const UpcomingTrainings = () => {
                 />
             </div>
             <div className="row">
-
                 {currentTrainings.map((training) => (
                     <div key={training.sessionId} className="col-md-4 mb-4">
                         <div className="card h-100">

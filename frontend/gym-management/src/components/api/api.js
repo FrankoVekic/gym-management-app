@@ -147,3 +147,7 @@ export const checkAttendance = ({userId, trainingSessionId}) => {
     return axios.post(`${API_URL}/public/attendances/checkAttendance`, {userId, trainingSessionId});
 }
 
+// REGISTER A USER FOR A TRAINING
+export const registerUserForTraining = ({userId, trainingSessionId}) => {
+    return axios.post(`${API_URL}/public/attendances/registerForTraining`, {userId, trainingSessionId});
+}
