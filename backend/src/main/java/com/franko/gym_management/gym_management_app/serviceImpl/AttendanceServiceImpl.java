@@ -39,7 +39,7 @@ public class AttendanceServiceImpl implements AttendanceService {
         List<Attendance> list = attendanceRepository.findAllByOrderByIdAsc();
         return list.stream()
                 .map(AttendanceMapper::mapToAttendanceDto)
-               .collect(Collectors.toList());
+                .collect(Collectors.toList());
 
     }
 
@@ -52,7 +52,7 @@ public class AttendanceServiceImpl implements AttendanceService {
 
     @Override
     public Long checkAttendance(CheckAttendanceDto checkAttendanceDto) {
-        return attendanceRepository.checkAttendance(checkAttendanceDto.getUserId(),checkAttendanceDto.getTrainingSessionId());
+        return attendanceRepository.checkAttendance(checkAttendanceDto.getUserId(), checkAttendanceDto.getTrainingSessionId());
     }
 
     @Override
@@ -63,6 +63,13 @@ public class AttendanceServiceImpl implements AttendanceService {
 
         TrainingSession trainingSession = trainingSessionRepository.findById(trainingSessionId)
                 .orElseThrow(() -> new RuntimeException("Training session does not exist"));
+
+        Long userExists = attendanceRepository.checkAttendance(userId, trainingSessionId);
+
+        // TODO: CREATE A EXCEPTION FOR THIS
+        if(userExists != 0){
+            throw new IllegalArgumentException("Member is already registered in this training session");
+        }
 
         Attendance attendance = Attendance
                 .builder()
