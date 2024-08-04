@@ -1,10 +1,10 @@
-import React, { useEffect, useState, useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
-import { getUpcomingTrainingSessions, checkAttendance, registerUserForTraining } from "../api/api";
+import React, { useEffect, useState } from "react";
+import { getUpcomingTrainingSessions, checkAttendance, registerUserForTraining, unregisterUserForTraining } from "../api/api";
 import { Button, Alert, Modal, Form, Spinner } from "react-bootstrap";
+import { CheckCircle } from 'react-bootstrap-icons';
+import { jwtDecode } from "jwt-decode";
 
 const UpcomingTrainings = () => {
-    const { authState } = useContext(AuthContext);
     const [trainings, setTrainings] = useState([]);
     const [filteredTrainings, setFilteredTrainings] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -14,25 +14,38 @@ const UpcomingTrainings = () => {
     const [selectedTraining, setSelectedTraining] = useState(null);
     const [filter, setFilter] = useState("");
     const [currentPage, setCurrentPage] = useState(0);
-    const [isAttending, setIsAttending] = useState(null);
+    const [attendedTrainings, setAttendedTrainings] = useState(new Set());
+    
     const itemsPerPage = 6;
     const indexOfLastItem = (currentPage + 1) * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const token = localStorage.getItem("token");
+    const decodedToken = token ? jwtDecode(token) : {};
+    const userId = decodedToken.userID;
 
-    const currentTrainings = filteredTrainings.slice(
-        indexOfFirstItem,
-        indexOfLastItem,
-    );
-
+    const currentTrainings = filteredTrainings.slice(indexOfFirstItem, indexOfLastItem);
     const totalPages = Math.ceil(filteredTrainings.length / itemsPerPage);
 
     useEffect(() => {
         const fetchTrainings = async () => {
             try {
-                const response = await getUpcomingTrainingSessions();
-                setTrainings(response.data);
-                setFilteredTrainings(response.data);
-            } catch (error) {
+                const { data } = await getUpcomingTrainingSessions();
+                setTrainings(data);
+                setFilteredTrainings(data);
+
+                const attended = new Set();
+                for (const training of data) {
+                    try {
+                        const { data: attendanceData } = await checkAttendance({ userId, trainingSessionId: training.sessionId });
+                        if (attendanceData === 1) {
+                            attended.add(training.sessionId);
+                        }
+                    } catch {
+                        setErrorMessage("Failed to check attendance status.");
+                    }
+                }
+                setAttendedTrainings(attended);
+            } catch {
                 setErrorMessage("Failed to fetch upcoming trainings.");
             } finally {
                 setLoading(false);
@@ -40,7 +53,7 @@ const UpcomingTrainings = () => {
         };
 
         fetchTrainings();
-    }, []); 
+    }, [userId]);
 
     useEffect(() => {
         if (errorMessage || successMessage) {
@@ -54,52 +67,33 @@ const UpcomingTrainings = () => {
 
     useEffect(() => {
         const lowerCaseFilter = filter.toLowerCase();
-
-        const newFilteredTrainings = trainings.filter(
+        setFilteredTrainings(trainings.filter(
             (training) =>
-                (training.trainingType &&
-                    training.trainingType.toLowerCase().includes(lowerCaseFilter)) ||
-                (training.trainer &&
-                    training.trainer.some((trainerName) =>
-                        trainerName.toLowerCase().includes(lowerCaseFilter),
-                    )),
-        );
-        setFilteredTrainings(newFilteredTrainings);
+                (training.trainingType?.toLowerCase().includes(lowerCaseFilter)) ||
+                (training.trainer?.some(trainerName => trainerName.toLowerCase().includes(lowerCaseFilter)))
+        ));
     }, [filter, trainings]);
 
-    const handleFilterChange = (e) => {
-        setFilter(e.target.value);
-    };
+    const handleFilterChange = (e) => setFilter(e.target.value);
 
-    const handleShowDetails = async (training) => {
+    const handleShowDetails = (training) => {
         setSelectedTraining(training);
         setShowModal(true);
-        try {
-            const response = await checkAttendance({
-                userId: authState.user.userID,
-                trainingSessionId: training.sessionId,
-            });
-            setIsAttending(response.data);
-        } catch (error) {
-            setErrorMessage("Failed to check attendance status.");
-        }
     };
 
     const handleCloseModal = () => {
         setShowModal(false);
         setSelectedTraining(null);
-        setIsAttending(null);
     };
 
     const handleAttend = async () => {
         if (window.confirm('Confirm: Are you sure you want to attend this Training?')) {
             try {
-                await registerUserForTraining({ userId: authState.user.userID, trainingSessionId: selectedTraining.sessionId });
+                await registerUserForTraining({ userId, trainingSessionId: selectedTraining.sessionId });
                 setSuccessMessage("Successfully registered for the training!");
-                setIsAttending(1); 
+                setAttendedTrainings(prev => new Set(prev).add(selectedTraining.sessionId));
                 updateNumberOfPeople(selectedTraining.sessionId, 1);
-                
-            } catch (error) {
+            } catch {
                 setErrorMessage("Failed to register for the training.");
             } finally {
                 handleCloseModal();
@@ -108,36 +102,32 @@ const UpcomingTrainings = () => {
     };
 
     const handleUnattend = async () => {
-        try {
-            // await unregisterFromTraining(selectedTraining.sessionId);
-            setSuccessMessage("Successfully unregistered from the training!");
-            setIsAttending(0); 
-            updateNumberOfPeople(selectedTraining.sessionId, -1);
-            
-        } catch (error) {
-            setErrorMessage("Failed to unregister from the training.");
-        } finally {
-            handleCloseModal();
+        if (window.confirm('Confirm: Are you sure you want to unattend this Training?')) {
+            try {
+                await unregisterUserForTraining({ userId, trainingSessionId: selectedTraining.sessionId });
+                setSuccessMessage("Successfully unregistered from the training!");
+                setAttendedTrainings(prev => {
+                    const updated = new Set(prev);
+                    updated.delete(selectedTraining.sessionId);
+                    return updated;
+                });
+                updateNumberOfPeople(selectedTraining.sessionId, -1);
+            } catch {
+                setErrorMessage("Failed to unregister from the training.");
+            } finally {
+                handleCloseModal();
+            }
         }
     };
 
     const updateNumberOfPeople = (sessionId, change) => {
-        setTrainings((prevTrainings) => {
-            return prevTrainings.map((training) => {
-                if (training.sessionId === sessionId) {
-                    return { ...training, numberOfPeople: training.numberOfPeople + change };
-                }
-                return training;
-            });
-        });
-        setFilteredTrainings((prevFilteredTrainings) => {
-            return prevFilteredTrainings.map((training) => {
-                if (training.sessionId === sessionId) {
-                    return { ...training, numberOfPeople: training.numberOfPeople + change };
-                }
-                return training;
-            });
-        });
+        const updateTrainingList = (list) => list.map(training => 
+            training.sessionId === sessionId
+                ? { ...training, numberOfPeople: training.numberOfPeople + change }
+                : training
+        );
+        setTrainings(prev => updateTrainingList(prev));
+        setFilteredTrainings(prev => updateTrainingList(prev));
     };
 
     const handlePageChange = (newPage) => {
@@ -159,41 +149,35 @@ const UpcomingTrainings = () => {
     return (
         <div className="container">
             <h2 className="text-center my-4">Upcoming Trainings</h2>
-            {errorMessage && (
-                <Alert className="m-5" variant="warning">
-                    {errorMessage}
-                </Alert>
-            )}
-            {successMessage && (
-                <Alert className="m-5" variant="success">
-                    {successMessage}
-                </Alert>
-            )}
+            {errorMessage && <Alert className="m-5" variant="warning">{errorMessage}</Alert>}
+            {successMessage && <Alert className="m-5" variant="success">{successMessage}</Alert>}
             <div className="mb-3">
                 <Form.Control
                     type="text"
                     placeholder="Filter by training type or trainer"
                     value={filter}
                     onChange={handleFilterChange}
-                    className="mb-3"
                 />
             </div>
             <div className="row">
-                {currentTrainings.map((training) => (
+                {currentTrainings.map(training => (
                     <div key={training.sessionId} className="col-md-4 mb-4">
                         <div className="card h-100">
                             <div className="card-body d-flex flex-column">
-                                <h5 className="card-title">{training.trainingType}</h5>
+                                <h5 className="card-title">
+                                    {training.trainingType}
+                                    {attendedTrainings.has(training.sessionId) && (
+                                        <CheckCircle className="text-success ms-2" />
+                                    )}
+                                </h5>
                                 <p className="card-text">
-                                    <strong>Date: </strong>
-                                    {new Date(training.sessionDate).toLocaleString()}
+                                    <strong>Date: </strong>{new Date(training.sessionDate).toLocaleString()}
                                 </p>
                                 <p className="card-text">
-                                    <strong>Trainer: </strong> {training.trainer.join(", ")}
+                                    <strong>Trainer: </strong>{training.trainer.join(", ")}
                                 </p>
                                 <p className="card-text">
-                                    <strong>Number of Members Coming: </strong>
-                                    {training.numberOfPeople}
+                                    <strong>Number of Members Coming: </strong>{training.numberOfPeople}
                                 </p>
                                 <Button
                                     onClick={() => handleShowDetails(training)}
@@ -207,7 +191,7 @@ const UpcomingTrainings = () => {
                 ))}
             </div>
             <div className="d-flex justify-content-center">
-                {[...Array(totalPages).keys()].map((page) => (
+                {[...Array(totalPages).keys()].map(page => (
                     <button
                         key={page}
                         onClick={() => handlePageChange(page)}
@@ -220,42 +204,22 @@ const UpcomingTrainings = () => {
             {selectedTraining && (
                 <Modal show={showModal} onHide={handleCloseModal}>
                     <Modal.Header closeButton>
-                        <Modal.Title>
-                            {selectedTraining.trainingType} Details
-                        </Modal.Title>
+                        <Modal.Title>{selectedTraining.trainingType} Details</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <p>
-                            <strong>Description: </strong> {selectedTraining.description}
-                        </p>
-                        <p>
-                            <strong>Date: </strong>
-                            {new Date(selectedTraining.sessionDate).toLocaleString()}
-                        </p>
-                        <p>
-                            <strong>Trainer:</strong> {selectedTraining.trainer.join(", ")}
-                        </p>
-                        <p>
-                            <strong>Number of Members: </strong>
-                            {selectedTraining.numberOfPeople}
-                        </p>
-                        <p>
-                            <strong>Duration:</strong> {selectedTraining.duration} minutes
-                        </p>
+                        <p><strong>Description: </strong>{selectedTraining.description}</p>
+                        <p><strong>Date: </strong>{new Date(selectedTraining.sessionDate).toLocaleString()}</p>
+                        <p><strong>Trainer:</strong> {selectedTraining.trainer.join(", ")}</p>
+                        <p><strong>Number of Members: </strong>{selectedTraining.numberOfPeople}</p>
+                        <p><strong>Duration:</strong> {selectedTraining.duration} minutes</p>
                     </Modal.Body>
                     <Modal.Footer className="d-flex justify-content-between">
-                        {isAttending === 1 ? (
-                            <Button variant="danger" onClick={handleUnattend}>
-                                Unattend
-                            </Button>
+                        {attendedTrainings.has(selectedTraining.sessionId) ? (
+                            <Button variant="danger" onClick={handleUnattend}>Unattend</Button>
                         ) : (
-                            <Button variant="success" onClick={handleAttend}>
-                                Attend
-                            </Button>
+                            <Button variant="success" onClick={handleAttend}>Attend</Button>
                         )}
-                        <Button variant="secondary" onClick={handleCloseModal}>
-                            Close
-                        </Button>
+                        <Button variant="secondary" onClick={handleCloseModal}>Close</Button>
                     </Modal.Footer>
                 </Modal>
             )}

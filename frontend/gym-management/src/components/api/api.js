@@ -151,3 +151,9 @@ export const checkAttendance = ({userId, trainingSessionId}) => {
 export const registerUserForTraining = ({userId, trainingSessionId}) => {
     return axios.post(`${API_URL}/public/attendances/registerForTraining`, {userId, trainingSessionId});
 }
+
+// REMOVE REGISTRATION FROM A TRAINING
+export const unregisterUserForTraining = ({userId, trainingSessionId}) => {
+    return axios.post(`${API_URL}/public/attendances/unregisterFromTraining`, {userId, trainingSessionId});
+}
+

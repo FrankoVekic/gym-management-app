@@ -9,7 +9,8 @@ public class AttendanceMapper {
         return new AttendanceDto(
             attendance.getId(),
             attendance.getTrainingSession(),
-            attendance.getMember()
+            attendance.getMember(),
+            attendance.getUnattendedAt()
         );
     }
 
@@ -17,7 +18,8 @@ public class AttendanceMapper {
         return new Attendance(
             attendanceDto.getId(),
             attendanceDto.getTrainingSession(),
-            attendanceDto.getMember()
+            attendanceDto.getMember(),
+            attendanceDto.getUnattendedAt()
         );
     }
 }

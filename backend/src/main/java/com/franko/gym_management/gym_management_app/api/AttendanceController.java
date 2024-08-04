@@ -45,7 +45,12 @@ public class AttendanceController {
 
         return new ResponseEntity<>(attendanceDto, HttpStatus.CREATED);
 
+    }
 
+    @PostMapping("unregisterFromTraining")
+    public ResponseEntity<String> unregisterFromTraining(@RequestBody CheckAttendanceDto checkAttendanceDto) {
+        attendanceService.unregisterFromTraining(checkAttendanceDto.getUserId(), checkAttendanceDto.getTrainingSessionId());
+        return ResponseEntity.ok("Unregistered successfully");
     }
 
 }

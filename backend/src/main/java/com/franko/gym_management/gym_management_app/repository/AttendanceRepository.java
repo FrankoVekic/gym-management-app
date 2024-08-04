@@ -22,6 +22,13 @@ public interface AttendanceRepository extends JpaRepository<Attendance,Long> {
     WHERE u.id = :userId 
     AND 
     a.training_session_id = :trainingSessionId
+    AND 
+    a.unattended_at IS NULL
 """, nativeQuery = true)
     Long checkAttendance(@Param("userId") Long userId, @Param("trainingSessionId") Long trainingSessionId);
+
+    Attendance findByMemberIdAndTrainingSessionIdAndUnattendedAtIsNull(Long memberId, Long trainingSessionId);
+
+    Attendance findByMemberIdAndTrainingSessionIdAndUnattendedAtIsNotNull(Long memberId, Long trainingSessionId);
+
 }

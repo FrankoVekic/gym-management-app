@@ -16,4 +16,5 @@ public interface AttendanceService {
     // TODO: CHANGE RESPONSE MODEL, ITS GIVING AWAY PROTECTED DATA RIGHT NOW
     AttendanceDto registerForTraining(Long userId, Long trainingSessionId);
 
+    void unregisterFromTraining(Long userId, Long trainingSessionId);
 }

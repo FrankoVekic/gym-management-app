@@ -15,6 +15,8 @@ import com.franko.gym_management.gym_management_app.service.AttendanceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -58,30 +60,47 @@ public class AttendanceServiceImpl implements AttendanceService {
     @Override
     public AttendanceDto registerForTraining(Long userId, Long trainingSessionId) {
 
-        Optional<Member> member = Optional.ofNullable(memberRepository.findByUserId(userId)
-                .orElseThrow(() -> new RuntimeException("Member does not exist")));
+        Member member = memberRepository.findByUserId(userId)
+                .orElseThrow(() -> new RuntimeException("Member does not exist"));
 
         TrainingSession trainingSession = trainingSessionRepository.findById(trainingSessionId)
                 .orElseThrow(() -> new RuntimeException("Training session does not exist"));
 
-        Long userExists = attendanceRepository.checkAttendance(userId, trainingSessionId);
+        Attendance attendance = attendanceRepository.findByMemberIdAndTrainingSessionIdAndUnattendedAtIsNotNull(member.getId(), trainingSessionId);
 
-        // TODO: CREATE A EXCEPTION FOR THIS
-        if(userExists != 0){
-            throw new IllegalArgumentException("Member is already registered in this training session");
+        if (attendance != null) {
+            if (attendance.getUnattendedAt() != null) {
+                attendance.setUnattendedAt(null);
+                attendanceRepository.save(attendance);
+            } else {
+                throw new IllegalArgumentException("Member is already registered in this training session");
+            }
+        } else {
+            attendance = Attendance.builder()
+                    .member(member)
+                    .trainingSession(trainingSession)
+                    .build();
+
+            attendanceRepository.save(attendance);
         }
-
-        Attendance attendance = Attendance
-                .builder()
-                .member(member.get())
-                .trainingSession(trainingSession)
-                .build();
-
-        attendanceRepository.save(attendance);
 
         return AttendanceMapper.mapToAttendanceDto(attendance);
 
     }
 
+    @Override
+    public void unregisterFromTraining(Long userId, Long trainingSessionId) {
 
+        Member member = memberRepository.findByUserId(userId)
+                .orElseThrow(() -> new RuntimeException("Member does not exist"));
+
+        Attendance attendance = attendanceRepository.findByMemberIdAndTrainingSessionIdAndUnattendedAtIsNull(member.getId(), trainingSessionId);
+
+        if (attendance == null) {
+            throw new IllegalArgumentException("Attendance not found for user and training session");
+        }
+
+        attendance.setUnattendedAt(LocalDateTime.now());
+        attendanceRepository.save(attendance);
+    }
 }

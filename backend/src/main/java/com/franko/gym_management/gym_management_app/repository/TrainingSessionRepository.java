@@ -27,7 +27,7 @@ public interface TrainingSessionRepository extends JpaRepository<TrainingSession
             JOIN
                 training_types tt ON ts.training_type_id = tt.id
             LEFT JOIN
-                attendances a ON ts.id = a.training_session_id
+                attendances a ON ts.id = a.training_session_id AND a.unattended_at IS NULL
             LEFT JOIN
                 training_sessions_trainers tst ON ts.id = tst.training_session_id
             LEFT JOIN
@@ -40,6 +40,6 @@ public interface TrainingSessionRepository extends JpaRepository<TrainingSession
                 ts.id, tt.name, ts.date, tt.duration_in_minutes, tt.description
             ORDER BY
                 ts.date ASC
-                    """, nativeQuery = true)
+                                """, nativeQuery = true)
     List<Object[]> findUpcomingTrainingSessions();
 }
