@@ -463,6 +463,20 @@ public class FakeDataInitalizer implements CommandLineRunner {
 
         userRepository.save(exampleUser);
 
+        Status dummyStatus = statusRepository.getReferenceById(1L);
+
+        TrainingPackage dummyTrainingPackage = trainingPackageRepository.getReferenceById(3L);
+
+
+        Member member = Member
+                .builder()
+                .user(exampleUser)
+                .trainingPackage(dummyTrainingPackage)
+                .status(dummyStatus)
+                .build();
+
+        memberRepository.save(member);
+
         while (memberCounter <= numberOfMemberUsers) {
             var user = User
                     .builder()
@@ -485,14 +499,14 @@ public class FakeDataInitalizer implements CommandLineRunner {
             TrainingPackage trainingPackage = trainingPackageRepository.getReferenceById(3L);
 
 
-            Member member = Member
+            Member exampleMember = Member
                     .builder()
                     .user(savedMember)
                     .trainingPackage(trainingPackage)
                     .status(activeStatus)
                     .build();
 
-            memberRepository.save(member);
+            memberRepository.save(exampleMember);
 
         }
 

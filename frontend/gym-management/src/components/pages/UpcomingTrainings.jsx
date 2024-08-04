@@ -26,8 +26,6 @@ const UpcomingTrainings = () => {
 
     const totalPages = Math.ceil(filteredTrainings.length / itemsPerPage);
 
-
-    
     useEffect(() => {
         const fetchTrainings = async () => {
             try {
@@ -40,8 +38,9 @@ const UpcomingTrainings = () => {
                 setLoading(false);
             }
         };
+
         fetchTrainings();
-    }, [authState]);
+    }, []); 
 
     useEffect(() => {
         if (errorMessage || successMessage) {
@@ -92,14 +91,13 @@ const UpcomingTrainings = () => {
         setIsAttending(null);
     };
 
-    // TODO: Fix bug when user attends a training to change Number of members coming immediately
-    // TODO: Check if i can avoid setting isAttending?
     const handleAttend = async () => {
         if (window.confirm('Confirm: Are you sure you want to attend this Training?')) {
             try {
                 await registerUserForTraining({ userId: authState.user.userID, trainingSessionId: selectedTraining.sessionId });
                 setSuccessMessage("Successfully registered for the training!");
                 setIsAttending(1); 
+                updateNumberOfPeople(selectedTraining.sessionId, 1);
                 
             } catch (error) {
                 setErrorMessage("Failed to register for the training.");
@@ -109,17 +107,37 @@ const UpcomingTrainings = () => {
         }
     };
 
-    // TODO: Check if i can avoid setting isAttending?
     const handleUnattend = async () => {
         try {
             // await unregisterFromTraining(selectedTraining.sessionId);
             setSuccessMessage("Successfully unregistered from the training!");
             setIsAttending(0); 
+            updateNumberOfPeople(selectedTraining.sessionId, -1);
+            
         } catch (error) {
             setErrorMessage("Failed to unregister from the training.");
         } finally {
             handleCloseModal();
         }
+    };
+
+    const updateNumberOfPeople = (sessionId, change) => {
+        setTrainings((prevTrainings) => {
+            return prevTrainings.map((training) => {
+                if (training.sessionId === sessionId) {
+                    return { ...training, numberOfPeople: training.numberOfPeople + change };
+                }
+                return training;
+            });
+        });
+        setFilteredTrainings((prevFilteredTrainings) => {
+            return prevFilteredTrainings.map((training) => {
+                if (training.sessionId === sessionId) {
+                    return { ...training, numberOfPeople: training.numberOfPeople + change };
+                }
+                return training;
+            });
+        });
     };
 
     const handlePageChange = (newPage) => {
@@ -152,7 +170,6 @@ const UpcomingTrainings = () => {
                 </Alert>
             )}
             <div className="mb-3">
-
                 <Form.Control
                     type="text"
                     placeholder="Filter by training type or trainer"
@@ -245,4 +262,5 @@ const UpcomingTrainings = () => {
         </div>
     );
 };
+
 export default UpcomingTrainings;
