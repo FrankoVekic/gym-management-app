@@ -20,8 +20,7 @@ export default function HeaderComponent() {
                     {Statics.navbarTraining}
                 </a>
                 <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <li><Link className="dropdown-item" to="/#">Overview of Available Trainings</Link></li>
-                    <li><Link className="dropdown-item" to="/#">My Training Sessions</Link></li>
+                    <li><Link className="dropdown-item" to="/my-training-sessions">My Training Sessions</Link></li>
                     <li><Link className="dropdown-item" to="/upcoming-training-sessions">Upcoming Trainings</Link></li>
                     <li><Link className="dropdown-item" to="/training-packages">Training Packages</Link></li>
                 </ul>

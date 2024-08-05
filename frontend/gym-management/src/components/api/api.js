@@ -157,3 +157,8 @@ export const unregisterUserForTraining = ({userId, trainingSessionId}) => {
     return axios.post(`${API_URL}/public/attendances/unregisterFromTraining`, {userId, trainingSessionId});
 }
 
+// GET TRAINING SESSIONS FOR SPECIFIC USER
+export const getUserTrainingSessions = (id) => {
+    return axios.post(`${API_URL}/public/trainingSessions/userTrainingSessions`, {id});
+}
+

@@ -2,6 +2,8 @@ package com.franko.gym_management.gym_management_app.serviceImpl;
 
 import com.franko.gym_management.gym_management_app.dto.TrainingSessionDto;
 import com.franko.gym_management.gym_management_app.dto.TrainingSessionResponseDto;
+import com.franko.gym_management.gym_management_app.dto.UserTrainingSessionRequest;
+import com.franko.gym_management.gym_management_app.dto.UserTrainingSessionsDto;
 import com.franko.gym_management.gym_management_app.mapper.TrainingSessionMapper;
 import com.franko.gym_management.gym_management_app.model.TrainingSession;
 import com.franko.gym_management.gym_management_app.repository.TrainingSessionRepository;
@@ -64,6 +66,34 @@ public class TrainingSessionServiceImpl implements TrainingSessionService {
 
             dto.setDuration(((Number) result[5]).intValue());
             dto.setDescription((String) result[6]);
+
+            sessions.add(dto);
+        }
+
+        return sessions;
+    }
+
+    @Override
+    public List<UserTrainingSessionsDto> getUpcomingUserTrainingSessions(Long id) {
+        List<Object[]> results = trainingSessionRepository.findUpcomingTrainingSessionsByUser(id);
+        List<UserTrainingSessionsDto> sessions = new ArrayList<>();
+
+        for (Object[] result : results) {
+            UserTrainingSessionsDto dto = new UserTrainingSessionsDto();
+            dto.setSessionId(((Number) result[0]).longValue());
+            dto.setTrainingType((String) result[1]);
+
+            Timestamp timestamp = (Timestamp) result[2];
+            LocalDateTime localDateTime = timestamp.toLocalDateTime();
+            dto.setSessionDate(localDateTime);
+
+
+            String[] trainersArray = (String[]) result[3];
+            List<String> trainersList = Arrays.asList(trainersArray);
+            dto.setTrainer(trainersList);
+
+            dto.setDuration(((Number) result[4]).intValue());
+            dto.setDescription((String) result[5]);
 
             sessions.add(dto);
         }

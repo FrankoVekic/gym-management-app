@@ -25,6 +25,7 @@ import TrainerProtectedRoute from '../protected routes/TrainerProtectedRoute';
 import AuthenticatedRoute from '../protected routes/AuthenticatedRoute';
 import UnauthorizedComponent from '../parts/UnauthorizedComponent';
 import UpcomingTrainings from '../pages/UpcomingTrainings';
+import MyTrainingSessions from '../pages/MyTrainingSessions';
 
 
 export default function GymApp() {
@@ -67,6 +68,7 @@ export default function GymApp() {
                             </Route>
 
                             <Route path="/upcoming-training-sessions" element={<UpcomingTrainings/>}></Route>
+                            <Route path="/my-training-sessions" element={<MyTrainingSessions/>}></Route>
 
                             <Route path="/" element={<HomeComponent />} />
                             <Route path="/unauthorized" element={<UnauthorizedComponent />} />
