@@ -18,7 +18,7 @@ public class ContactFormEntryServiceImpl implements ContactFormEntryService {
     private ContactFormEntryRepository contactFormEntryRepository;
     @Override
     public List<ContactFormEntryDto> getContactFormEntries() {
-        List<ContactFormEntry> list = contactFormEntryRepository.findAllByOrderByIdAsc();
+        List<ContactFormEntry> list = contactFormEntryRepository.findAllByOrderByIdDesc();
         return list
                 .stream()
                 .map(ContactFormEntryMapper::mapToContactFormEntriesDto)

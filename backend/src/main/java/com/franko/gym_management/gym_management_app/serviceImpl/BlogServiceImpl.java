@@ -12,6 +12,7 @@ import com.franko.gym_management.gym_management_app.service.BlogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -128,6 +129,7 @@ public class BlogServiceImpl implements BlogService {
 
         Blog blog = blogRepository.findById(blogUpdateDto.getId()).orElseThrow(() -> new RuntimeException("Blog not found"));
 
+        blog.setUpdatedAt(LocalDateTime.now());
         blog.setTitle(blogUpdateDto.getTitle());
         blog.setContent(blogUpdateDto.getContent());
 

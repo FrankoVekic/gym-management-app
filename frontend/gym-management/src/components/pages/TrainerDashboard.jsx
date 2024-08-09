@@ -6,10 +6,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import ClientStatusTable from '../parts/Trainer Dashboard Components/ClientStatusTable';
 import StatsCards from '../parts/Trainer Dashboard Components/StatsCards';
 import UpcomingSessions from '../parts/Trainer Dashboard Components/UpcomingSessions';
-import { getMemberStatusesAndTrainingPackages } from '../api/api';
+import { getMemberStatusesAndTrainingPackages, getAllContactEntries } from '../api/api';
 
 const TrainerDashboard = () => {
     const [membersData, setMembersData] = useState([]);
+    const [contactEntries, setContactEntries] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -26,21 +27,19 @@ const TrainerDashboard = () => {
             }
         };
 
-        fetchMembersData();
-    }, []);
+        const fetchContactEntries = async () => {
+            try {
+                const response = await getAllContactEntries();
+                setContactEntries(response.data.slice(0, 2));
+            } catch (error) {
+                setError('Failed to fetch contact entries.');
+                console.error(error);
+            }
+        };
 
-    const notifications = [
-        {
-            id: 1,
-            message: 'Session with John Doe has been rescheduled.',
-            date: '2024-07-18',
-        },
-        {
-            id: 2,
-            message: 'Happy Birthday to Jane Smith!',
-            date: '2024-07-19',
-        },
-    ];
+        fetchMembersData();
+        fetchContactEntries();
+    }, []);
 
     const resources = [
         {
@@ -76,24 +75,27 @@ const TrainerDashboard = () => {
             <UpcomingSessions />
 
             <div className="row mb-4">
-                <div className="col-md-6">
-                    <div className="card">
-                        <div className="card-header d-flex justify-content-between align-items-center">
-                            <h5>Notifications</h5>
-                            <Link to="/notifications" className="btn btn-primary btn-sm">View All</Link>
-                        </div>
-                        <div className="card-body">
-                            <ul className="list-group">
-                                {notifications.map(notification => (
-                                    <li key={notification.id} className="list-group-item">
-                                        <p>{notification.message}</p>
-                                        <p className="text-muted"><small>{notification.date}</small></p>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+            <div className="col-md-6">
+    <div className="card">
+        <div className="card-header d-flex justify-content-between align-items-center">
+            <h5>Contact Entries</h5>
+            <Link to="/contact-entries" className="btn btn-primary btn-sm">View All</Link>
+        </div>
+        <div className="card-body">
+            <ul className="list-group">
+                {contactEntries.map((entry, index) => (
+                    <li key={index} className="list-group-item">
+                        <p><strong>Name:</strong> {entry.fullName}</p>
+                        <p><strong>Email:</strong> {entry.email}</p>
+                        <p><strong>Phone number:</strong> {entry.phoneNumber}</p>
+                        <p><strong>Message:</strong> {entry.message}</p>
+                        <p><strong>Created:</strong> {new Date(entry.createdAt).toLocaleString()}</p>
+                    </li>
+                ))}
+            </ul>
+        </div>
+    </div>
+</div>
                 <div className="col-md-6">
                     <div className="card">
                         <div className="card-header d-flex justify-content-between align-items-center">

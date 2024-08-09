@@ -461,6 +461,10 @@ html, body {
     text-align: center;
 }
 
+.list-group-item p {
+    margin-bottom: 5px;
+}
+
 @media (max-width: 768px) {
     .inner-sidebar {
         position: absolute;

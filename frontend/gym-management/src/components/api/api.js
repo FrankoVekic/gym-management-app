@@ -162,3 +162,7 @@ export const getUserTrainingSessions = (id) => {
     return axios.post(`${API_URL}/public/trainingSessions/userTrainingSessions`, {id});
 }
 
+// GET ALL CONTACT ENTRIES
+export const getAllContactEntries = () => {
+    return axios.get(`${API_URL}/public/contactFormEntries/getAllContactEntries`);
+}

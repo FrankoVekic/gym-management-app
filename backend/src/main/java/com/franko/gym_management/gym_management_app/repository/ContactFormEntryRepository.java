@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface ContactFormEntryRepository extends JpaRepository<ContactFormEntry,Long> {
 
-    List<ContactFormEntry> findAllByOrderByIdAsc();
+    List<ContactFormEntry> findAllByOrderByIdDesc();
 }
