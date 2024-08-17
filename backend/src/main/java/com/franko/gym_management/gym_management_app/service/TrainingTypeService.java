@@ -8,4 +8,6 @@ public interface TrainingTypeService {
     List<TrainingTypeDto> getTrainingTypes();
 
     TrainingTypeDto createTrainingType(TrainingTypeDto trainingTypeDto);
+
+    List<String> getAllTrainingTypeNames();
 }

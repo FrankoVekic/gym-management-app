@@ -28,4 +28,9 @@ public class TrainingTypeController {
         TrainingTypeDto savedTrainingType = trainingTypeService.createTrainingType(trainingTypeDto);
         return new ResponseEntity<>(savedTrainingType, HttpStatus.CREATED);
     }
+
+    @GetMapping("/getTrainingTypeNames")
+    public List<String> getAllTrainingTypeNames() {
+        return trainingTypeService.getAllTrainingTypeNames();
+    }
 }

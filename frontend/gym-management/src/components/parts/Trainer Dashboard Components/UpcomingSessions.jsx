@@ -35,7 +35,7 @@ const UpcomingSessions = () => {
                 <div className="card">
                     <div className="card-header d-flex justify-content-between align-items-center">
                         <h5>Upcoming Sessions</h5>
-                        <Link to="/sessions" className="btn btn-primary btn-sm">View All</Link>
+                        <Link to="/training-sessions" className="btn btn-primary btn-sm">View All</Link>
                     </div>
                     <div className="card-body">
                         <ul className="list-group">

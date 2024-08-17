@@ -166,3 +166,8 @@ export const getUserTrainingSessions = (id) => {
 export const getAllContactEntries = () => {
     return axios.get(`${API_URL}/public/contactFormEntries/getAllContactEntries`);
 }
+
+// GET A LIST OF STRINGS OF ALL TRAINING TYPE NAMES
+export const getAllTrainingTypeNames = () => {
+    return axios.get(`${API_URL}/public/trainingTypes/getTrainingTypeNames`)
+}
