@@ -1,6 +1,7 @@
 package com.franko.gym_management.gym_management_app.api;
 
 import com.franko.gym_management.gym_management_app.dto.TrainerDto;
+import com.franko.gym_management.gym_management_app.dto.TrainerNameDto;
 import com.franko.gym_management.gym_management_app.service.TrainerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,5 +28,12 @@ public class TrainerController {
         TrainerDto savedTrainer = trainerService.createTrainer(trainerDto);
         return new ResponseEntity<>(savedTrainer, HttpStatus.CREATED);
     }
+
+    @GetMapping("getFirstnamesAndLastnames")
+    public ResponseEntity<List<TrainerNameDto>> getTrainerNamesAndLastnames(){
+        List<TrainerNameDto> trainers = trainerService.getTrainerNames();
+        return ResponseEntity.ok(trainers);
+    }
+
 
 }

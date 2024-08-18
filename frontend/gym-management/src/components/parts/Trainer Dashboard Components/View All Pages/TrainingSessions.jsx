@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { getAllTrainingTypeNames, getUpcomingTrainingSessions } from '../../../api/api'; 
+import { getAllTrainingTypeNames, getUpcomingTrainingSessions, getTrainerFirstnamesAndLastnames, createNewTrainingSession } from '../../../api/api'; 
 import { Modal, Button, Form } from 'react-bootstrap';
+import URLSaver from '../../URLSaver';
 
 const TrainingSessions = () => {
     const [upcomingSessions, setUpcomingSessions] = useState([]);
     const [trainingTypes, setTrainingTypes] = useState([]); 
+    const [trainers, setTrainers] = useState([]); 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [showModal, setShowModal] = useState(false);
     const [editingSession, setEditingSession] = useState(null); 
     const [formData, setFormData] = useState({
         trainingType: '',
-        sessionDate: ''
+        sessionDate: '',
+        trainer: ''
     });
 
     useEffect(() => {
@@ -37,21 +40,36 @@ const TrainingSessions = () => {
             }
         };
 
+        const fetchTrainers = async () => {
+            try {
+                const response = await getTrainerFirstnamesAndLastnames();
+                setTrainers(response.data);
+            } catch (error) {
+                setError('Failed to fetch trainers.');
+                console.error(error);
+            }
+        };
+
         fetchUpcomingSessions();
         fetchTrainingTypes(); 
+        fetchTrainers(); 
     }, []);
 
     const handleShowModal = (session = null) => {
         if (session) {
+            const formattedDate = new Date(session.sessionDate).toISOString().slice(0, 16);
+
             setFormData({
                 trainingType: session.trainingType,
-                sessionDate: session.sessionDate
+                sessionDate: formattedDate, 
+                trainer: session.trainer 
             });
             setEditingSession(session);
         } else {
             setFormData({
                 trainingType: '',
-                sessionDate: ''
+                sessionDate: '',
+                trainer: '' 
             });
             setEditingSession(null);
         }
@@ -67,12 +85,31 @@ const TrainingSessions = () => {
         });
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
+        try {
+            const sessionData = {
+                trainingType: {
+                    id: formData.trainingType
+                },
+                date: new Date(formData.sessionDate).toISOString(), 
+                trainers: [
+                    {
+                        id: 1
+                    }
+                ],
+                attendances: [] 
+            };
 
-        if (editingSession) {
-            console.log('Updating session:', formData);
-        } else {
-            console.log('Creating new session:', formData);
+            if (editingSession) {
+                console.log('Updating session:', sessionData);
+                // TODO: update method
+            } else {
+                console.log('Creating new session:', sessionData);
+                await createNewTrainingSession(sessionData);
+                window.location.reload();
+            }
+        } catch (error) {
+            console.error('Failed to submit form', error);
         }
         setShowModal(false);
     };
@@ -82,6 +119,10 @@ const TrainingSessions = () => {
 
     return (
         <div className="container mt-5">
+            <div className="mb-4">
+                <URLSaver />
+            </div>
+
             <h2 className="mb-4 text-center">All Upcoming Training Sessions</h2>
             <div className="text-center mb-4">
                 <Button variant="success" onClick={() => handleShowModal()}>Create New Training Session</Button>
@@ -92,10 +133,10 @@ const TrainingSessions = () => {
                         <div className="card position-relative">
                             <div className="card-body">
                                 <div className="d-flex justify-content-end">
-                                    <Button variant="link" onClick={() => handleShowModal(session)}>
+                                    <Button className='btn btn-primary btn-sm me-2' onClick={() => handleShowModal(session)}>
                                         <i className="bi bi-pen"></i>
                                     </Button>
-                                    <Button variant="link" className="text-danger">
+                                    <Button className="btn btn-danger btn-sm">
                                         <i className="bi bi-trash"></i>
                                     </Button>
                                 </div>
@@ -125,7 +166,7 @@ const TrainingSessions = () => {
                             >
                                 <option value="">Select Training Type</option>
                                 {trainingTypes.map(type => (
-                                    <option key={type} value={type}>{type}</option>
+                                    <option key={type.id} value={type.id}>{type.name}</option>
                                 ))}
                             </Form.Control>
                         </Form.Group>
@@ -138,6 +179,23 @@ const TrainingSessions = () => {
                                 value={formData.sessionDate}
                                 onChange={handleFormChange}
                             />
+                        </Form.Group>
+
+                        <Form.Group controlId="trainer">
+                            <Form.Label>Trainer</Form.Label>
+                            <Form.Control
+                                as="select"
+                                name="trainer"
+                                value={formData.trainer}
+                                onChange={handleFormChange}
+                            >
+                                <option value="">Select Trainer</option>
+                                {trainers.map(trainer => (
+                                    <option key={`${trainer.firstname}-${trainer.lastname}`} value={`${trainer.firstname} ${trainer.lastname}`}>
+                                        {`${trainer.firstname} ${trainer.lastname}`}
+                                    </option>
+                                ))}
+                            </Form.Control>
                         </Form.Group>
                     </Form>
                 </Modal.Body>

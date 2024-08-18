@@ -171,3 +171,14 @@ export const getAllContactEntries = () => {
 export const getAllTrainingTypeNames = () => {
     return axios.get(`${API_URL}/public/trainingTypes/getTrainingTypeNames`)
 }
+
+// GET TRAINERS FIRSTNAMES AND LASTNAMES
+export const getTrainerFirstnamesAndLastnames = () => {
+    return axios.get(`${API_URL}/public/trainers/getFirstnamesAndLastnames`)
+}
+
+// ADD NEW TRAINING SESSION
+export const createNewTrainingSession = (values) => {
+    return axios.post(`${API_URL}/public/trainingSessions/addTrainingSession`, values);
+}
+

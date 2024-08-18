@@ -13,4 +13,9 @@ public interface TrainingTypeRepository extends JpaRepository<TrainingType, Long
 
     List<TrainingType> findAllByOrderByIdAsc();
 
+    @Query(value = """
+                SELECT tt.id, tt.name FROM training_types tt
+            """)
+    List<Object[]> getTrainingTypeNamesAndIds();
+
 }

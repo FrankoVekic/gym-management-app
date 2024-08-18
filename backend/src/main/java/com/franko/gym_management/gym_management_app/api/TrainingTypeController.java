@@ -1,6 +1,7 @@
 package com.franko.gym_management.gym_management_app.api;
 
 import com.franko.gym_management.gym_management_app.dto.TrainingTypeDto;
+import com.franko.gym_management.gym_management_app.dto.TrainingTypeNamesDto;
 import com.franko.gym_management.gym_management_app.service.TrainingTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,7 +31,7 @@ public class TrainingTypeController {
     }
 
     @GetMapping("/getTrainingTypeNames")
-    public List<String> getAllTrainingTypeNames() {
-        return trainingTypeService.getAllTrainingTypeNames();
+    public List<TrainingTypeNamesDto> getAllTrainingTypeNames() {
+        return trainingTypeService.getTrainingTypeNamesAndIds();
     }
 }

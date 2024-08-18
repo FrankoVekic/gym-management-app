@@ -109,9 +109,7 @@ const BlogDetail = () => {
     if (loading) {
         return (
             <div className="d-flex justify-content-center align-items-center mt-5">
-
                 <Spinner animation="border" role="status">
-
                     <span className="visually-hidden">Loading...</span>
                 </Spinner>
             </div>
@@ -213,7 +211,7 @@ const BlogDetail = () => {
 
                                     By
                                     <span className="comment-author">{` ${comment.user.firstName} ${comment.user.lastName + " "}`}</span>
-                                    on 
+                                    on
                                     <span className="comment-date">
                                         {" " + new Date(comment.createdAt).toLocaleString()}
                                     </span>
