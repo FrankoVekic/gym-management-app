@@ -119,7 +119,7 @@ const TrainingSessions = () => {
 
     return (
         <div className="container mt-5">
-            <div className="mb-4">
+            <div className="d-flex flex-row mb-5">
                 <URLSaver />
             </div>
 

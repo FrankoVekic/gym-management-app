@@ -40,7 +40,7 @@ public interface TrainingSessionRepository extends JpaRepository<TrainingSession
             GROUP BY
                 ts.id, tt.name, ts.date, tt.duration_in_minutes, tt.description
             ORDER BY
-                ts.date ASC
+                ts.date DESC
                                 """, nativeQuery = true)
     List<Object[]> findUpcomingTrainingSessions();
 
