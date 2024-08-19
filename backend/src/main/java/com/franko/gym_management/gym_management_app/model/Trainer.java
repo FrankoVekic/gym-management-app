@@ -27,7 +27,6 @@ public class Trainer {
     @ManyToOne
     private Status status;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "trainer")
-    private List<TrainingSessionTrainer> trainingSessions;
+    @OneToMany(mappedBy = "trainer", cascade = CascadeType.ALL)
+    private List<TrainingSession> trainingSessions;
 }

@@ -10,7 +10,7 @@ public class TrainingSessionMapper {
                 trainingSession.getId(),
                 trainingSession.getTrainingType(),
                 trainingSession.getDate(),
-                trainingSession.getTrainers(),
+                trainingSession.getTrainer(),
                 trainingSession.getAttendances()
         );
     }
@@ -20,7 +20,7 @@ public class TrainingSessionMapper {
                 trainingSessionDto.getId(),
                 trainingSessionDto.getTrainingType(),
                 trainingSessionDto.getDate(),
-                trainingSessionDto.getTrainers(),
+                trainingSessionDto.getTrainer(),
                 trainingSessionDto.getAttendances()
         );
     }

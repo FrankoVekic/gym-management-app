@@ -49,9 +49,6 @@ public class FakeDataInitalizer implements CommandLineRunner {
     private AttendanceRepository attendanceRepository;
 
     @Autowired
-    private TrainingSessionTrainerRepository trainingSessionTrainerRepository;
-
-    @Autowired
     private TestimonialUserRepository testimonialUserRepository;
 
     @Autowired
@@ -84,7 +81,6 @@ public class FakeDataInitalizer implements CommandLineRunner {
             insertUserTestimonials();
             insertBlogs();
             insertTrainingSessions();
-            insertTrainingSessionTrainers();
             insertAttendance();
         }
     }
@@ -159,7 +155,7 @@ public class FakeDataInitalizer implements CommandLineRunner {
 
     }
 
-    private void insertTrainingSessionTrainers() {
+  /*  private void insertTrainingSessionTrainers() {
 
         Trainer trainerOne = trainerRepository.getReferenceById(1L);
         Trainer trainerTwo = trainerRepository.getReferenceById(2L);
@@ -236,7 +232,7 @@ public class FakeDataInitalizer implements CommandLineRunner {
         );
 
         trainingSessionTrainerRepository.saveAll(sessions);
-    }
+    } */
 
     private void insertTrainingSessions() {
 
@@ -252,6 +248,7 @@ public class FakeDataInitalizer implements CommandLineRunner {
                         .builder()
                         .date(LocalDateTime.now().plusDays(2))
                         .trainingType(t1)
+                        .trainer(trainerRepository.getReferenceById(1L))
                         .build()
         );
 
@@ -260,6 +257,7 @@ public class FakeDataInitalizer implements CommandLineRunner {
                         .builder()
                         .date(LocalDateTime.now().plusDays(4))
                         .trainingType(t2)
+                        .trainer(trainerRepository.getReferenceById(1L))
                         .build()
         );
 
@@ -268,6 +266,7 @@ public class FakeDataInitalizer implements CommandLineRunner {
                         .builder()
                         .date(LocalDateTime.now().plusDays(3))
                         .trainingType(t3)
+                        .trainer(trainerRepository.getReferenceById(1L))
                         .build()
         );
 
@@ -276,6 +275,7 @@ public class FakeDataInitalizer implements CommandLineRunner {
                         .builder()
                         .date(LocalDateTime.now().plusDays(6))
                         .trainingType(t3)
+                        .trainer(trainerRepository.getReferenceById(1L))
                         .build()
         );
 
@@ -284,6 +284,7 @@ public class FakeDataInitalizer implements CommandLineRunner {
                         .builder()
                         .date(LocalDateTime.now().plusDays(3))
                         .trainingType(t3)
+                        .trainer(trainerRepository.getReferenceById(1L))
                         .build()
         );
 
@@ -292,6 +293,7 @@ public class FakeDataInitalizer implements CommandLineRunner {
                         .builder()
                         .date(LocalDateTime.now().plusDays(3))
                         .trainingType(t1)
+                        .trainer(trainerRepository.getReferenceById(2L))
                         .build()
         );
 
@@ -300,6 +302,7 @@ public class FakeDataInitalizer implements CommandLineRunner {
                         .builder()
                         .date(LocalDateTime.now().plusDays(3))
                         .trainingType(t2)
+                        .trainer(trainerRepository.getReferenceById(2L))
                         .build()
         );
         trainingSessions.add(
@@ -307,6 +310,7 @@ public class FakeDataInitalizer implements CommandLineRunner {
                         .builder()
                         .date(LocalDateTime.now().plusDays(3))
                         .trainingType(t3)
+                        .trainer(trainerRepository.getReferenceById(2L))
                         .build()
         );
 

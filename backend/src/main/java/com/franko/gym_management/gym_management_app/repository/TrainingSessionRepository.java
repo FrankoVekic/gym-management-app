@@ -9,18 +9,17 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface TrainingSessionRepository extends JpaRepository<TrainingSession,Long> {
+public interface TrainingSessionRepository extends JpaRepository<TrainingSession, Long> {
 
     List<TrainingSession> findAllByOrderByIdAsc();
 
     @Query(value = """
-
             SELECT
                 ts.id AS session_id,
                 tt.name AS training_type,
                 ts.date AS session_date,
                 COUNT(a.id) AS number_of_people,
-                ARRAY_AGG(DISTINCT u.first_name || ' ' || u.last_name) AS trainers,
+                ARRAY_AGG(DISTINCT u.first_name || ' ' || u.last_name) AS trainer,
                 tt.duration_in_minutes AS duration,
                 tt.description
             FROM
@@ -30,9 +29,7 @@ public interface TrainingSessionRepository extends JpaRepository<TrainingSession
             LEFT JOIN
                 attendances a ON ts.id = a.training_session_id AND a.unattended_at IS NULL
             LEFT JOIN
-                training_sessions_trainers tst ON ts.id = tst.training_session_id
-            LEFT JOIN
-                trainers t ON tst.trainer_id = t.id
+                trainers t ON ts.trainer_id = t.id
             LEFT JOIN
                 users u ON t.user_id = u.id
             WHERE
@@ -41,37 +38,35 @@ public interface TrainingSessionRepository extends JpaRepository<TrainingSession
                 ts.id, tt.name, ts.date, tt.duration_in_minutes, tt.description
             ORDER BY
                 ts.date DESC
-                                """, nativeQuery = true)
+                    """, nativeQuery = true)
     List<Object[]> findUpcomingTrainingSessions();
 
     @Query(value = """
             SELECT
-                ts.id AS session_id,
-                tt.name AS training_type,
-                ts.date AS session_date,
-                ARRAY_AGG(DISTINCT CONCAT(u.first_name, ' ', u.last_name)) AS trainers,
-                tt.duration_in_minutes AS duration,
-                tt.description
-            FROM
-                training_sessions ts
-            JOIN
-                training_types tt ON ts.training_type_id = tt.id
-            LEFT JOIN
-                attendances a ON ts.id = a.training_session_id AND a.unattended_at IS NULL
-            LEFT JOIN
-                training_sessions_trainers tst ON ts.id = tst.training_session_id
-            LEFT JOIN
-                trainers t ON tst.trainer_id = t.id
-            LEFT JOIN
-                users u ON t.user_id = u.id
-            WHERE
-                a.member_id IN (
-                    SELECT id FROM members WHERE user_id = :id
-                )
-            GROUP BY
-                ts.id, tt.name, ts.date, tt.duration_in_minutes, tt.description
-            ORDER BY
-                ts.date ASC
-            """,nativeQuery = true)
-    List<Object[]> findUpcomingTrainingSessionsByUser(@Param("id")Long id);
+                               ts.id AS session_id,
+                               tt.name AS training_type,
+                               ts.date AS session_date,
+                               ARRAY_AGG(DISTINCT CONCAT(u.first_name, ' ', u.last_name)) AS trainers,
+                               tt.duration_in_minutes AS duration,
+                               tt.description
+                           FROM
+                               training_sessions ts
+                           JOIN
+                               training_types tt ON ts.training_type_id = tt.id
+                           LEFT JOIN
+                               attendances a ON ts.id = a.training_session_id AND a.unattended_at IS NULL
+                           LEFT JOIN
+                               trainers t ON ts.trainer_id = t.id
+                           LEFT JOIN
+                               users u ON t.user_id = u.id
+                           WHERE
+                               a.member_id IN (
+                                   SELECT id FROM members WHERE user_id = :id
+                               )
+                           GROUP BY
+                               ts.id, tt.name, ts.date, tt.duration_in_minutes, tt.description
+                           ORDER BY
+                               ts.date DESC
+            """, nativeQuery = true)
+    List<Object[]> findUpcomingTrainingSessionsByUser(@Param("id") Long id);
 }

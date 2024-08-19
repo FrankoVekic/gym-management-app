@@ -1,9 +1,6 @@
 package com.franko.gym_management.gym_management_app.dto;
 
-import com.franko.gym_management.gym_management_app.model.Attendance;
-import com.franko.gym_management.gym_management_app.model.TrainingSessionTrainer;
-import com.franko.gym_management.gym_management_app.model.TrainingPackage;
-import com.franko.gym_management.gym_management_app.model.TrainingType;
+import com.franko.gym_management.gym_management_app.model.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,6 +16,6 @@ public class TrainingSessionDto {
     private Long id;
     private TrainingType trainingType;
     private LocalDateTime date;
-    private List<TrainingSessionTrainer> trainers;
+    private Trainer trainer;
     private List<Attendance> attendances;
 }

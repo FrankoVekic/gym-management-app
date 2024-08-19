@@ -25,12 +25,12 @@ public class TrainingSession {
     @Column(nullable = false)
     private LocalDateTime date;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "trainingSession")
-    private List<TrainingSessionTrainer> trainers;
+    @ManyToOne
+    @JoinColumn(name = "trainer_id", nullable = false)
+    private Trainer trainer;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "trainingSession")
+    @OneToMany(mappedBy = "trainingSession", cascade = CascadeType.ALL)
     private List<Attendance> attendances;
 
 }
