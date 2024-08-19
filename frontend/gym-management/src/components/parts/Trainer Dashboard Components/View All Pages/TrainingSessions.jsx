@@ -1,26 +1,27 @@
 import React, { useEffect, useState } from 'react';
-import { getAllTrainingTypeNames, getUpcomingTrainingSessions, getTrainerFirstnamesAndLastnames, createNewTrainingSession, deleteTrainingSession } from '../../../api/api'; 
-import { Modal, Button, Form } from 'react-bootstrap';
+import { getAllTrainingTypeNames, getUpcomingTrainingSessions, getTrainerFirstnamesAndLastnames, createNewTrainingSession, deleteTrainingSession } from '../../../api/api';
+import { Modal, Button, Form, Alert } from 'react-bootstrap';
 import URLSaver from '../../URLSaver';
 
 const TrainingSessions = () => {
     const [upcomingSessions, setUpcomingSessions] = useState([]);
-    const [trainingTypes, setTrainingTypes] = useState([]); 
-    const [trainers, setTrainers] = useState([]); 
+    const [trainingTypes, setTrainingTypes] = useState([]);
+    const [trainers, setTrainers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [showModal, setShowModal] = useState(false);
-    const [editingSession, setEditingSession] = useState(null); 
+    const [editingSession, setEditingSession] = useState(null);
     const [formData, setFormData] = useState({
         trainingType: '',
         sessionDate: '',
         trainer: ''
     });
+    const [validationError, setValidationError] = useState('');
 
     useEffect(() => {
         const fetchUpcomingSessions = async () => {
             try {
-                const response = await getUpcomingTrainingSessions(); 
+                const response = await getUpcomingTrainingSessions();
                 setUpcomingSessions(response.data);
             } catch (error) {
                 setError('Failed to fetch upcoming training sessions.');
@@ -29,7 +30,7 @@ const TrainingSessions = () => {
                 setLoading(false);
             }
         };
-          
+
         const fetchTrainingTypes = async () => {
             try {
                 const response = await getAllTrainingTypeNames();
@@ -51,8 +52,8 @@ const TrainingSessions = () => {
         };
 
         fetchUpcomingSessions();
-        fetchTrainingTypes(); 
-        fetchTrainers(); 
+        fetchTrainingTypes();
+        fetchTrainers();
     }, []);
 
     const handleShowModal = (session = null) => {
@@ -61,30 +62,31 @@ const TrainingSessions = () => {
 
             setFormData({
                 trainingType: session.trainingType,
-                sessionDate: formattedDate, 
-                trainer: session.trainer 
+                sessionDate: formattedDate,
+                trainer: session.trainer
             });
             setEditingSession(session);
         } else {
             setFormData({
                 trainingType: '',
                 sessionDate: '',
-                trainer: '' 
+                trainer: ''
             });
             setEditingSession(null);
         }
+        setValidationError('');
         setShowModal(true);
     };
 
     const handleDelete = async (sessionId) => {
         if (window.confirm("Are you sure you want to remove this training session?")) {
-        try {
-          await deleteTrainingSession(sessionId);
-          window.location.reload();
-        } catch (error) {
-          console.error('Failed to delete session', error);
-        }
-      };
+            try {
+                await deleteTrainingSession(sessionId);
+                window.location.reload();
+            } catch (error) {
+                console.error('Failed to delete session', error);
+            }
+        };
     };
 
     const handleCloseModal = () => setShowModal(false);
@@ -97,16 +99,30 @@ const TrainingSessions = () => {
     };
 
     const handleSubmit = async () => {
+        const { trainingType, sessionDate, trainer } = formData;
+
+        if (!trainingType || !trainer || !sessionDate) {
+            setValidationError('All fields must be filled out.');
+            return;
+        }
+
+        const selectedDate = new Date(sessionDate);
+        const now = new Date();
+        if (selectedDate <= now) {
+            setValidationError('The session date must be in the future.');
+            return;
+        }
+
         try {
             const sessionData = {
                 trainingType: {
-                    id: formData.trainingType
+                    id: trainingType
                 },
-                date: formData.sessionDate,
+                date: sessionDate,
                 trainer: {
-                    id: 1
+                    id: trainer
                 },
-                attendances: [] 
+                attendances: []
             };
 
             if (editingSession) {
@@ -171,6 +187,7 @@ const TrainingSessions = () => {
                     <Modal.Title>{editingSession ? 'Edit Training Session' : 'Create New Training Session'}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
+                    {validationError && <Alert variant="danger">{validationError}</Alert>}
                     <Form>
                         <Form.Group controlId="trainingType">
                             <Form.Label>Training Type</Form.Label>
@@ -207,7 +224,7 @@ const TrainingSessions = () => {
                             >
                                 <option value="">Select Trainer</option>
                                 {trainers.map(trainer => (
-                                    <option key={`${trainer.firstname}-${trainer.lastname}`} value={`${trainer.firstname} ${trainer.lastname}`}>
+                                    <option key={trainer.id} value={trainer.id}>
                                         {`${trainer.firstname} ${trainer.lastname}`}
                                     </option>
                                 ))}

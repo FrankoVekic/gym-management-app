@@ -4,6 +4,8 @@ import { Button, Alert, Modal, Spinner, Form } from "react-bootstrap";
 import {jwtDecode} from "jwt-decode";
 import { CheckCircle, XCircle } from 'react-bootstrap-icons';
 
+
+// TODO: change filter from frontend to backend calls
 const MyTrainingSessions = () => {
     const [trainings, setTrainings] = useState([]);
     const [loading, setLoading] = useState(true);
