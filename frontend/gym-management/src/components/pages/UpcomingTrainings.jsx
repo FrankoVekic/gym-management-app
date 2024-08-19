@@ -171,7 +171,13 @@ const UpcomingTrainings = () => {
                                     )}
                                 </h5>
                                 <p className="card-text">
-                                    <strong>Date: </strong>{new Date(training.sessionDate).toLocaleString()}
+                                    <strong>Date: </strong>{new Date(training.sessionDate).toLocaleString(undefined, {
+                                        year: 'numeric',
+                                        month: '2-digit',
+                                        day: '2-digit',
+                                        hour: '2-digit',
+                                        minute: '2-digit',
+                                    })}
                                 </p>
                                 <p className="card-text">
                                     <strong>Trainer: </strong>{training.trainer.join(", ")}

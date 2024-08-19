@@ -55,7 +55,6 @@ const TrainingSessions = () => {
         fetchTrainers(); 
     }, []);
 
-    // TODO: Fix Date problem. When a date is inserted it is not the same the one you insert and the one that is saved
     const handleShowModal = (session = null) => {
         if (session) {
             const formattedDate = new Date(session.sessionDate).toISOString().slice(0, 16);
@@ -103,13 +102,10 @@ const TrainingSessions = () => {
                 trainingType: {
                     id: formData.trainingType
                 },
-                date: new Date(formData.sessionDate).toISOString(), 
-                // TODO: insert right trainer (get trainer id by user id and then insert)
-                trainer: 
-                    {
-                        id: 1
-                    }
-                ,
+                date: formData.sessionDate,
+                trainer: {
+                    id: 1
+                },
                 attendances: [] 
             };
 
@@ -155,14 +151,21 @@ const TrainingSessions = () => {
                                 </div>
                                 <h5 className="card-title">{session.trainingType}</h5>
                                 <p className="card-text"><strong>Trainer:</strong> {session.trainer}</p>
-                                <p className="card-text"><strong>Date:</strong> {new Date(session.sessionDate).toLocaleString()}</p>
+                                <p className="card-text">
+                                    <strong>Date:</strong> {new Date(session.sessionDate).toLocaleString(undefined, {
+                                        year: 'numeric',
+                                        month: '2-digit',
+                                        day: '2-digit',
+                                        hour: '2-digit',
+                                        minute: '2-digit',
+                                    })}
+                                </p>
                                 <p className="card-text"><strong>Number of Members:</strong> {session.numberOfPeople}</p>
                             </div>
                         </div>
                     </div>
                 ))}
             </div>
-
             <Modal show={showModal} onHide={handleCloseModal}>
                 <Modal.Header closeButton>
                     <Modal.Title>{editingSession ? 'Edit Training Session' : 'Create New Training Session'}</Modal.Title>
