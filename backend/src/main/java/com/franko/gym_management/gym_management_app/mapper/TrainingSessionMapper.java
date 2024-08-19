@@ -11,7 +11,8 @@ public class TrainingSessionMapper {
                 trainingSession.getTrainingType(),
                 trainingSession.getDate(),
                 trainingSession.getTrainer(),
-                trainingSession.getAttendances()
+                trainingSession.getAttendances(),
+                trainingSession.getDeletedAt()
         );
     }
 
@@ -21,7 +22,8 @@ public class TrainingSessionMapper {
                 trainingSessionDto.getTrainingType(),
                 trainingSessionDto.getDate(),
                 trainingSessionDto.getTrainer(),
-                trainingSessionDto.getAttendances()
+                trainingSessionDto.getAttendances(),
+                trainingSessionDto.getDeletedAt()
         );
     }
 }

@@ -1,5 +1,6 @@
 package com.franko.gym_management.gym_management_app.dto;
 
+import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,6 +22,6 @@ public class TrainingSessionResponseDto {
     private List<String> trainer;
     private int duration;
     private String description;
-
+    private LocalDateTime deletedAt;
 
 }

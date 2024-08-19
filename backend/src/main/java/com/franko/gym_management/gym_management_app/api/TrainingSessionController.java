@@ -1,9 +1,6 @@
 package com.franko.gym_management.gym_management_app.api;
 
-import com.franko.gym_management.gym_management_app.dto.TrainingSessionDto;
-import com.franko.gym_management.gym_management_app.dto.TrainingSessionResponseDto;
-import com.franko.gym_management.gym_management_app.dto.UserTrainingSessionRequest;
-import com.franko.gym_management.gym_management_app.dto.UserTrainingSessionsDto;
+import com.franko.gym_management.gym_management_app.dto.*;
 import com.franko.gym_management.gym_management_app.service.TrainingSessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -46,5 +43,14 @@ public class TrainingSessionController {
     public ResponseEntity<List<UserTrainingSessionsDto>> getUserUpcomingTrainingSessions(@RequestBody UserTrainingSessionRequest userTrainingSessionRequest) {
         List<UserTrainingSessionsDto> list = trainingSessionService.getUpcomingUserTrainingSessions(userTrainingSessionRequest.getId());
         return ResponseEntity.ok(list);
+    }
+
+    @PostMapping("deleteTrainingSession")
+    public ResponseEntity<String> deleteTrainingSession(@RequestBody DeleteBlogRequestDto deleteBlogRequestDto){
+
+        trainingSessionService.softDeleteById(deleteBlogRequestDto.getId());
+
+        return ResponseEntity.ok().build();
+
     }
 }

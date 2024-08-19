@@ -182,3 +182,8 @@ export const createNewTrainingSession = (values) => {
     return axios.post(`${API_URL}/public/trainingSessions/addTrainingSession`, values);
 }
 
+// CHANGE TRAINING SESSION DELETED AT STATUS (DELETE TRAINING SESSION)
+export const deleteTrainingSession = (id) => {
+    return axios.post(`${API_URL}/public/trainingSessions/deleteTrainingSession`, { id });    
+}
+

@@ -18,4 +18,6 @@ public interface TrainingSessionService {
     List<TrainingSessionResponseDto> getUpcomingTrainingSessions();
 
     List<UserTrainingSessionsDto> getUpcomingUserTrainingSessions(Long id);
+
+    void softDeleteById(Long id);
 }

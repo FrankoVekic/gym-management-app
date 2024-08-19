@@ -33,4 +33,7 @@ public class TrainingSession {
     @OneToMany(mappedBy = "trainingSession", cascade = CascadeType.ALL)
     private List<Attendance> attendances;
 
+    @Column
+    private LocalDateTime deletedAt;
+
 }

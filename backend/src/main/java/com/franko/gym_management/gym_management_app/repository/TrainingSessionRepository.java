@@ -1,7 +1,9 @@
 package com.franko.gym_management.gym_management_app.repository;
 
 import com.franko.gym_management.gym_management_app.model.TrainingSession;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -34,10 +36,12 @@ public interface TrainingSessionRepository extends JpaRepository<TrainingSession
                 users u ON t.user_id = u.id
             WHERE
                 ts.date > NOW()
+            AND 
+                ts.deleted_at is null
             GROUP BY
                 ts.id, tt.name, ts.date, tt.duration_in_minutes, tt.description
             ORDER BY
-                ts.date DESC
+                ts.date ASC
                     """, nativeQuery = true)
     List<Object[]> findUpcomingTrainingSessions();
 
@@ -63,10 +67,17 @@ public interface TrainingSessionRepository extends JpaRepository<TrainingSession
                                a.member_id IN (
                                    SELECT id FROM members WHERE user_id = :id
                                )
+                           AND 
+                               ts.deleted_at is null
                            GROUP BY
                                ts.id, tt.name, ts.date, tt.duration_in_minutes, tt.description
                            ORDER BY
                                ts.date DESC
             """, nativeQuery = true)
     List<Object[]> findUpcomingTrainingSessionsByUser(@Param("id") Long id);
+
+    @Modifying
+    @Query(value="UPDATE TRAINING_SESSIONS SET deleted_at = CURRENT_TIMESTAMP where id = :id", nativeQuery = true)
+    @Transactional
+    void softDeleteById(@Param("id") Long id);
 }

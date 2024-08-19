@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getAllTrainingTypeNames, getUpcomingTrainingSessions, getTrainerFirstnamesAndLastnames, createNewTrainingSession } from '../../../api/api'; 
+import { getAllTrainingTypeNames, getUpcomingTrainingSessions, getTrainerFirstnamesAndLastnames, createNewTrainingSession, deleteTrainingSession } from '../../../api/api'; 
 import { Modal, Button, Form } from 'react-bootstrap';
 import URLSaver from '../../URLSaver';
 
@@ -29,7 +29,7 @@ const TrainingSessions = () => {
                 setLoading(false);
             }
         };
-
+          
         const fetchTrainingTypes = async () => {
             try {
                 const response = await getAllTrainingTypeNames();
@@ -55,6 +55,7 @@ const TrainingSessions = () => {
         fetchTrainers(); 
     }, []);
 
+    // TODO: Fix Date problem. When a date is inserted it is not the same the one you insert and the one that is saved
     const handleShowModal = (session = null) => {
         if (session) {
             const formattedDate = new Date(session.sessionDate).toISOString().slice(0, 16);
@@ -76,6 +77,17 @@ const TrainingSessions = () => {
         setShowModal(true);
     };
 
+    const handleDelete = async (sessionId) => {
+        if (window.confirm("Are you sure you want to remove this training session?")) {
+        try {
+          await deleteTrainingSession(sessionId);
+          window.location.reload();
+        } catch (error) {
+          console.error('Failed to delete session', error);
+        }
+      };
+    };
+
     const handleCloseModal = () => setShowModal(false);
 
     const handleFormChange = (e) => {
@@ -92,11 +104,12 @@ const TrainingSessions = () => {
                     id: formData.trainingType
                 },
                 date: new Date(formData.sessionDate).toISOString(), 
-                trainers: [
+                // TODO: insert right trainer (get trainer id by user id and then insert)
+                trainer: 
                     {
                         id: 1
                     }
-                ],
+                ,
                 attendances: [] 
             };
 
@@ -136,7 +149,7 @@ const TrainingSessions = () => {
                                     <Button className='btn btn-primary btn-sm me-2' onClick={() => handleShowModal(session)}>
                                         <i className="bi bi-pen"></i>
                                     </Button>
-                                    <Button className="btn btn-danger btn-sm">
+                                    <Button className="btn btn-danger btn-sm" onClick={() => handleDelete(session.sessionId)}>
                                         <i className="bi bi-trash"></i>
                                     </Button>
                                 </div>

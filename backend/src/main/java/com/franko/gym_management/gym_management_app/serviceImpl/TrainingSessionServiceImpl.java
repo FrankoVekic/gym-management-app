@@ -5,6 +5,7 @@ import com.franko.gym_management.gym_management_app.dto.TrainingSessionResponseD
 import com.franko.gym_management.gym_management_app.dto.UserTrainingSessionRequest;
 import com.franko.gym_management.gym_management_app.dto.UserTrainingSessionsDto;
 import com.franko.gym_management.gym_management_app.mapper.TrainingSessionMapper;
+import com.franko.gym_management.gym_management_app.model.Blog;
 import com.franko.gym_management.gym_management_app.model.TrainingSession;
 import com.franko.gym_management.gym_management_app.repository.TrainingSessionRepository;
 import com.franko.gym_management.gym_management_app.service.TrainingSessionService;
@@ -35,6 +36,11 @@ public class TrainingSessionServiceImpl implements TrainingSessionService {
     @Override
     public TrainingSessionDto createTrainingSession(TrainingSessionDto trainingSessionDto) {
         TrainingSession trainingSession = TrainingSessionMapper.mapToTrainingSession(trainingSessionDto);
+
+        if(trainingSessionDto.getDate().isBefore(LocalDateTime.now())){
+            throw new IllegalArgumentException("Date must be in the future.");
+        }
+
         return TrainingSessionMapper.mapToTrainingSessionDto(trainingSessionRepository.save(trainingSession));
     }
 
@@ -99,5 +105,12 @@ public class TrainingSessionServiceImpl implements TrainingSessionService {
         }
 
         return sessions;
+    }
+
+    @Override
+    public void softDeleteById(Long id) {
+
+        TrainingSession trainingSession = trainingSessionRepository.findById(id).orElseThrow(() -> new RuntimeException("Training session not found"));
+        trainingSessionRepository.softDeleteById(id);
     }
 }
