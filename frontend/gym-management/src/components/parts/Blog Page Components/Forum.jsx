@@ -153,7 +153,13 @@ const Forum = () => {
                                                 </p>
                                                 <p className="text-muted">
                                                     <a href="">{`${blog.author.firstName} ${blog.author.lastName}`}</a>
-                                                    <span className="text-secondary"> {new Date(blog.createdAt).toLocaleString()}</span>
+                                                    <span className="text-secondary"> {new Date(blog.createdAt).toLocaleString(undefined, {
+                                                        year: 'numeric',
+                                                        month: '2-digit',
+                                                        day: '2-digit',
+                                                        hour: '2-digit',
+                                                        minute: '2-digit',
+                                                    })}</span>
                                                 </p>
                                             </div>
                                             {blog.comments && blog.comments.length > 0 ? (

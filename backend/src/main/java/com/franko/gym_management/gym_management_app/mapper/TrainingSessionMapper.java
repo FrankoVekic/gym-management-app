@@ -1,6 +1,7 @@
 package com.franko.gym_management.gym_management_app.mapper;
 
 import com.franko.gym_management.gym_management_app.dto.TrainingSessionDto;
+import com.franko.gym_management.gym_management_app.dto.TrainingSessionUpdateDto;
 import com.franko.gym_management.gym_management_app.model.TrainingSession;
 
 public class TrainingSessionMapper {
@@ -24,6 +25,15 @@ public class TrainingSessionMapper {
                 trainingSessionDto.getTrainer(),
                 trainingSessionDto.getAttendances(),
                 trainingSessionDto.getDeletedAt()
+        );
+    }
+
+    public static TrainingSessionUpdateDto mapFromObjectToUpdatedDto(TrainingSession ts) {
+        return new TrainingSessionUpdateDto(
+                ts.getId(),
+                ts.getTrainingType().getId(),
+                ts.getDate(),
+                ts.getTrainer().getId()
         );
     }
 }

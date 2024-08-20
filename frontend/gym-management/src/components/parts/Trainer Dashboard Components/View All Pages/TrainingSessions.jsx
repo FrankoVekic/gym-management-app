@@ -3,6 +3,8 @@ import { getAllTrainingTypeNames, getUpcomingTrainingSessions, getTrainerFirstna
 import { Modal, Button, Form, Alert } from 'react-bootstrap';
 import URLSaver from '../../URLSaver';
 
+
+// TODO: When updating only date is selected
 const TrainingSessions = () => {
     const [upcomingSessions, setUpcomingSessions] = useState([]);
     const [trainingTypes, setTrainingTypes] = useState([]);

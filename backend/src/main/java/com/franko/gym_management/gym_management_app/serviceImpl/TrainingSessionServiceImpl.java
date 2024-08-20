@@ -1,13 +1,14 @@
 package com.franko.gym_management.gym_management_app.serviceImpl;
 
-import com.franko.gym_management.gym_management_app.dto.TrainingSessionDto;
-import com.franko.gym_management.gym_management_app.dto.TrainingSessionResponseDto;
-import com.franko.gym_management.gym_management_app.dto.UserTrainingSessionRequest;
-import com.franko.gym_management.gym_management_app.dto.UserTrainingSessionsDto;
+import com.franko.gym_management.gym_management_app.dto.*;
 import com.franko.gym_management.gym_management_app.mapper.TrainingSessionMapper;
 import com.franko.gym_management.gym_management_app.model.Blog;
+import com.franko.gym_management.gym_management_app.model.Trainer;
 import com.franko.gym_management.gym_management_app.model.TrainingSession;
+import com.franko.gym_management.gym_management_app.model.TrainingType;
+import com.franko.gym_management.gym_management_app.repository.TrainerRepository;
 import com.franko.gym_management.gym_management_app.repository.TrainingSessionRepository;
+import com.franko.gym_management.gym_management_app.repository.TrainingTypeRepository;
 import com.franko.gym_management.gym_management_app.service.TrainingSessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,13 @@ public class TrainingSessionServiceImpl implements TrainingSessionService {
 
     @Autowired
     private TrainingSessionRepository trainingSessionRepository;
+
+    @Autowired
+    private TrainingTypeRepository trainingTypeRepository;
+
+    @Autowired
+    private TrainerRepository trainerRepository;
+
     @Override
     public List<TrainingSessionDto> getTrainingSessions() {
         List<TrainingSession> trainingSessions = trainingSessionRepository.findAllByOrderByIdAsc();
@@ -37,7 +45,7 @@ public class TrainingSessionServiceImpl implements TrainingSessionService {
     public TrainingSessionDto createTrainingSession(TrainingSessionDto trainingSessionDto) {
         TrainingSession trainingSession = TrainingSessionMapper.mapToTrainingSession(trainingSessionDto);
 
-        if(trainingSessionDto.getDate().isBefore(LocalDateTime.now())){
+        if (trainingSessionDto.getDate().isBefore(LocalDateTime.now())) {
             throw new IllegalArgumentException("Date must be in the future.");
         }
 
@@ -112,5 +120,34 @@ public class TrainingSessionServiceImpl implements TrainingSessionService {
 
         TrainingSession trainingSession = trainingSessionRepository.findById(id).orElseThrow(() -> new RuntimeException("Training session not found"));
         trainingSessionRepository.softDeleteById(id);
+    }
+
+    @Override
+    public TrainingSessionUpdateDto updateTrainingSession(TrainingSessionUpdateDto trainingSessionUpdateDto) {
+
+        TrainingSession ts = trainingSessionRepository
+                .findById(trainingSessionUpdateDto.getId())
+                .orElseThrow(
+                        () -> new RuntimeException("Training Session with given id does not exist"));
+
+        TrainingType trainingType = trainingTypeRepository
+                .findById(trainingSessionUpdateDto
+                        .getTrainingType()).orElseThrow(
+                        () -> new RuntimeException("Training type with given id does not exist"));
+
+        Trainer trainer = trainerRepository
+                .findById(trainingSessionUpdateDto.getTrainer())
+                .orElseThrow(
+                        () -> new RuntimeException("Trainer with given id does not exist"));
+
+        ts.setTrainingType(trainingType);
+        ts.setDate(trainingSessionUpdateDto.getDate());
+        ts.setTrainer(trainer);
+
+        TrainingSession savedTs = trainingSessionRepository.save(ts);
+
+        return TrainingSessionMapper.mapFromObjectToUpdatedDto(ts);
+
+
     }
 }

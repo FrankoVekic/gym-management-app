@@ -2,6 +2,7 @@ package com.franko.gym_management.gym_management_app.api;
 
 import com.franko.gym_management.gym_management_app.dto.*;
 import com.franko.gym_management.gym_management_app.service.TrainingSessionService;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -51,6 +52,15 @@ public class TrainingSessionController {
         trainingSessionService.softDeleteById(deleteBlogRequestDto.getId());
 
         return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("updateTrainingSession")
+    public ResponseEntity<String> updateTrainingSession(@RequestBody TrainingSessionUpdateDto trainingSessionUpdateDto){
+
+        TrainingSessionUpdateDto ts = trainingSessionService.updateTrainingSession(trainingSessionUpdateDto);
+
+        return ResponseEntity.ok("Training Session successfully updated");
 
     }
 }
+

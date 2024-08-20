@@ -1,9 +1,6 @@
 package com.franko.gym_management.gym_management_app.service;
 
-import com.franko.gym_management.gym_management_app.dto.TrainingSessionDto;
-import com.franko.gym_management.gym_management_app.dto.TrainingSessionResponseDto;
-import com.franko.gym_management.gym_management_app.dto.UserTrainingSessionRequest;
-import com.franko.gym_management.gym_management_app.dto.UserTrainingSessionsDto;
+import com.franko.gym_management.gym_management_app.dto.*;
 
 import java.util.List;
 
@@ -20,4 +17,6 @@ public interface TrainingSessionService {
     List<UserTrainingSessionsDto> getUpcomingUserTrainingSessions(Long id);
 
     void softDeleteById(Long id);
+
+    TrainingSessionUpdateDto updateTrainingSession(TrainingSessionUpdateDto trainingSessionUpdateDto);
 }

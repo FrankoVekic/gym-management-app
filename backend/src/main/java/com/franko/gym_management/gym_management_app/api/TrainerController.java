@@ -17,6 +17,7 @@ public class TrainerController {
     @Autowired
     private TrainerService trainerService;
 
+    // TODO: change response model, its giving too much information back
     @GetMapping("getTrainers")
     public ResponseEntity<List<TrainerDto>> getTrainers(){
         List<TrainerDto> trainers = trainerService.getTrainers();
