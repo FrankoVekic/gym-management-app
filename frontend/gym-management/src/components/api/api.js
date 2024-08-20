@@ -187,3 +187,7 @@ export const deleteTrainingSession = (id) => {
     return axios.post(`${API_URL}/public/trainingSessions/deleteTrainingSession`, { id });    
 }
 
+// UPDATE TRAINING SESSION
+export const updateTrainingSession = ({ id, trainingType, date, trainer }) => {
+    return axios.put(`${API_URL}/public/trainingSessions/updateTrainingSession`, { id, trainingType, date, trainer });
+}

@@ -196,7 +196,13 @@ const MyTrainingSessions = () => {
                     </Modal.Header>
                     <Modal.Body>
                         <p><strong>Description:</strong> {selectedTraining.description}</p>
-                        <p><strong>Date:</strong> {new Date(selectedTraining.sessionDate).toLocaleString()}</p>
+                        <p><strong>Date:</strong> {new Date(selectedTraining.sessionDate).toLocaleString(undefined, {
+                                        year: 'numeric',
+                                        month: '2-digit',
+                                        day: '2-digit',
+                                        hour: '2-digit',
+                                        minute: '2-digit',
+                                    })}</p>
                         <p><strong>Trainer:</strong> {selectedTraining.trainer.join(", ")}</p>
                         <p><strong>Duration:</strong> {selectedTraining.duration} minutes</p>
                     </Modal.Body>

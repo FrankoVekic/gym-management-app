@@ -44,7 +44,13 @@ const UpcomingSessions = () => {
                                     <div>
                                         <p className="mb-1"><strong>Training Type:</strong> {session.trainingType}</p>
                                         <p className="mb-1"><strong>Trainer:</strong> {session.trainer}</p>
-                                        <p className="mb-1"><strong>Date:</strong> {new Date(session.sessionDate).toLocaleString()}</p>
+                                        <p className="mb-1"><strong>Date:</strong> {new Date(session.sessionDate).toLocaleString(undefined, {
+                                            year: 'numeric',
+                                            month: '2-digit',
+                                            day: '2-digit',
+                                            hour: '2-digit',
+                                            minute: '2-digit',
+                                        })}</p>
                                         <p className="mb-1"><strong>Number of Members:</strong> {session.numberOfPeople}</p>
                                     </div>
                                     <i className="fas fa-chevron-right"></i>

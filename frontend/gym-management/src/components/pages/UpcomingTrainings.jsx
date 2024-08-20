@@ -15,7 +15,7 @@ const UpcomingTrainings = () => {
     const [filter, setFilter] = useState("");
     const [currentPage, setCurrentPage] = useState(0);
     const [attendedTrainings, setAttendedTrainings] = useState(new Set());
-    
+
     const itemsPerPage = 6;
     const indexOfLastItem = (currentPage + 1) * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -121,7 +121,7 @@ const UpcomingTrainings = () => {
     };
 
     const updateNumberOfPeople = (sessionId, change) => {
-        const updateTrainingList = (list) => list.map(training => 
+        const updateTrainingList = (list) => list.map(training =>
             training.sessionId === sessionId
                 ? { ...training, numberOfPeople: training.numberOfPeople + change }
                 : training
@@ -214,7 +214,13 @@ const UpcomingTrainings = () => {
                     </Modal.Header>
                     <Modal.Body>
                         <p><strong>Description: </strong>{selectedTraining.description}</p>
-                        <p><strong>Date: </strong>{new Date(selectedTraining.sessionDate).toLocaleString()}</p>
+                        <p><strong>Date: </strong>{new Date(selectedTraining.sessionDate).toLocaleString(undefined, {
+                            year: 'numeric',
+                            month: '2-digit',
+                            day: '2-digit',
+                            hour: '2-digit',
+                            minute: '2-digit',
+                        })}</p>
                         <p><strong>Trainer:</strong> {selectedTraining.trainer.join(", ")}</p>
                         <p><strong>Number of Members: </strong>{selectedTraining.numberOfPeople}</p>
                         <p><strong>Duration:</strong> {selectedTraining.duration} minutes</p>

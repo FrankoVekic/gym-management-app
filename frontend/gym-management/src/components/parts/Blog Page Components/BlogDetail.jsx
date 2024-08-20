@@ -176,7 +176,13 @@ const BlogDetail = () => {
                     <span className="blog-author">{` ${blog.author.firstName} ${blog.author.lastName + " "}`}</span>
                     on
                     <span className="blog-date">
-                        {" " + new Date(blog.createdAt).toLocaleString()}
+                        {" " + new Date(blog.createdAt).toLocaleString(undefined, {
+                            year: 'numeric',
+                            month: '2-digit',
+                            day: '2-digit',
+                            hour: '2-digit',
+                            minute: '2-digit',
+                        })}
                     </span>
                 </p>
                 <div className="blog-content m-5">
@@ -213,7 +219,13 @@ const BlogDetail = () => {
                                     <span className="comment-author">{` ${comment.user.firstName} ${comment.user.lastName + " "}`}</span>
                                     on
                                     <span className="comment-date">
-                                        {" " + new Date(comment.createdAt).toLocaleString()}
+                                        {" " + new Date(comment.createdAt).toLocaleString(undefined, {
+                                            year: 'numeric',
+                                            month: '2-digit',
+                                            day: '2-digit',
+                                            hour: '2-digit',
+                                            minute: '2-digit',
+                                        })}
                                     </span>
                                 </p>
                             </div>

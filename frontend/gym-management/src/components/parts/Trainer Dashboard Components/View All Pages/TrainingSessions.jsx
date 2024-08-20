@@ -1,10 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { getAllTrainingTypeNames, getUpcomingTrainingSessions, getTrainerFirstnamesAndLastnames, createNewTrainingSession, deleteTrainingSession } from '../../../api/api';
+import {
+    getAllTrainingTypeNames,
+    getUpcomingTrainingSessions,
+    getTrainerFirstnamesAndLastnames,
+    createNewTrainingSession,
+    deleteTrainingSession,
+    updateTrainingSession
+} from '../../../api/api';
 import { Modal, Button, Form, Alert } from 'react-bootstrap';
 import URLSaver from '../../URLSaver';
 
-
 // TODO: When updating only date is selected
+// TODO: When selecting (updating) date is not as it should be
+// TODO: Add success and error messages
 const TrainingSessions = () => {
     const [upcomingSessions, setUpcomingSessions] = useState([]);
     const [trainingTypes, setTrainingTypes] = useState([]);
@@ -129,7 +137,8 @@ const TrainingSessions = () => {
 
             if (editingSession) {
                 console.log('Updating session:', sessionData);
-                // TODO: update method
+                await updateTrainingSession({ id: editingSession.sessionId, trainingType: trainingType, date: sessionDate, trainer: trainer });
+                window.location.reload();
             } else {
                 console.log('Creating new session:', sessionData);
                 await createNewTrainingSession(sessionData);

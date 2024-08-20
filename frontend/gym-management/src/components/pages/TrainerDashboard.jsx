@@ -75,27 +75,33 @@ const TrainerDashboard = () => {
             <UpcomingSessions />
 
             <div className="row mb-4">
-            <div className="col-md-6">
-    <div className="card">
-        <div className="card-header d-flex justify-content-between align-items-center">
-            <h5>Contact Entries</h5>
-            <Link to="/contact-entries" className="btn btn-primary btn-sm">View All</Link>
-        </div>
-        <div className="card-body">
-            <ul className="list-group">
-                {contactEntries.map((entry, index) => (
-                    <li key={index} className="list-group-item">
-                        <p><strong>Name:</strong> {entry.fullName}</p>
-                        <p><strong>Email:</strong> {entry.email}</p>
-                        <p><strong>Phone number:</strong> {entry.phoneNumber}</p>
-                        <p><strong>Message:</strong> {entry.message}</p>
-                        <p><strong>Created:</strong> {new Date(entry.createdAt).toLocaleString()}</p>
-                    </li>
-                ))}
-            </ul>
-        </div>
-    </div>
-</div>
+                <div className="col-md-6">
+                    <div className="card">
+                        <div className="card-header d-flex justify-content-between align-items-center">
+                            <h5>Contact Entries</h5>
+                            <Link to="/contact-entries" className="btn btn-primary btn-sm">View All</Link>
+                        </div>
+                        <div className="card-body">
+                            <ul className="list-group">
+                                {contactEntries.map((entry, index) => (
+                                    <li key={index} className="list-group-item">
+                                        <p><strong>Name:</strong> {entry.fullName}</p>
+                                        <p><strong>Email:</strong> {entry.email}</p>
+                                        <p><strong>Phone number:</strong> {entry.phoneNumber}</p>
+                                        <p><strong>Message:</strong> {entry.message}</p>
+                                        <p><strong>Created:</strong> {new Date(entry.createdAt).toLocaleString(undefined, {
+                                            year: 'numeric',
+                                            month: '2-digit',
+                                            day: '2-digit',
+                                            hour: '2-digit',
+                                            minute: '2-digit',
+                                        })}</p>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
                 <div className="col-md-6">
                     <div className="card">
                         <div className="card-header d-flex justify-content-between align-items-center">
