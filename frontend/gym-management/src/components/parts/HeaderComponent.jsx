@@ -12,7 +12,7 @@ export default function HeaderComponent() {
 
     const renderMemberLinks = () => (
         <>
-            <li className="nav-item">                
+            <li className="nav-item">
                 <Link className="nav-link text-blue" aria-current="page" to="/">{Statics.navbarHome}</Link>
             </li>
             <li className="nav-item dropdown">
@@ -55,8 +55,15 @@ export default function HeaderComponent() {
             <li className="nav-item">
                 <Link className="nav-link text-blue" to="/trainer-dashboard">{Statics.navBarTrainerDash}</Link>
             </li>
-            <li className="nav-item">
-                <Link className="nav-link text-blue" to="/trainer-management">{Statics.navbarTrainerManage}</Link>
+            <li className="nav-item dropdown">
+                <a className="nav-link dropdown-toggle text-blue" href="/" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    {Statics.navbarTrainerManage}
+                </a>
+                <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <li><Link className="dropdown-item" to="/contact-entries">Contact Entries</Link></li>
+                    <li><Link className="dropdown-item" to="/training-sessions">Training Sessions</Link></li>
+                    <li><Link className="dropdown-item" to="/testimonials">Testimonials</Link></li>
+                </ul>
             </li>
             <li className="nav-item">
                 <Link className="nav-link text-blue" to="/profile-page">Profile</Link>

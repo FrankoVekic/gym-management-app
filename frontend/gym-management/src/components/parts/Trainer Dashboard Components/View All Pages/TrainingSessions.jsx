@@ -13,6 +13,7 @@ import URLSaver from '../../URLSaver';
 // TODO: When updating only date is selected
 // TODO: When selecting (updating) date is not as it should be
 // TODO: Add success and error messages
+// TODO: Validation when updating and asking if user is sure to save changed data
 const TrainingSessions = () => {
     const [upcomingSessions, setUpcomingSessions] = useState([]);
     const [trainingTypes, setTrainingTypes] = useState([]);

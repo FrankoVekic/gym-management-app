@@ -4,6 +4,7 @@ import { getMemberProfile } from "../../api/api";
 import { jwtDecode } from 'jwt-decode';
 import Statics from '../../static utils/Statics';
 
+//TODO: Right now only members profile card query is good, for trainers it doesnt give status, training type and joined date
 const ProfileCard = () => {
     const { authState } = useContext(AuthContext);
     const [profile, setProfile] = useState({});

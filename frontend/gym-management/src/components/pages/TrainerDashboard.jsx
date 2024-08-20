@@ -88,7 +88,7 @@ const TrainerDashboard = () => {
                                         <p><strong>Name:</strong> {entry.fullName}</p>
                                         <p><strong>Email:</strong> {entry.email}</p>
                                         <p><strong>Phone number:</strong> {entry.phoneNumber}</p>
-                                        <p><strong>Message:</strong> {entry.message}</p>
+                                        <p><strong>Message:</strong> {entry.message.length > 50 ? entry.message.substring(0, 50) + '...' : entry.message}</p>
                                         <p><strong>Created:</strong> {new Date(entry.createdAt).toLocaleString(undefined, {
                                             year: 'numeric',
                                             month: '2-digit',
