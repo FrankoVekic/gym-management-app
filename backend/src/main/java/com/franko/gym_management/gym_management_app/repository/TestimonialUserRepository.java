@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface TestimonialUserRepository extends JpaRepository<TestimonialUser, Long> {
 
-    List<TestimonialUser> findAllByOrderByIdAsc();
+    List<TestimonialUser> findAllByOrderByIdDesc();
 
     @Query(value = "SELECT * FROM testimonial_user ORDER BY RANDOM() LIMIT 3", nativeQuery = true)
     List<TestimonialUser> findTwoRandomTestimonialUsers();

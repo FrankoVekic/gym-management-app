@@ -20,7 +20,7 @@ public class TestimonialUserServiceImpl implements TestimonialUserService {
 
     @Override
     public List<TestimonialUserDto> getTestimonialUsers() {
-        List<TestimonialUser> list = testimonialUserRepository.findAllByOrderByIdAsc();
+        List<TestimonialUser> list = testimonialUserRepository.findAllByOrderByIdDesc();
         return list
                 .stream()
                 .map(TestimonialUserMapper::mapToTestimonialUserDto)
