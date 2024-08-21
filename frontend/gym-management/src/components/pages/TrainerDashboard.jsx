@@ -7,6 +7,7 @@ import ClientStatusTable from '../parts/Trainer Dashboard Components/ClientStatu
 import StatsCards from '../parts/Trainer Dashboard Components/StatsCards';
 import UpcomingSessions from '../parts/Trainer Dashboard Components/UpcomingSessions';
 import { getMemberStatusesAndTrainingPackages, getAllContactEntries } from '../api/api';
+import { Alert, Spinner } from 'react-bootstrap';
 
 const TrainerDashboard = () => {
     const [membersData, setMembersData] = useState([]);
@@ -61,9 +62,24 @@ const TrainerDashboard = () => {
         { Header: 'Training Package', accessor: 'trainingPackage' }
     ], []);
 
-    if (loading) return <div>Loading...</div>;
-    if (error) return <div>{error}</div>;
+    if (loading) {
+        return (
+            <div className="d-flex justify-content-center align-items-center mt-5">
+                <Spinner animation="border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                </Spinner>
+            </div>
+        );
+    }
 
+    if (error) {
+        return (
+            <div className="d-flex justify-content-center align-items-center mt-5">
+                <Alert variant="danger">{error}</Alert>
+            </div>
+        );
+    }
+    
     return (
         <div className="container mt-5">
             <StatsCards />

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { getMemberProfile } from "../../api/api";
 import {jwtDecode} from 'jwt-decode';
-import { Alert } from "react-bootstrap";
+import { Alert, Spinner } from "react-bootstrap";
 
 const Overview = () => {
     const [user, setUser] = useState(null);
@@ -39,8 +39,23 @@ const Overview = () => {
         fetchUserProfile();
     }, []);
 
-    if (loading) return <p>Loading...</p>;
-    if (error) return  <Alert className="m-5" variant="warning"> Error loading profile: {error.message}</Alert>;
+    if (loading) {
+        return (
+            <div className="d-flex justify-content-center align-items-center mt-5">
+                <Spinner animation="border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                </Spinner>
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="d-flex justify-content-center align-items-center mt-5">
+                <Alert variant="danger">{error}</Alert>
+            </div>
+        );
+    }
 
     if (!user) return <p>No user data found.</p>;
 

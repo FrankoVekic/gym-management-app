@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import {jwtDecode} from 'jwt-decode'; 
 import { Outlet, Navigate, useLocation } from 'react-router-dom';
+import { Alert, Spinner } from 'react-bootstrap';
+
 
 const MemberProtectedRoute = () => {
 
@@ -39,7 +41,13 @@ const MemberProtectedRoute = () => {
     }, [token]); 
 
     if (loading) {
-        return <div>Loading...</div>; 
+        return (
+            <div className="d-flex justify-content-center align-items-center mt-5">
+                <Spinner animation="border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                </Spinner>
+            </div>
+        );
     }
 
     if (redirectTo) {

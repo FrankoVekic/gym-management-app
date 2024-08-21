@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getTestimonialUsers } from "../../api/api";
+import { Alert, Spinner } from 'react-bootstrap';
+
 
 const RecentTestimonials = () => {
     const [feedback, setFeedback] = useState([]);
@@ -23,8 +25,23 @@ const RecentTestimonials = () => {
         fetchTestimonials();
     }, []);
 
-    if (loading) return <div>Loading...</div>;
-    if (error) return <div>Error: {error}</div>;
+    if (loading) {
+        return (
+            <div className="d-flex justify-content-center align-items-center mt-5">
+                <Spinner animation="border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                </Spinner>
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="d-flex justify-content-center align-items-center mt-5">
+                <Alert variant="danger">{error}</Alert>
+            </div>
+        );
+    }
 
     // Limit feedback to maximum 4 items
     const limitedFeedback = feedback.slice(0, 3);

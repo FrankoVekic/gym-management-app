@@ -27,6 +27,7 @@ import UnauthorizedComponent from '../parts/UnauthorizedComponent';
 import UpcomingTrainings from '../pages/UpcomingTrainings';
 import MyTrainingSessions from '../pages/MyTrainingSessions';
 import TrainingSessions from '../parts/Trainer Dashboard Components/View All Pages/TrainingSessions';
+import Testimonials from '../parts/Trainer Dashboard Components/View All Pages/Testimonials';
 
 
 export default function GymApp() {
@@ -51,6 +52,7 @@ export default function GymApp() {
                                 <Route path="trainer-dashboard" element={<TrainerDashboard />} />
                                 <Route path="/trainer-management" element={<ManageComponent />} />
                                 <Route path="/training-sessions" element={<TrainingSessions/>} ></Route>
+                                <Route path="/testimonials" element={<Testimonials/>}></Route>
                             </Route>
 
                             {/* ROUTES FOR ALL AUTHENTICATED USERS */}
@@ -65,14 +67,13 @@ export default function GymApp() {
 
                             {/* MEMBER ROUTES */}
                             <Route element={<MemberProtectedRoute />}>
-                                <Route path="/about" element={<AboutComponent />} />
-                                <Route path="/contact" element={<ContactComponent />} />
+                                <Route path="/upcoming-training-sessions" element={<UpcomingTrainings/>}></Route>
+                                <Route path="/my-training-sessions" element={<MyTrainingSessions/>}></Route>
                             </Route>
 
-                            <Route path="/upcoming-training-sessions" element={<UpcomingTrainings/>}></Route>
-                            <Route path="/my-training-sessions" element={<MyTrainingSessions/>}></Route>
-
                             <Route path="/" element={<HomeComponent />} />
+                            <Route path="/about" element={<AboutComponent />} />
+                            <Route path="/contact" element={<ContactComponent />} />
                             <Route path="/unauthorized" element={<UnauthorizedComponent />} />
                             <Route path="*" element={<ErrorComponent />} />
                         </Routes>

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { jwtDecode } from 'jwt-decode'; 
 import { Outlet, Navigate, useLocation } from 'react-router-dom';
+import { Alert, Spinner } from 'react-bootstrap';
+
 
 const ProtectedRoute = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -36,7 +38,13 @@ const ProtectedRoute = () => {
 
     // TODO: EDIT LOGINS WITH ALERTS
     if (loading) {
-        return <div>Loading...</div>; 
+        return (
+            <div className="d-flex justify-content-center align-items-center mt-5">
+                <Spinner animation="border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                </Spinner>
+            </div>
+        );
     }
 
     return isAuthenticated ? <Navigate to="/" state={{ from: location }} replace /> : <Outlet />;

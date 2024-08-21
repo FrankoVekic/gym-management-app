@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { getMembersCount, getTraningSessionsCount, getTotalPaid } from '../../api/api';
+import { Alert, Spinner } from 'react-bootstrap';
+
 
 const StatsCards = () => {
     const [totalClients, setTotalClients] = useState(0);
     const [totalSessions, setTotalSessions] = useState(0);
-    const [totalPaid, setTotalPaid] = useState(7800); 
+    const [totalPaid, setTotalPaid] = useState(7800);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -20,7 +22,7 @@ const StatsCards = () => {
 
                 const totalPaidResponse = await getTotalPaid();
                 setTotalPaid(totalPaidResponse.data);
-                
+
             } catch (error) {
                 console.error('Error fetching data:', error);
                 setError('Failed to load data');
@@ -32,14 +34,31 @@ const StatsCards = () => {
         fetchData();
     }, []);
 
-    if (loading) return <div>Loading...</div>;
-    if (error) return <div>Error: {error}</div>;
 
     const stats = {
         totalClients,
-        totalSessions, 
-        totalPaid, 
+        totalSessions,
+        totalPaid,
     };
+
+    if (loading) {
+        return (
+            <div className="d-flex justify-content-center align-items-center mt-5">
+                <Spinner animation="border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                </Spinner>
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="d-flex justify-content-center align-items-center mt-5">
+                <Alert variant="danger">{error}</Alert>
+            </div>
+        );
+    }
+
 
     return (
         <div className="row mb-4">

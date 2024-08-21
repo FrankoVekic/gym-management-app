@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { jwtDecode } from 'jwt-decode'; 
 import { Outlet, Navigate, useLocation } from 'react-router-dom';
+import { Spinner } from 'react-bootstrap';
+
 
 const AuthenticatedRoute = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -27,7 +29,7 @@ const AuthenticatedRoute = () => {
                     setRedirectTo('/'); 
                 }
             } else {
-                setRedirectTo('/unauthorized');
+                setRedirectTo('/login');
             }
             setLoading(false); 
         };
@@ -36,7 +38,13 @@ const AuthenticatedRoute = () => {
     }, [token]); 
 
     if (loading) {
-        return <div>Loading...</div>; 
+        return (
+            <div className="d-flex justify-content-center align-items-center mt-5">
+                <Spinner animation="border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                </Spinner>
+            </div>
+        );
     }
 
     if (redirectTo) {

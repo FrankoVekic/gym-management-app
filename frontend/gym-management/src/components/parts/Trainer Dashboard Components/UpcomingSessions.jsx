@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import RecentTestimonials from './RecentTestimonials';
 import { getUpcomingTrainingSessions } from '../../api/api';
+import { Alert, Spinner } from 'react-bootstrap';
+
 
 const UpcomingSessions = () => {
     const [upcomingSessions, setUpcomingSessions] = useState([]);
@@ -24,8 +26,23 @@ const UpcomingSessions = () => {
         fetchUpcomingSessions();
     }, []);
 
-    if (loading) return <div>Loading...</div>;
-    if (error) return <div>{error}</div>;
+    if (loading) {
+        return (
+            <div className="d-flex justify-content-center align-items-center mt-5">
+                <Spinner animation="border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                </Spinner>
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="d-flex justify-content-center align-items-center mt-5">
+                <Alert variant="danger">{error}</Alert>
+            </div>
+        );
+    }
 
     const sessionsToDisplay = upcomingSessions.slice(0, 2);
 

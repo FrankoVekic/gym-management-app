@@ -4,7 +4,7 @@ import Statics from "../../static utils/Statics";
 import { jwtDecode } from "jwt-decode";
 import { getMemberProfile } from "../../api/api";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { Button, Alert } from "react-bootstrap";
+import { Button, Alert, Spinner } from "react-bootstrap";
 import { updateUserProfile } from "../../api/api";
 
 const ProfileContent = () => {
@@ -79,8 +79,23 @@ const ProfileContent = () => {
         }
     };
 
-    if (loading) return <p>Loading...</p>;
-    if (errorMessage) return <p>Error: {errorMessage}</p>;
+    if (loading) {
+        return (
+            <div className="d-flex justify-content-center align-items-center mt-5">
+                <Spinner animation="border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                </Spinner>
+            </div>
+        );
+    }
+
+    if (errorMessage) {
+        return (
+            <div className="d-flex justify-content-center align-items-center mt-5">
+                <Alert variant="danger">{errorMessage}</Alert>
+            </div>
+        );
+    }
 
     return (
         <div className="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabIndex={0}>

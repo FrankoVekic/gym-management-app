@@ -187,8 +187,9 @@ const TrainingSessions = () => {
                 </Spinner>
             </div>
         );
-
-    } if (error) {
+    } 
+    
+    if (error) {
         return (
             <div className="d-flex justify-content-center align-items-center mt-5">
                 <Alert variant="danger">{error}</Alert>
