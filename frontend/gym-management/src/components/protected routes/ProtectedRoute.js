@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { jwtDecode } from 'jwt-decode'; 
 import { Outlet, Navigate, useLocation } from 'react-router-dom';
-import { Alert, Spinner } from 'react-bootstrap';
+import { Spinner } from 'react-bootstrap';
 
 
 const ProtectedRoute = () => {
@@ -36,7 +36,7 @@ const ProtectedRoute = () => {
         checkAuth();
     }, [token]); 
 
-    // TODO: EDIT LOGINS WITH ALERTS
+    
     if (loading) {
         return (
             <div className="d-flex justify-content-center align-items-center mt-5">

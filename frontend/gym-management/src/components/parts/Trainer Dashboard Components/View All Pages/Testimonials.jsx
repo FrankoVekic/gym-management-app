@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { getTestimonialUsers } from '../../../api/api';
 import { Alert, Spinner } from 'react-bootstrap';
+import URLSaver from '../../URLSaver';
+
 
 
 // TODO: ADD PAGINATION
@@ -46,21 +48,25 @@ const Testimonials = () => {
     }
 
     return (
-        <div className="recent-testimonials-container">
-            <div className="card">
-                <div className="card-header d-flex justify-content-between align-items-center">
-                    <h5>All Testimonials</h5>
-                </div>
-                <div className="card-body">
-                    <ul className="list-group">
-                        {feedback.map(item => (
-                            <li key={item.id} className="list-group-item">
-                                <p><strong>{item.user.firstName}:</strong> {item.testimonials.content}</p>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
+        <div className="container mt-5">
+            <div className="d-flex flex-row mb-3">
+                <URLSaver />
             </div>
+
+                <div className="card">
+                    <div className="card-header d-flex justify-content-between align-items-center">
+                        <h5>All Testimonials</h5>
+                    </div>
+                    <div className="card-body">
+                        <ul className="list-group">
+                            {feedback.map(item => (
+                                <li key={item.id} className="list-group-item">
+                                    <p><strong>{item.user.firstName}:</strong> {item.testimonials.content}</p>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                </div>
         </div>
     );
 };

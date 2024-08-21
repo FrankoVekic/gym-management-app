@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {jwtDecode} from 'jwt-decode'; 
 import { Outlet, Navigate, useLocation } from 'react-router-dom';
-import { Alert, Spinner } from 'react-bootstrap';
+import { Spinner } from 'react-bootstrap';
 
 
 const MemberProtectedRoute = () => {
