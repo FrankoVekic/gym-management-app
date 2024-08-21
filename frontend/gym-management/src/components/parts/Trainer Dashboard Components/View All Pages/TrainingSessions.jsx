@@ -7,13 +7,13 @@ import {
     deleteTrainingSession,
     updateTrainingSession
 } from '../../../api/api';
-import { Modal, Button, Form, Alert } from 'react-bootstrap';
+import { Modal, Button, Form, Alert, Spinner } from 'react-bootstrap';
 import URLSaver from '../../URLSaver';
 
 // TODO: When updating only date is selected
 // TODO: When selecting (updating) date is not as it should be
-// TODO: Add success and error messages
 // TODO: Validation when updating and asking if user is sure to save changed data
+// TODO: Remove time out from everywhere and get response body from backend
 const TrainingSessions = () => {
     const [upcomingSessions, setUpcomingSessions] = useState([]);
     const [trainingTypes, setTrainingTypes] = useState([]);
@@ -28,6 +28,9 @@ const TrainingSessions = () => {
         trainer: ''
     });
     const [validationError, setValidationError] = useState('');
+    const [showMessage, setShowMessage] = useState(false);
+    const [showUpdateMessage, setShowUpdateMessage] = useState(false);
+    const [showDeleteMessage, setShowDeleteMessage] = useState(false);
 
     useEffect(() => {
         const fetchUpcomingSessions = async () => {
@@ -72,9 +75,9 @@ const TrainingSessions = () => {
             const formattedDate = new Date(session.sessionDate).toISOString().slice(0, 16);
 
             setFormData({
-                trainingType: session.trainingType,
+                trainingType: session.trainingType.id,
                 sessionDate: formattedDate,
-                trainer: session.trainer
+                trainer: session.trainer.id
             });
             setEditingSession(session);
         } else {
@@ -87,17 +90,6 @@ const TrainingSessions = () => {
         }
         setValidationError('');
         setShowModal(true);
-    };
-
-    const handleDelete = async (sessionId) => {
-        if (window.confirm("Are you sure you want to remove this training session?")) {
-            try {
-                await deleteTrainingSession(sessionId);
-                window.location.reload();
-            } catch (error) {
-                console.error('Failed to delete session', error);
-            }
-        };
     };
 
     const handleCloseModal = () => setShowModal(false);
@@ -137,13 +129,33 @@ const TrainingSessions = () => {
             };
 
             if (editingSession) {
-                console.log('Updating session:', sessionData);
-                await updateTrainingSession({ id: editingSession.sessionId, trainingType: trainingType, date: sessionDate, trainer: trainer });
-                window.location.reload();
+
+                if (window.confirm("Are you sure you want to update this training session?")) {
+                    setShowModal(false);
+                    setShowUpdateMessage(true);
+                    try {
+                        await updateTrainingSession({ id: editingSession.sessionId, trainingType: trainingType, date: sessionDate, trainer: trainer });
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 2000);
+                    } catch (error) {
+                        setError("Error while updating training session. Please try again later.");
+                    }
+                }
             } else {
-                console.log('Creating new session:', sessionData);
-                await createNewTrainingSession(sessionData);
-                window.location.reload();
+
+                if (window.confirm("Are you sure you want to create this training session?")) {
+                    setShowModal(false);
+                    setShowMessage(true);
+                    try {
+                        await createNewTrainingSession(sessionData);
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 2000);
+                    } catch (error) {
+                        setError("Error while creating new training session. Please try again later.");
+                    }
+                }
             }
         } catch (error) {
             console.error('Failed to submit form', error);
@@ -151,14 +163,59 @@ const TrainingSessions = () => {
         setShowModal(false);
     };
 
-    if (loading) return <div>Loading...</div>;
-    if (error) return <div>{error}</div>;
+
+    const handleDelete = async (sessionId) => {
+        if (window.confirm("Are you sure you want to delete this training session?")) {
+            setShowDeleteMessage(true);
+            try {
+                await deleteTrainingSession(sessionId);
+
+                setTimeout(() => {
+                    window.location.reload();
+                }, 500);
+            } catch (error) {
+                console.error('Failed to delete session', error);
+            }
+        };
+    };
+
+    if (loading) {
+        return (
+            <div className="d-flex justify-content-center align-items-center mt-5">
+                <Spinner animation="border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                </Spinner>
+            </div>
+        );
+
+    } if (error) {
+        return (
+            <div className="d-flex justify-content-center align-items-center mt-5">
+                <Alert variant="danger">{error}</Alert>
+            </div>
+        );
+    }
 
     return (
         <div className="container mt-5">
-            <div className="d-flex flex-row mb-5">
+            <div className="d-flex flex-row mb-3">
                 <URLSaver />
             </div>
+
+            {showMessage &&
+                <div className="d-flex justify-content-center align-items-center mb-5">
+                    <Alert variant="success">Training Session was Successfully Created!</Alert>
+                </div>}
+
+            {showUpdateMessage &&
+                <div className="d-flex justify-content-center align-items-center mb-5">
+                    <Alert variant="info">Training Session was Successfully Updated!</Alert>
+                </div>}
+
+            {showDeleteMessage &&
+                <div className="d-flex justify-content-center align-items-center mb-5">
+                    <Alert variant="danger">Training Session was Successfully Deleted!</Alert>
+                </div>}
 
             <h2 className="mb-4 text-center">All Upcoming Training Sessions</h2>
             <div className="text-center mb-4">
