@@ -61,5 +61,11 @@ public class TrainingSessionController {
         return ResponseEntity.ok("Training Session successfully updated");
 
     }
+
+    @GetMapping("{id}")
+    public ResponseEntity<SpecTrainingSessionDto> getTrainingSession(@PathVariable("id") Long id) {
+        SpecTrainingSessionDto trainingSessionDto = trainingSessionService.getTrainingSessionById(id);
+        return ResponseEntity.ok(trainingSessionDto);
+    }
 }
 

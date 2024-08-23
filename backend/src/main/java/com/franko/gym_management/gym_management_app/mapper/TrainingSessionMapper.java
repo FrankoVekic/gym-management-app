@@ -36,4 +36,6 @@ public class TrainingSessionMapper {
                 ts.getTrainer().getId()
         );
     }
+
+
 }

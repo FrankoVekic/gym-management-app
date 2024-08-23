@@ -1,6 +1,7 @@
 package com.franko.gym_management.gym_management_app.mapper;
 
 import com.franko.gym_management.gym_management_app.dto.TrainerDto;
+import com.franko.gym_management.gym_management_app.dto.TrainerNameDto;
 import com.franko.gym_management.gym_management_app.model.Trainer;
 
 public class TrainerMapper {
@@ -25,4 +26,13 @@ public class TrainerMapper {
                 trainerDto.getTrainingSessions()
         );
     }
+
+    public static TrainerNameDto mapToTrainerName(Trainer trainer){
+        return new TrainerNameDto(
+                trainer.getId(),
+                trainer.getUser().getFirstName(),
+                trainer.getUser().getLastName()
+        );
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.franko.gym_management.gym_management_app.serviceImpl;
 
 import com.franko.gym_management.gym_management_app.dto.*;
+import com.franko.gym_management.gym_management_app.mapper.TrainerMapper;
 import com.franko.gym_management.gym_management_app.mapper.TrainingSessionMapper;
 import com.franko.gym_management.gym_management_app.model.Blog;
 import com.franko.gym_management.gym_management_app.model.Trainer;
@@ -149,5 +150,16 @@ public class TrainingSessionServiceImpl implements TrainingSessionService {
         return TrainingSessionMapper.mapFromObjectToUpdatedDto(ts);
 
 
+    }
+
+    @Override
+    public SpecTrainingSessionDto getTrainingSessionById(Long id) {
+        TrainingSession trainingSession = trainingSessionRepository.findById(id).orElseThrow(() -> new RuntimeException("Training session not found"));
+        return new SpecTrainingSessionDto(
+                trainingSession.getId(),
+                trainingSession.getTrainingType(),
+                trainingSession.getDate(),
+                TrainerMapper.mapToTrainerName(trainingSession.getTrainer())
+        );
     }
 }

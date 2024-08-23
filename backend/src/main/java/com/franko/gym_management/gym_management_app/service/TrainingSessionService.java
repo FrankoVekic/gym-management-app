@@ -19,4 +19,8 @@ public interface TrainingSessionService {
     void softDeleteById(Long id);
 
     TrainingSessionUpdateDto updateTrainingSession(TrainingSessionUpdateDto trainingSessionUpdateDto);
+
+    SpecTrainingSessionDto getTrainingSessionById(Long id);
+
+
 }

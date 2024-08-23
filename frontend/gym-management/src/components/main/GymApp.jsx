@@ -28,6 +28,7 @@ import UpcomingTrainings from '../pages/UpcomingTrainings';
 import MyTrainingSessions from '../pages/MyTrainingSessions';
 import TrainingSessions from '../parts/Trainer Dashboard Components/View All Pages/TrainingSessions';
 import Testimonials from '../parts/Trainer Dashboard Components/View All Pages/Testimonials';
+import EditTrainingSession from '../parts/Trainer Dashboard Components/View All Pages/EditTrainingSession';
 
 
 export default function GymApp() {
@@ -53,6 +54,7 @@ export default function GymApp() {
                                 <Route path="/trainer-management" element={<ManageComponent />} />
                                 <Route path="/training-sessions" element={<TrainingSessions/>} ></Route>
                                 <Route path="/testimonials" element={<Testimonials/>}></Route>
+                                <Route path="/training-sessions/:id" element={<EditTrainingSession/>}></Route>
                             </Route>
 
                             {/* ROUTES FOR ALL AUTHENTICATED USERS */}
