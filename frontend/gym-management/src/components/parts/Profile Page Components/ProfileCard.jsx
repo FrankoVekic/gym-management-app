@@ -1,12 +1,10 @@
-import React, { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../../context/AuthContext";
+import React, { useEffect, useState } from "react";
 import { getMemberProfile } from "../../api/api";
 import { jwtDecode } from 'jwt-decode';
 import Statics from '../../static utils/Statics';
 
 //TODO: Right now only members profile card query is good, for trainers it doesnt give status, training type and joined date
 const ProfileCard = () => {
-    const { authState } = useContext(AuthContext);
     const [profile, setProfile] = useState({});
 
     useEffect(() => {
@@ -27,7 +25,7 @@ const ProfileCard = () => {
         };
 
         fetchProfile();
-    }, [authState]);
+    }, []);
 
     return (
         <div className="col-12 col-lg-4 col-xl-3">

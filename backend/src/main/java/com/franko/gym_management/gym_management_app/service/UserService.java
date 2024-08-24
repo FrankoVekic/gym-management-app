@@ -1,12 +1,11 @@
 package com.franko.gym_management.gym_management_app.service;
 
-import com.franko.gym_management.gym_management_app.dto.UserCreationDto;
-import com.franko.gym_management.gym_management_app.dto.UserDto;
-import com.franko.gym_management.gym_management_app.dto.UserProfileUpdateDto;
-import com.franko.gym_management.gym_management_app.dto.UserProfileUpdateResponse;
+import com.franko.gym_management.gym_management_app.dto.*;
 import com.franko.gym_management.gym_management_app.model.User;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface UserService {
@@ -24,5 +23,7 @@ public interface UserService {
     void deleteUser(Long id);
 
     UserProfileUpdateResponse updateUserProfile(Long id, String firstname, String lastname);
+
+    void updateProfileImage(MultipartFile image, Long userId) throws IOException;
 
 }

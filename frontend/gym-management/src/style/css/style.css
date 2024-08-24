@@ -68,6 +68,7 @@
     height: 500px;
 }
 
+
 .header-bg-blogs {
     background-image: url('/src/style/images/blogbg.jpg');
     background-size: cover;
@@ -463,6 +464,12 @@ html, body {
 
 .list-group-item p {
     margin-bottom: 5px;
+}
+
+.profile-image {
+    max-width: 200px; 
+    max-height: 200px; 
+    object-fit: cover; 
 }
 
 @media (max-width: 768px) {

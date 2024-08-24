@@ -1,16 +1,19 @@
 package com.franko.gym_management.gym_management_app.serviceImpl;
 
-import com.franko.gym_management.gym_management_app.dto.UserCreationDto;
-import com.franko.gym_management.gym_management_app.dto.UserDto;
-import com.franko.gym_management.gym_management_app.dto.UserProfileUpdateDto;
-import com.franko.gym_management.gym_management_app.dto.UserProfileUpdateResponse;
+import com.franko.gym_management.gym_management_app.dto.*;
 import com.franko.gym_management.gym_management_app.mapper.UserMapper;
 import com.franko.gym_management.gym_management_app.model.User;
 import com.franko.gym_management.gym_management_app.repository.UserRepository;
 import com.franko.gym_management.gym_management_app.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,6 +22,8 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    private final Path rootLocation = Paths.get("src/main/resources/static/images/users/logos/");
 
     @Override
     public UserDto createUser(UserCreationDto userDto) {
@@ -93,4 +98,52 @@ public class UserServiceImpl implements UserService {
 
         return UserMapper.mapToUserProfileResponse(updatedUser);
     }
+
+    @Override
+    public void updateProfileImage(MultipartFile image, Long userId) throws IOException {
+        if (!Files.exists(rootLocation)) {
+            Files.createDirectories(rootLocation);
+        }
+
+        if (image == null || image.isEmpty()) {
+            throw new IllegalArgumentException("Image file is empty or null");
+        }
+
+        String originalFilename = image.getOriginalFilename();
+        if (originalFilename == null) {
+            throw new IllegalArgumentException("Image file has no original filename");
+        }
+
+        String filename = userId + "_" + originalFilename;
+
+        Path filePath = rootLocation.resolve(filename);
+        int count = 1;
+        while (Files.exists(filePath)) {
+            String fileExtension = getFileExtension(originalFilename);
+            String baseName = getBaseName(originalFilename);
+            filename = userId + "_" + baseName + "_" + count + "." + fileExtension;
+            filePath = rootLocation.resolve(filename);
+            count++;
+        }
+
+        try (InputStream inputStream = image.getInputStream()) {
+            Files.copy(inputStream, filePath);
+        }
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        user.setImage(filename);
+        userRepository.save(user);
+    }
+
+    private String getBaseName(String filename) {
+        int dotIndex = filename.lastIndexOf('.');
+        return (dotIndex == -1) ? filename : filename.substring(0, dotIndex);
+    }
+
+    private String getFileExtension(String filename) {
+        int dotIndex = filename.lastIndexOf('.');
+        return (dotIndex == -1) ? "" : filename.substring(dotIndex + 1);
+    }
+
 }

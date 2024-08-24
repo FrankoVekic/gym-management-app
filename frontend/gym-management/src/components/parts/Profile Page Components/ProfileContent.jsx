@@ -1,20 +1,17 @@
-import React, { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../../context/AuthContext";
+import React, { useEffect, useState } from "react";
 import Statics from "../../static utils/Statics";
 import { jwtDecode } from "jwt-decode";
-import { getMemberProfile } from "../../api/api";
+import { getMemberProfile, updateUserProfile, updateProfileImage } from "../../api/api";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Button, Alert, Spinner } from "react-bootstrap";
-import { updateUserProfile } from "../../api/api";
 
 const ProfileContent = () => {
-    const { authState } = useContext(AuthContext);
     const [profile, setProfile] = useState({});
     const [loading, setLoading] = useState(true);
     const [image, setImage] = useState(null);
     const [errorMessage, setErrorMessage] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
-    const [userIds, setUserId] = useState(null);
+    const [userId, setUserId] = useState(null);
 
     useEffect(() => {
         const fetchProfile = async () => {
@@ -25,9 +22,9 @@ const ProfileContent = () => {
                     return;
                 }
                 const decodedToken = jwtDecode(token);
-                const userId = decodedToken.userID;
-                setUserId(userId);
-                const response = await getMemberProfile(userId);
+                const tokenId = decodedToken.userID;
+                setUserId(tokenId);
+                const response = await getMemberProfile(tokenId);
                 setProfile(response.data);
             } catch (error) {
                 setErrorMessage("Failed to fetch profile.");
@@ -36,20 +33,22 @@ const ProfileContent = () => {
             }
         };
         fetchProfile();
-    }, [authState]);
+    }, []);
 
     const handleSubmit = async (values) => {
-        if(window.confirm('Are you sure you want to change your changes?')){
-        try {
-            await updateUserProfile({ id: userIds, firstname: values.firstName, lastname: values.lastName});
-            setSuccessMessage("Profile updated successfully.");
-            setErrorMessage("");
-            window.location.reload();
-        } catch (error) {
-            setErrorMessage("Failed to update profile.");
-            setSuccessMessage("");
+        if (window.confirm('Are you sure you want to change your profile?')) {
+            try {
+                await updateUserProfile({ id: userId, firstname: values.firstName, lastname: values.lastName });
+                setSuccessMessage("Profile updated successfully.");
+                setErrorMessage("");
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1000);
+            } catch (error) {
+                setErrorMessage("Failed to update profile.");
+                setSuccessMessage("");
+            }
         }
-    }
     };
 
     useEffect(() => {
@@ -69,15 +68,24 @@ const ProfileContent = () => {
 
     const handleImageUpload = async () => {
         if (!image) return;
+
         const formData = new FormData();
-        formData.append("image", image);
+        formData.append('image', image);
+        formData.append('userId', userId);
+
         try {
-            // await updateProfileImage(formData);
-            setSuccessMessage("Profile image updated successfully");
+            await updateProfileImage({ image, userId });
+            setSuccessMessage("Profile image updated successfully.");
+            setErrorMessage("");
+            setTimeout(() => {
+                window.location.reload();
+            }, 1000);
         } catch (error) {
             setErrorMessage("Failed to update profile image.");
+            setSuccessMessage("");
         }
     };
+
 
     if (loading) {
         return (
@@ -113,13 +121,32 @@ const ProfileContent = () => {
                                 <label className="col-12 form-label m-0">Profile Image</label>
                                 <div className="col-12">
                                     {profile.image ? (
-                                        <img src={`${Statics.imagesUsersLogoUrl}${profile.image}`} className="img-fluid" alt={`${profile.firstName} ${profile.lastName}`} />
+                                        <>
+                                            <img
+                                                src={`${Statics.imagesUsersLogoUrl}${profile.image}`}
+                                                className="img-fluid profile-image"
+                                                alt={`${profile.firstName} ${profile.lastName}`}
+                                            />
+                                            <input
+                                                type="file"
+                                                accept=".jpg, .jpeg, .png"
+                                                name="image"
+                                                onChange={handleFileChange}
+                                            />
+                                        </>
                                     ) : (
-                                        <input type="file" onChange={handleFileChange} />
+                                        <input
+                                            type="file"
+                                            accept=".jpg, .jpeg, .png"
+                                            name="image"
+                                            onChange={handleFileChange}
+                                        />
                                     )}
                                 </div>
                                 <div className="col-12">
-                                    <Button onClick={handleImageUpload} className="btn btn-primary">Upload Image</Button>
+                                    <Button onClick={handleImageUpload} className="btn btn-primary">
+                                        Upload Image
+                                    </Button>
                                 </div>
                             </div>
                         </div>
