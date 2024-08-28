@@ -17,6 +17,7 @@ public class CommentMapper {
         comment.setContent(commentDto.getContent());
         comment.setCreatedAt(commentDto.getCreatedAt());
         comment.setUser(UserMapper.mapToUser(commentDto.getUser()));
+        comment.setDeletedAt(commentDto.getDeletedAt());
 
         return comment;
     }
@@ -41,6 +42,7 @@ public class CommentMapper {
         commentDto.setContent(comment.getContent());
         commentDto.setCreatedAt(comment.getCreatedAt());
         commentDto.setUser(UserMapper.mapToUserDto(comment.getUser()));
+        commentDto.setDeletedAt(comment.getDeletedAt());
 
         return commentDto;
     }

@@ -1,10 +1,7 @@
 package com.franko.gym_management.gym_management_app.serviceImpl;
 
 
-import com.franko.gym_management.gym_management_app.dto.BlogCommentResponseDto;
-import com.franko.gym_management.gym_management_app.dto.CommentCreationDto;
-import com.franko.gym_management.gym_management_app.dto.CommentDto;
-import com.franko.gym_management.gym_management_app.dto.CommentUpdateDto;
+import com.franko.gym_management.gym_management_app.dto.*;
 import com.franko.gym_management.gym_management_app.mapper.CommentMapper;
 import com.franko.gym_management.gym_management_app.model.Blog;
 import com.franko.gym_management.gym_management_app.model.Comment;
@@ -85,5 +82,14 @@ public class CommentServiceImpl implements CommentService {
                 .stream()
                 .map(CommentMapper::mapFromObjectToResponse)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public void softDeleteById(CommentDeleteDto dto) {
+
+        Comment comment = commentRepository.findById(dto.getId()).orElseThrow(() -> new RuntimeException("Comment with given id not found"));
+
+        commentRepository.softDeleteById(comment.getId());
+
     }
 }
