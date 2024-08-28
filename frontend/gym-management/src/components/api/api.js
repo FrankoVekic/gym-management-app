@@ -210,3 +210,8 @@ export const updateProfileImage = async ({ image, userId }) => {
 export const updateComment = ({commentId, content, blogId, userId}) => {
     return axios.put(`${API_URL}/public/comments/updateComment`,{commentId, content, blogId, userId})
 }
+
+// DELETE COMMENT
+export const deleteComment = (id) => {
+    return axios.post(`${API_URL}/public/comments/deleteComment`, { id });
+};

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { getBlogById, updateBlog, deleteBlog, addCommentToBlog, updateComment } from "../../api/api";
+import { getBlogById, updateBlog, deleteBlog, addCommentToBlog, updateComment, deleteComment } from "../../api/api";
 import { Spinner, Alert, Button } from "react-bootstrap";
 import { AuthContext } from "../../context/AuthContext";
 import { jwtDecode } from "jwt-decode";
@@ -24,7 +24,7 @@ const BlogDetail = () => {
     const indexOfFirstComment = indexOfLastComment - commentsPerPage;
     const currentComments = comments.slice(indexOfFirstComment, indexOfLastComment);
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
-    
+
     const [isEditingBlog, setIsEditingBlog] = useState(false);
     const [editedBlog, setEditedBlog] = useState({ title: "", content: "" });
     
@@ -107,8 +107,8 @@ const BlogDetail = () => {
             const commentUpdateData = {
                 commentId: comment.id,
                 content: editedCommentContent,
-                blogId: blog.id, 
-                userId: decodedToken.userID 
+                blogId: blog.id,
+                userId: decodedToken.userID
             };
 
             try {
@@ -118,7 +118,7 @@ const BlogDetail = () => {
                         c.id === comment.id ? { ...c, content: editedCommentContent } : c
                     )
                 );
-                
+
                 setIsEditingCommentId(null);
                 setEditedCommentContent("");
             } catch (error) {
@@ -132,7 +132,7 @@ const BlogDetail = () => {
 
     const handleDeleteComment = async (commentId) => {
         if (window.confirm("Are you sure you want to delete this comment?")) {
-            // await deleteComment(commentId); 
+             await deleteComment(commentId); 
 
             setComments(prevComments => prevComments.filter(comment => comment.id !== commentId));
         }
@@ -228,11 +228,11 @@ const BlogDetail = () => {
                     )}
                 </div>
                 <div className="comments-section">
-                    <h3>Comments</h3>
-                    {currentComments.length === 0 ? (
+                    <h3>Comments:</h3>
+                    {currentComments.filter(comment => comment.deletedAt === null).length === 0 ? (
                         <p>No comments yet. Be the first to comment!</p>
                     ) : (
-                        currentComments.map((comment) => (
+                        currentComments.filter(comment => comment.deletedAt === null).map((comment) => (
                             <div key={comment.id} className="comment">
                                 <div className="d-flex justify-content-end mb-3">
                                     {comment.user.id === decodedToken.userID && (
