@@ -1,14 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { getBlogById, updateBlog, deleteBlog } from "../../api/api";
-import { Spinner, Alert } from "react-bootstrap";
+import { getBlogById, updateBlog, deleteBlog, addCommentToBlog } from "../../api/api";
+import { Spinner, Alert, Button } from "react-bootstrap";
 import { AuthContext } from "../../context/AuthContext";
-import { addCommentToBlog } from "../../api/api";
 import { jwtDecode } from "jwt-decode";
 import URLSaver from "../URLSaver";
 
 const BlogDetail = () => {
-
     const { id } = useParams();
     const [blog, setBlog] = useState(null);
     const [newComment, setNewComment] = useState("");
@@ -24,15 +22,14 @@ const BlogDetail = () => {
     const [showMessage, setShowMessage] = useState(false);
     const indexOfLastComment = currentPage * commentsPerPage;
     const indexOfFirstComment = indexOfLastComment - commentsPerPage;
-    const currentComments = comments.slice(
-        indexOfFirstComment,
-        indexOfLastComment,
-    );
-
+    const currentComments = comments.slice(indexOfFirstComment, indexOfLastComment);
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
-    const [isEditing, setIsEditing] = useState(false);
+    
+    const [isEditingBlog, setIsEditingBlog] = useState(false);
     const [editedBlog, setEditedBlog] = useState({ title: "", content: "" });
-
+    
+    const [isEditingCommentId, setIsEditingCommentId] = useState(null);
+    const [editedCommentContent, setEditedCommentContent] = useState("");
 
     useEffect(() => {
         const fetchBlog = async () => {
@@ -49,7 +46,6 @@ const BlogDetail = () => {
         };
         fetchBlog();
     }, [id]);
-
 
     const handleDeleteBlog = async () => {
         if (window.confirm("Are you sure you want to delete this blog?")) {
@@ -81,9 +77,8 @@ const BlogDetail = () => {
         }
     };
 
-    const handleEdit = async () => {
-
-        if (isEditing) {
+    const handleEditBlog = async () => {
+        if (isEditingBlog) {
             try {
                 await updateBlog({
                     id: blog.id,
@@ -95,16 +90,48 @@ const BlogDetail = () => {
                     title: editedBlog.title,
                     content: editedBlog.content,
                 });
-                setIsEditing(false);
+                setIsEditingBlog(false);
             } catch (error) {
                 setError("Error updating blog. Please try again later.");
             }
         } else {
             setEditedBlog({ title: blog.title, content: blog.content });
-            setIsEditing(true);
+            setIsEditingBlog(true);
         }
     };
 
+    const handleEditComment = (comment) => {
+        if (isEditingCommentId === comment.id) {
+
+            if (editedCommentContent.trim() === "") return;
+
+            // await updateComment({ id: comment.id, content: editedCommentContent });
+
+            // remove after adding api
+            setComments(prevComments =>
+                prevComments.map(c =>
+                    c.id === comment.id ? { ...c, content: editedCommentContent } : c
+                )
+            );
+
+            // Reset editing state
+            setIsEditingCommentId(null);
+            setEditedCommentContent("");
+        } else {
+            setIsEditingCommentId(comment.id);
+            setEditedCommentContent(comment.content);
+        }
+    };
+
+    const handleDeleteComment = async (commentId) => {
+        if (window.confirm("Are you sure you want to delete this comment?")) {
+
+            // await deleteComment(commentId);
+
+            // remove after adding api
+            setComments(prevComments => prevComments.filter(comment => comment.id !== commentId));
+        }
+    };
 
     if (loading) {
         return (
@@ -119,22 +146,18 @@ const BlogDetail = () => {
     if (error) {
         return (
             <div className="d-flex justify-content-center align-items-center mt-5">
-
                 <Alert variant="danger">{error}</Alert>
             </div>
         );
     }
 
-
     if (showMessage) {
         return (
             <div className="d-flex justify-content-center align-items-center mt-5">
-
                 <Alert variant="success">Blog was successfully deleted.</Alert>
             </div>
         );
     }
-
 
     return (
         <div className="mb-3">
@@ -144,29 +167,26 @@ const BlogDetail = () => {
                         <URLSaver />
                     </div>
                     <div className="d-flex justify-content-end mb-3">
-
                         {blog.author.id === decodedToken.userID && (
                             <>
-                                <button className="btn btn-success me-2" onClick={handleEdit}>
-
-                                    {!isEditing ? <i className="bi bi-pen"></i> : "Save"}
-                                </button>
-                                <button className="btn btn-danger" onClick={handleDeleteBlog}>
-
+                                <Button className="btn btn-success me-2" onClick={handleEditBlog}>
+                                    {!isEditingBlog ? <i className="bi bi-pen"></i> : "Save"}
+                                </Button>
+                                <Button className="btn btn-danger" onClick={handleDeleteBlog}>
                                     <i className="bi bi-trash"></i>
-                                </button>
+                                </Button>
                             </>
                         )}
                     </div>
                 </div>
-                {isEditing ? (
+                {isEditingBlog ? (
                     <input
                         type="text"
                         value={editedBlog.title}
                         onChange={(e) =>
                             setEditedBlog({ ...editedBlog, title: e.target.value })
                         }
-                        style={isEditing ? { width: "100%", padding: "5px" } : null}
+                        style={isEditingBlog ? { width: "100%", padding: "5px" } : null}
                     />
                 ) : (
                     <h1 className="blog-title">{blog.title}</h1>
@@ -186,15 +206,14 @@ const BlogDetail = () => {
                     </span>
                 </p>
                 <div className="blog-content m-5">
-
-                    {isEditing ? (
+                    {isEditingBlog ? (
                         <textarea
                             value={editedBlog.content}
                             onChange={(e) =>
                                 setEditedBlog({ ...editedBlog, content: e.target.value })
                             }
                             style={
-                                isEditing
+                                isEditingBlog
                                     ? { width: "100%", padding: "5px", height: "100px" }
                                     : null
                             }
@@ -204,17 +223,34 @@ const BlogDetail = () => {
                     )}
                 </div>
                 <div className="comments-section">
-
                     <h3>Comments</h3>
                     {currentComments.length === 0 ? (
                         <p>No comments yet. Be the first to comment!</p>
                     ) : (
                         currentComments.map((comment) => (
                             <div key={comment.id} className="comment">
-
-                                <p className="comment-content">{comment.content}</p>
+                                <div className="d-flex justify-content-end mb-3">
+                                    {comment.user.id === decodedToken.userID && (
+                                        <>
+                                            <Button className="btn btn-success me-1 commentBtn" onClick={() => handleEditComment(comment)} >
+                                                {isEditingCommentId === comment.id ? "Save" : <i className="bi bi-pen"></i>}
+                                            </Button>
+                                            <Button className="btn btn-danger commentBtn" onClick={() => handleDeleteComment(comment.id)}>
+                                                <i className="bi bi-trash"></i>
+                                            </Button>
+                                        </>
+                                    )}
+                                </div>
+                                {isEditingCommentId === comment.id ? (
+                                    <textarea
+                                        value={editedCommentContent}
+                                        onChange={(e) => setEditedCommentContent(e.target.value)}
+                                        style={{ width: "100%", padding: "5px", height: "100px" }}
+                                    />
+                                ) : (
+                                    <p className="comment-content">{comment.content}</p>
+                                )}
                                 <p className="comment-meta">
-
                                     By
                                     <span className="comment-author">{` ${comment.user.firstName} ${comment.user.lastName + " "}`}</span>
                                     on
@@ -232,7 +268,6 @@ const BlogDetail = () => {
                         ))
                     )}
                     <div className="pagination justify-content-center align-items-center">
-
                         {Array.from(
                             { length: Math.ceil(comments.length / commentsPerPage) },
                             (_, i) => (
@@ -241,14 +276,12 @@ const BlogDetail = () => {
                                     onClick={() => paginate(i + 1)}
                                     className={`page-link ${currentPage === i + 1 ? "active" : ""}`}
                                 >
-
                                     {i + 1}
                                 </button>
                             ),
                         )}
                     </div>
                     <div className="add-comment-section mt-2">
-
                         <h4>Add a Comment</h4>
                         <textarea
                             className="form-control"
@@ -257,14 +290,14 @@ const BlogDetail = () => {
                             onChange={(e) => setNewComment(e.target.value)}
                             placeholder="Write your comment here..."
                         ></textarea>
-                        <button className="btn btn-primary mt-2" onClick={handleAddComment}>
-
+                        <Button className="btn btn-primary mt-2" onClick={handleAddComment}>
                             Add Comment
-                        </button>
+                        </Button>
                     </div>
                 </div>
             </div>
         </div>
     );
 };
+
 export default BlogDetail;
