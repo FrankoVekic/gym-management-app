@@ -69,41 +69,31 @@ const Forum = () => {
                                                 <div className="simplebar-content" style={{ padding: '16px' }}>
                                                     <nav className="nav nav-pills nav-gap-y-1 flex-column">
                                                         <button
-                                                            className={`nav-link nav-link-faded ${isActive(
-                                                                ""
-                                                            )}`}
+                                                            className={`nav-link nav-link-faded ${isActive("")}`}
                                                             onClick={() => handleFilterChange("")}
                                                         >
                                                             All Discussions
                                                         </button>
                                                         <button
-                                                            className={`nav-link nav-link-faded ${isActive(
-                                                                "lastWeek"
-                                                            )}`}
+                                                            className={`nav-link nav-link-faded ${isActive("lastWeek")}`}
                                                             onClick={() => handleFilterChange("lastWeek")}
                                                         >
                                                             From Last Week
                                                         </button>
                                                         <button
-                                                            className={`nav-link nav-link-faded ${isActive(
-                                                                "lastMonth"
-                                                            )}`}
+                                                            className={`nav-link nav-link-faded ${isActive("lastMonth")}`}
                                                             onClick={() => handleFilterChange("lastMonth")}
                                                         >
                                                             From Last Month
                                                         </button>
                                                         <button
-                                                            className={`nav-link nav-link-faded ${isActive(
-                                                                "mostComments"
-                                                            )}`}
+                                                            className={`nav-link nav-link-faded ${isActive("mostComments")}`}
                                                             onClick={() => handleFilterChange("mostComments")}
                                                         >
                                                             Most Commented
                                                         </button>
                                                         <button
-                                                            className={`nav-link nav-link-faded ${isActive(
-                                                                "leastComments"
-                                                            )}`}
+                                                            className={`nav-link nav-link-faded ${isActive("leastComments")}`}
                                                             onClick={() => handleFilterChange("leastComments")}
                                                         >
                                                             Least Commented
@@ -124,61 +114,58 @@ const Forum = () => {
                             </div>
                         </div>
                         <div className="inner-main-body p-2 p-sm-3 collapse forum-content show">
-                            {blogs.map(blog => (
-                                <div className="card mb-2" key={blog.id}>
-                                    <div className="card-body p-2 p-sm-3">
-                                        <div className="media forum-item">
-                                            <Link to={`/blogs/${blog.id}`} data-toggle="collapse" data-target=".forum-content">
-                                                <div
-                                                    className="avatar-wrapper"
-                                                    style={{
-                                                        backgroundImage: `${blog.author.image ? `url(${Statics.imagesUsersLogoUrl}${blog.author.image})` : `url(${Statics.noImageUrl})`}`,
-                                                        width: "60px",
-                                                        height: "60px",
-                                                        backgroundPosition: "center",
-                                                        backgroundSize: "cover",
-                                                        borderRadius: "50%",
-                                                        overflow: "hidden",
-                                                    }}
-                                                ></div>
-                                            </Link>
-                                            <div className="media-body">
-                                                <h6>
-                                                    <Link to={`/blogs/${blog.id}`} className="text-body">
-                                                        <h5>{blog.title}</h5>
+                            {blogs.map(blog => {
+
+                                const activeCommentsCount = blog.comments.filter(comment => comment.deletedAt === null).length;
+
+                                return (
+                                    <div className="card mb-2" key={blog.id}>
+                                        <div className="card-body p-2 p-sm-3">
+                                            <div className="media forum-item">
+                                                <Link to={`/blogs/${blog.id}`} data-toggle="collapse" data-target=".forum-content">
+                                                    <div
+                                                        className="avatar-wrapper"
+                                                        style={{
+                                                            backgroundImage: `${blog.author.image ? `url(${Statics.imagesUsersLogoUrl}${blog.author.image})` : `url(${Statics.noImageUrl})`}`,
+                                                            width: "60px",
+                                                            height: "60px",
+                                                            backgroundPosition: "center",
+                                                            backgroundSize: "cover",
+                                                            borderRadius: "50%",
+                                                            overflow: "hidden",
+                                                        }}
+                                                    ></div>
+                                                </Link>
+                                                <div className="media-body">
+                                                    <h6>
+                                                        <Link to={`/blogs/${blog.id}`} className="text-body">
+                                                            <h5>{blog.title}</h5>
+                                                        </Link>
+                                                    </h6>
+                                                    <p className="text-secondary">
+                                                        {blog.content}
+                                                    </p>
+                                                    <p className="text-muted">
+                                                        <a href="">{`${blog.author.firstName} ${blog.author.lastName}`}</a>
+                                                        <span className="text-secondary"> {new Date(blog.createdAt).toLocaleString(undefined, {
+                                                            year: 'numeric',
+                                                            month: '2-digit',
+                                                            day: '2-digit',
+                                                            hour: '2-digit',
+                                                            minute: '2-digit',
+                                                        })}</span>
+                                                    </p>
+                                                </div>
+                                                <div className="text-muted small text-center align-self-center">
+                                                    <Link to={`/blogs/${blog.id}`}>
+                                                        <i className="far fa-comment ml-2"></i> {activeCommentsCount} Comments
                                                     </Link>
-                                                </h6>
-                                                <p className="text-secondary">
-                                                    {blog.content}
-                                                </p>
-                                                <p className="text-muted">
-                                                    <a href="">{`${blog.author.firstName} ${blog.author.lastName}`}</a>
-                                                    <span className="text-secondary"> {new Date(blog.createdAt).toLocaleString(undefined, {
-                                                        year: 'numeric',
-                                                        month: '2-digit',
-                                                        day: '2-digit',
-                                                        hour: '2-digit',
-                                                        minute: '2-digit',
-                                                    })}</span>
-                                                </p>
+                                                </div>
                                             </div>
-                                            {blog.comments && blog.comments.length > 0 ? (
-                                                <div className="text-muted small text-center align-self-center">
-                                                    <Link to={`/blogs/${blog.id}`}>
-                                                        <i className="far fa-comment ml-2"></i> {blog.comments.length} Comments
-                                                    </Link>
-                                                </div>
-                                            ) : (
-                                                <div className="text-muted small text-center align-self-center">
-                                                    <Link to={`/blogs/${blog.id}`}>
-                                                        <i className="far fa-comment ml-2"></i> 0 Comments
-                                                    </Link>
-                                                </div>
-                                            )}
                                         </div>
                                     </div>
-                                </div>
-                            ))}
+                                );
+                            })}
                         </div>
                     </div>
                 </div>

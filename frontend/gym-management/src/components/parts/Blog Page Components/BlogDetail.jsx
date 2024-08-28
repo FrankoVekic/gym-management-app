@@ -22,7 +22,10 @@ const BlogDetail = () => {
     const [showMessage, setShowMessage] = useState(false);
     const indexOfLastComment = currentPage * commentsPerPage;
     const indexOfFirstComment = indexOfLastComment - commentsPerPage;
-    const currentComments = comments.slice(indexOfFirstComment, indexOfLastComment);
+
+    const activeComments = comments.filter(comment => comment.deletedAt === null);
+    const currentComments = activeComments.slice(indexOfFirstComment, indexOfLastComment);
+    
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     const [isEditingBlog, setIsEditingBlog] = useState(false);
@@ -132,7 +135,7 @@ const BlogDetail = () => {
 
     const handleDeleteComment = async (commentId) => {
         if (window.confirm("Are you sure you want to delete this comment?")) {
-             await deleteComment(commentId); 
+            await deleteComment(commentId);
 
             setComments(prevComments => prevComments.filter(comment => comment.id !== commentId));
         }
@@ -229,10 +232,10 @@ const BlogDetail = () => {
                 </div>
                 <div className="comments-section">
                     <h3>Comments:</h3>
-                    {currentComments.filter(comment => comment.deletedAt === null).length === 0 ? (
+                    {activeComments.length === 0 ? (
                         <p>No comments yet. Be the first to comment!</p>
                     ) : (
-                        currentComments.filter(comment => comment.deletedAt === null).map((comment) => (
+                        currentComments.map((comment) => (
                             <div key={comment.id} className="comment">
                                 <div className="d-flex justify-content-end mb-3">
                                     {comment.user.id === decodedToken.userID && (
@@ -274,7 +277,7 @@ const BlogDetail = () => {
                     )}
                     <div className="pagination justify-content-center align-items-center">
                         {Array.from(
-                            { length: Math.ceil(comments.length / commentsPerPage) },
+                            { length: Math.ceil(activeComments.length / commentsPerPage) },
                             (_, i) => (
                                 <button
                                     key={i + 1}
