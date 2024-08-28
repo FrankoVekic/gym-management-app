@@ -205,3 +205,8 @@ export const updateProfileImage = async ({ image, userId }) => {
 
     return await axios.post(`${API_URL}/public/users/uploadImage`, formData);
 };
+
+// UPDATE COMMENT
+export const updateComment = ({commentId, content, blogId, userId}) => {
+    return axios.put(`${API_URL}/public/comments/updateComment`,{commentId, content, blogId, userId})
+}

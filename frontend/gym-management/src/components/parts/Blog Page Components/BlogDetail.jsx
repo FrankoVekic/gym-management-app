@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { getBlogById, updateBlog, deleteBlog, addCommentToBlog } from "../../api/api";
+import { getBlogById, updateBlog, deleteBlog, addCommentToBlog, updateComment } from "../../api/api";
 import { Spinner, Alert, Button } from "react-bootstrap";
 import { AuthContext } from "../../context/AuthContext";
 import { jwtDecode } from "jwt-decode";
@@ -100,23 +100,30 @@ const BlogDetail = () => {
         }
     };
 
-    const handleEditComment = (comment) => {
+    const handleEditComment = async (comment) => {
         if (isEditingCommentId === comment.id) {
-
             if (editedCommentContent.trim() === "") return;
 
-            // await updateComment({ id: comment.id, content: editedCommentContent });
+            const commentUpdateData = {
+                commentId: comment.id,
+                content: editedCommentContent,
+                blogId: blog.id, 
+                userId: decodedToken.userID 
+            };
 
-            // remove after adding api
-            setComments(prevComments =>
-                prevComments.map(c =>
-                    c.id === comment.id ? { ...c, content: editedCommentContent } : c
-                )
-            );
-
-            // Reset editing state
-            setIsEditingCommentId(null);
-            setEditedCommentContent("");
+            try {
+                await updateComment(commentUpdateData);
+                setComments(prevComments =>
+                    prevComments.map(c =>
+                        c.id === comment.id ? { ...c, content: editedCommentContent } : c
+                    )
+                );
+                
+                setIsEditingCommentId(null);
+                setEditedCommentContent("");
+            } catch (error) {
+                setError("Error updating comment. Please try again later.");
+            }
         } else {
             setIsEditingCommentId(comment.id);
             setEditedCommentContent(comment.content);
@@ -125,10 +132,8 @@ const BlogDetail = () => {
 
     const handleDeleteComment = async (commentId) => {
         if (window.confirm("Are you sure you want to delete this comment?")) {
+            // await deleteComment(commentId); 
 
-            // await deleteComment(commentId);
-
-            // remove after adding api
             setComments(prevComments => prevComments.filter(comment => comment.id !== commentId));
         }
     };
@@ -232,7 +237,7 @@ const BlogDetail = () => {
                                 <div className="d-flex justify-content-end mb-3">
                                     {comment.user.id === decodedToken.userID && (
                                         <>
-                                            <Button className="btn btn-success me-1 commentBtn" onClick={() => handleEditComment(comment)} >
+                                            <Button className="btn btn-success me-1 commentBtn" onClick={() => handleEditComment(comment)}>
                                                 {isEditingCommentId === comment.id ? "Save" : <i className="bi bi-pen"></i>}
                                             </Button>
                                             <Button className="btn btn-danger commentBtn" onClick={() => handleDeleteComment(comment.id)}>
