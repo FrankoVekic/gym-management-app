@@ -3,6 +3,7 @@ package com.franko.gym_management.gym_management_app.api;
 import com.franko.gym_management.gym_management_app.dto.BlogCommentResponseDto;
 import com.franko.gym_management.gym_management_app.dto.CommentCreationDto;
 import com.franko.gym_management.gym_management_app.dto.CommentDto;
+import com.franko.gym_management.gym_management_app.dto.CommentUpdateDto;
 import com.franko.gym_management.gym_management_app.mapper.CommentMapper;
 import com.franko.gym_management.gym_management_app.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,5 +30,12 @@ public class CommentController {
     public ResponseEntity<List<BlogCommentResponseDto>> getAllComments(){
         List<BlogCommentResponseDto> comments = commentService.getAllComments();
         return ResponseEntity.ok(comments);
+    }
+
+    @PutMapping("updateComment")
+    public ResponseEntity<List<BlogCommentResponseDto>> updateComment(@RequestBody CommentUpdateDto commentUpdateDto){
+        List<BlogCommentResponseDto> list = commentService.updateComment(commentUpdateDto);
+
+        return ResponseEntity.ok(list);
     }
 }

@@ -4,6 +4,7 @@ package com.franko.gym_management.gym_management_app.serviceImpl;
 import com.franko.gym_management.gym_management_app.dto.BlogCommentResponseDto;
 import com.franko.gym_management.gym_management_app.dto.CommentCreationDto;
 import com.franko.gym_management.gym_management_app.dto.CommentDto;
+import com.franko.gym_management.gym_management_app.dto.CommentUpdateDto;
 import com.franko.gym_management.gym_management_app.mapper.CommentMapper;
 import com.franko.gym_management.gym_management_app.model.Blog;
 import com.franko.gym_management.gym_management_app.model.Comment;
@@ -51,6 +52,32 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public List<BlogCommentResponseDto> getAllComments() {
+
+        List<Comment> comments = commentRepository.findAll();
+
+        return comments
+                .stream()
+                .map(CommentMapper::mapFromObjectToResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<BlogCommentResponseDto> updateComment(CommentUpdateDto commentUpdateDto) {
+
+        Blog blog = blogRepository.findById(commentUpdateDto.getBlogId()).orElseThrow(() -> new RuntimeException("Blog with given id does not exist"));
+        Comment comment = commentRepository.findById(commentUpdateDto.getCommentId()).orElseThrow(() -> new RuntimeException("Comment with given id is does not exist"));
+
+        if(comment.getBlog().getId() != blog.getId()){
+            throw new IllegalArgumentException();
+        }
+
+        if(comment.getUser().getId() != commentUpdateDto.getUserId()){
+            throw new RuntimeException("This comment is not from the right user");
+        }
+
+        comment.setContent(commentUpdateDto.getContent());
+
+        commentRepository.save(comment);
 
         List<Comment> comments = commentRepository.findAll();
 
