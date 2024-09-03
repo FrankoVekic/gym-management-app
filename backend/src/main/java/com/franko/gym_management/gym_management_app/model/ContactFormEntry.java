@@ -43,4 +43,7 @@ public class ContactFormEntry {
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
+    @Column(name = "contacted", nullable = false)
+    private boolean contacted;
+
 }

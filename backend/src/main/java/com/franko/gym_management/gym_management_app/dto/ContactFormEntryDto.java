@@ -34,5 +34,7 @@ public class ContactFormEntryDto {
 
     private LocalDateTime createdAt = LocalDateTime.now();
 
+    private boolean contacted;
+
 
 }

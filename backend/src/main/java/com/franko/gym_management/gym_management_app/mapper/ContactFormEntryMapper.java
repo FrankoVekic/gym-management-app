@@ -12,7 +12,8 @@ public class ContactFormEntryMapper {
                 contactFormEntriesDto.getEmail(),
                 contactFormEntriesDto.getPhoneNumber(),
                 contactFormEntriesDto.getMessage(),
-                contactFormEntriesDto.getCreatedAt()
+                contactFormEntriesDto.getCreatedAt(),
+                contactFormEntriesDto.isContacted()
         );
     }
 
@@ -23,7 +24,8 @@ public class ContactFormEntryMapper {
                 contactFormEntries.getEmail(),
                 contactFormEntries.getPhoneNumber(),
                 contactFormEntries.getMessage(),
-                contactFormEntries.getCreatedAt()
+                contactFormEntries.getCreatedAt(),
+                contactFormEntries.isContacted()
         );
     }
 }

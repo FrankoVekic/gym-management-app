@@ -28,6 +28,7 @@ public class ContactFormEntryServiceImpl implements ContactFormEntryService {
     @Override
     public ContactFormEntryDto createContactFormEntry(ContactFormEntryDto contactFormEntryDto) {
         ContactFormEntry contactFormEntry = ContactFormEntryMapper.mapToContactFormEntries(contactFormEntryDto);
+        contactFormEntry.setContacted(false);
         return ContactFormEntryMapper.mapToContactFormEntriesDto(contactFormEntryRepository.save(contactFormEntry));
     }
 }
