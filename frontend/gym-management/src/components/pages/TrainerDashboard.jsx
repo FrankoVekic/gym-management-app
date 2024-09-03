@@ -98,23 +98,29 @@ const TrainerDashboard = () => {
                             <Link to="/contact-entries" className="btn btn-primary btn-sm">View All</Link>
                         </div>
                         <div className="card-body">
-                            <ul className="list-group">
-                                {contactEntries.map((entry, index) => (
-                                    <li key={index} className="list-group-item">
-                                        <p><strong>Name:</strong> {entry.fullName}</p>
-                                        <p><strong>Email:</strong> {entry.email}</p>
-                                        <p><strong>Phone number:</strong> {entry.phoneNumber}</p>
-                                        <p><strong>Message:</strong> {entry.message.length > 50 ? entry.message.substring(0, 50) + '...' : entry.message}</p>
-                                        <p><strong>Created:</strong> {new Date(entry.createdAt).toLocaleString(undefined, {
-                                            year: 'numeric',
-                                            month: '2-digit',
-                                            day: '2-digit',
-                                            hour: '2-digit',
-                                            minute: '2-digit',
-                                        })}</p>
-                                    </li>
-                                ))}
-                            </ul>
+                            {contactEntries && contactEntries.length > 0 ? (
+                                <ul className="list-group">
+                                    {contactEntries.map((entry, index) => (
+                                        <li key={index} className="list-group-item">
+                                            <p><strong>Name:</strong> {entry.fullName}</p>
+                                            <p><strong>Email:</strong> {entry.email}</p>
+                                            <p><strong>Phone number:</strong> {entry.phoneNumber}</p>
+                                            <p><strong>Message:</strong> {entry.message.length > 50 ? entry.message.substring(0, 50) + '...' : entry.message}</p>
+                                            <p><strong>Created:</strong> {new Date(entry.createdAt).toLocaleString(undefined, {
+                                                year: 'numeric',
+                                                month: '2-digit',
+                                                day: '2-digit',
+                                                hour: '2-digit',
+                                                minute: '2-digit',
+                                            })}</p>
+                                        </li>
+                                    ))}
+                                </ul>
+                            ) : (
+                                <div className="alert alert-primary" role="alert">
+                                    No Contact Entries Yet
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
