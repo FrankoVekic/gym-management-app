@@ -10,19 +10,13 @@ const FooterComponent = () => {
                             <h6 className="text-uppercase mb-4 font-weight-bold">{Statics.firmName}</h6>
                             <p>{Statics.footerDescription}</p>
                         </div>
-                        <div className="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3" style={{ textAlign: 'center' }}>
-                            <h6 className="text-uppercase mb-4 font-weight-bold">TRAINING</h6>
-                            <p><a className="text-white" href="/">Available Trainings</a></p>
-                            <p><a className="text-white" href="/">View Training Schedule</a></p>
-                            <p><a className="text-white" href="/training-packages">Training Packages</a></p>
-                            <p><a className="text-white" href="/contact">Contact Us</a></p>
-                        </div>
+
                         <div className="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3" style={{ textAlign: 'center' }}>
                             <h6 className="text-uppercase mb-4 font-weight-bold">Resources</h6>
-                            <p><a className="text-white" href="/blogs">Blogs</a></p>
-                            <p><a className="text-white" href="/">FAQs</a></p>
-                            <p><a className="text-white" href="/">Customer Reviews</a></p>
-                            <p><a className="text-white" href="/">Terms and Conditions</a></p>
+                            <p><a className="text-white" href="/">{Statics.navbarHome}</a></p>
+                            <p><a className="text-white" href="/blogs">{Statics.navbarBlog}</a></p>
+                            <p><a className="text-white" href="/contact">{Statics.contactHeaderTitle}</a></p>
+                            <p><a className="text-white" href="/about">{Statics.navbarAbout}</a></p>
                         </div>
                         <div className="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3" style={{ textAlign: 'center' }}>
                             <h6 className="text-uppercase mb-4 font-weight-bold">Contact</h6>

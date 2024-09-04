@@ -3,12 +3,13 @@ import Statics from "../../static utils/Statics";
 import { jwtDecode } from "jwt-decode";
 import { getMemberProfile, updateUserProfile, updateProfileImage } from "../../api/api";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { Button, Alert, Spinner } from "react-bootstrap";
+import { Button, Alert } from "react-bootstrap";
 
 
 // TODO: Add validation for firstname and lastname
 const ProfileContent = () => {
     const [profile, setProfile] = useState({});
+    const [loading, setLoading] = useState(true);
     const [image, setImage] = useState(null);
     const [errorMessage, setErrorMessage] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
@@ -30,6 +31,7 @@ const ProfileContent = () => {
             } catch (error) {
                 setErrorMessage("Failed to fetch profile.");
             } finally {
+                setLoading(false);
             }
         };
         fetchProfile();
@@ -85,6 +87,15 @@ const ProfileContent = () => {
             setSuccessMessage("");
         }
     };
+
+
+    if (loading) {
+        return (
+            <div className="d-flex justify-content-center align-items-center mt-5">
+                    <span className="visually-hidden">Loading...</span>         
+            </div>
+        );
+    }
 
     if (errorMessage) {
         return (

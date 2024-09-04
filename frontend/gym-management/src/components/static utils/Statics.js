@@ -31,7 +31,7 @@ const Statics = {
     // navbar
     navbarTitle: 'FitnessPro',
     navbarHome: 'Home',
-    navbarAbout: 'About',
+    navbarAbout: 'About Us',
     navbarContact: 'Contact',
     navbarTraining: 'Training',
     navbarLogin: 'Login',

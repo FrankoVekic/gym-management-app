@@ -3,8 +3,10 @@ import Statics from "../../static utils/Statics";
 import { jwtDecode } from "jwt-decode";
 import { getTrainerProfile, updateUserProfile, updateProfileImage } from "../../api/api";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { Button, Alert, Spinner } from "react-bootstrap";
+import { Button, Alert } from "react-bootstrap";
 
+
+// TODO: Add validation for firstname and lastname
 const TrainerProfileContent = () => {
     const [trainer, setTrainer] = useState({});
     const [loading, setLoading] = useState(true);
@@ -87,12 +89,11 @@ const TrainerProfileContent = () => {
     };
 
 
+
     if (loading) {
         return (
             <div className="d-flex justify-content-center align-items-center mt-5">
-                <Spinner animation="border" role="status">
-                    <span className="visually-hidden">Loading...</span>
-                </Spinner>
+                    <span className="visually-hidden">Loading...</span>         
             </div>
         );
     }
