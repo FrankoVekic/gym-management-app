@@ -66,7 +66,7 @@ export default function HeaderComponent() {
                 </ul>
             </li>
             <li className="nav-item">
-                <Link className="nav-link text-blue" to="/profile-page">Profile</Link>
+                <Link className="nav-link text-blue" to="/trainer-profile-page">Profile</Link>
             </li>
             <li className="nav-item">
                 <button className="nav-link text-blue" onClick={logout}>Logout</button>

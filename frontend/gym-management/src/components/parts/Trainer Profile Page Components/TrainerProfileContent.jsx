@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Statics from "../../static utils/Statics";
 import { jwtDecode } from "jwt-decode";
-import { getMemberProfile, updateUserProfile, updateProfileImage } from "../../api/api";
+import { getTrainerProfile, updateUserProfile, updateProfileImage } from "../../api/api";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { Button, Alert, Spinner } from "react-bootstrap";
+import { Button, Alert } from "react-bootstrap";
 
-const ProfileContent = () => {
-    const [profile, setProfile] = useState({});
+const TrainerProfileContent = () => {
+    const [trainer, setTrainer] = useState({});
     const [image, setImage] = useState(null);
     const [errorMessage, setErrorMessage] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
@@ -23,8 +23,8 @@ const ProfileContent = () => {
                 const decodedToken = jwtDecode(token);
                 const tokenId = decodedToken.userID;
                 setUserId(tokenId);
-                const response = await getMemberProfile(tokenId);
-                setProfile(response.data);
+                const response = await getTrainerProfile(tokenId);
+                setTrainer(response.data);
             } catch (error) {
                 setErrorMessage("Failed to fetch profile.");
             } finally {
@@ -96,8 +96,8 @@ const ProfileContent = () => {
         <div className="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabIndex={0}>
             <Formik
                 initialValues={{
-                    firstName: profile.firstName || "",
-                    lastName: profile.lastName || ""
+                    firstName: trainer.firstName || "",
+                    lastName: trainer.lastName || ""
                 }}
                 onSubmit={handleSubmit}
             >
@@ -107,12 +107,12 @@ const ProfileContent = () => {
                             <div className="row gy-2">
                                 <label className="col-12 form-label m-0">Profile Image</label>
                                 <div className="col-12">
-                                    {profile.image ? (
+                                    {trainer.image ? (
                                         <>
                                             <img
-                                                src={`${Statics.imagesFEUrl}${profile.image}`}
+                                                src={`${Statics.imagesFEUrl}${trainer.image}`}
                                                 className="img-fluid profile-image"
-                                                alt={`${profile.firstName} ${profile.lastName}`}
+                                                alt={`${trainer.firstname} ${trainer.lastName}`}
                                             />
                                             <input
                                                 type="file"
@@ -163,4 +163,4 @@ const ProfileContent = () => {
     );
 };
 
-export default ProfileContent;
+export default TrainerProfileContent;

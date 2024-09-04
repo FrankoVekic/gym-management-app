@@ -30,6 +30,7 @@ import TrainingSessions from '../parts/Trainer Dashboard Components/View All Pag
 import Testimonials from '../parts/Trainer Dashboard Components/View All Pages/Testimonials';
 import EditTrainingSession from '../parts/Trainer Dashboard Components/View All Pages/EditTrainingSession';
 import ContactEntries from '../parts/Trainer Dashboard Components/View All Pages/ContactEntries';
+import TrainerProfilePage from '../pages/TrainerProfilePage';
 
 
 export default function GymApp() {
@@ -57,6 +58,7 @@ export default function GymApp() {
                                 <Route path="/testimonials" element={<Testimonials/>}></Route>
                                 <Route path="/training-sessions/:id" element={<EditTrainingSession/>}></Route>
                                 <Route path="/contact-entries" element={<ContactEntries/>}></Route>
+                                <Route path="/trainer-profile-page" element={<TrainerProfilePage />} />
                             </Route>
 
                             {/* ROUTES FOR ALL AUTHENTICATED USERS */}
@@ -66,13 +68,13 @@ export default function GymApp() {
                                 <Route path="/blogs/new-discussion" element={<BlogCreation />} />
                                 <Route path="/training-packages" element={<TrainingPackagesComponent />} />
                                 <Route path="/training-package-detail/:id" element={<TrainingPackageDetailComponent />} />
-                                <Route path="/profile-page" element={<ProfilePage />} />
                             </Route>
 
                             {/* MEMBER ROUTES */}
                             <Route element={<MemberProtectedRoute />}>
                                 <Route path="/upcoming-training-sessions" element={<UpcomingTrainings/>}></Route>
                                 <Route path="/my-training-sessions" element={<MyTrainingSessions/>}></Route>
+                                <Route path="/profile-page" element={<ProfilePage />} />
                             </Route>
 
                             <Route path="/" element={<HomeComponent />} />

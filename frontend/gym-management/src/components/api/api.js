@@ -215,3 +215,8 @@ export const updateComment = ({commentId, content, blogId, userId}) => {
 export const deleteComment = (id) => {
     return axios.post(`${API_URL}/public/comments/deleteComment`, { id });
 };
+
+// GET TRAINER PROFILE
+export const getTrainerProfile = (userId) => {
+    return axios.post(`${API_URL}/public/trainers/getTrainerProfile`, { userId });
+};
