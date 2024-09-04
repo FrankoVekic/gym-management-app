@@ -5,16 +5,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class MemberProfileDto {
+public class TrainerProfileDto {
 
-    private String firstName, lastName, email, role, image, trainingPackageName, status;
-
-    private LocalDateTime joinedDate;
+    private String firstName, lastName, email, image, role, status, description;
 
 }

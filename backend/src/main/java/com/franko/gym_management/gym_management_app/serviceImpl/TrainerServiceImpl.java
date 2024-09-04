@@ -1,8 +1,7 @@
 package com.franko.gym_management.gym_management_app.serviceImpl;
 
-import com.franko.gym_management.gym_management_app.dto.MemberResponseDto;
-import com.franko.gym_management.gym_management_app.dto.TrainerDto;
-import com.franko.gym_management.gym_management_app.dto.TrainerNameDto;
+import com.franko.gym_management.gym_management_app.dto.*;
+import com.franko.gym_management.gym_management_app.exceptions.ResourceNotFoundException;
 import com.franko.gym_management.gym_management_app.mapper.TrainerMapper;
 import com.franko.gym_management.gym_management_app.model.Trainer;
 import com.franko.gym_management.gym_management_app.repository.TrainerRepository;
@@ -10,6 +9,7 @@ import com.franko.gym_management.gym_management_app.service.TrainerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -53,4 +53,27 @@ public class TrainerServiceImpl implements TrainerService {
 
         return trainers;
     }
+
+    @Override
+    public TrainerProfileDto getTrainerProfile(Long id) {
+
+        List<Object[]> result = trainerRepository.getTrainerProfileDetails(id);
+
+        if (result.isEmpty()) {
+            throw new ResourceNotFoundException("No trainer found with ID: " + id);
+        }
+
+        Object[] userData = result.get(0);
+
+        return TrainerProfileDto.builder()
+                .firstName((String) userData[0])
+                .lastName((String) userData[1])
+                .email((String) userData[2])
+                .image((String) userData[3])
+                .role((String) userData[4])
+                .status((String) userData[5])
+                .description((String) userData[6])
+                .build();
+    }
+
 }

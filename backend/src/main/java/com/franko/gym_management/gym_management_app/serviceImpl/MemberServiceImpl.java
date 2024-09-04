@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -71,17 +73,15 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public MemberProfileDto getMemberProfile(Long id) {
-
         List<Object[]> result = memberRepository.getProfileDetails(id);
 
         if (result.isEmpty()) {
             throw new ResourceNotFoundException("No member found on ID: " + id);
         }
 
-        Object[] userData = result.getFirst();
+        Object[] userData = result.get(0);
 
-        return MemberProfileDto
-                .builder()
+        return MemberProfileDto.builder()
                 .firstName((String) userData[0])
                 .lastName((String) userData[1])
                 .email((String) userData[2])
@@ -89,6 +89,8 @@ public class MemberServiceImpl implements MemberService {
                 .role((String) userData[4])
                 .trainingPackageName((String) userData[5])
                 .status((String) userData[6])
+                .joinedDate(((Timestamp) userData[7]).toLocalDateTime())
                 .build();
     }
+
 }
