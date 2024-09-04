@@ -48,7 +48,7 @@ const ProfileCard = () => {
                                 ) : (
                                     <img
                                         src={imageSrc}
-                                        className="img-fluid rounded-circle"
+                                        className="img-fluid rounded-circle profile-logo"
                                         alt={`${profile.firstName} ${profile.lastName}`}
                                     />
                                 )}
