@@ -48,7 +48,7 @@ export default function CarouselComponent() {
                                         <h3 className="h5 fw-bolder">{trainer.user.firstName + " " + trainer.user.lastName}</h3>
                                         <img
                                             className="d-block w-100 trainer-image"
-                                            src={`${Statics.imagesUsersLogoUrl}${trainer.user.image}`}
+                                            src={`${Statics.imagesFEUrl}${trainer.user.image}`}
                                             alt={trainer.user.firstName}
                                         />
                                     </div>

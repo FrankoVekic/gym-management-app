@@ -123,7 +123,7 @@ const ProfileContent = () => {
                                     {profile.image ? (
                                         <>
                                             <img
-                                                src={`${Statics.imagesUsersLogoUrl}${profile.image}`}
+                                                src={`${Statics.imagesFEUrl}${profile.image}`}
                                                 className="img-fluid profile-image"
                                                 alt={`${profile.firstName} ${profile.lastName}`}
                                             />

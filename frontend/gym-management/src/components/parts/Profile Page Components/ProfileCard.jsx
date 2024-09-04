@@ -3,15 +3,16 @@ import { getMemberProfile } from "../../api/api";
 import { jwtDecode } from 'jwt-decode';
 import Statics from '../../static utils/Statics';
 
-//TODO: Right now only members profile card query is good, for trainers it doesnt give status, training type and joined date
 const ProfileCard = () => {
     const [profile, setProfile] = useState({});
+    const [loading, setLoading] = useState(true); 
 
     useEffect(() => {
         const fetchProfile = async () => {
             try {
                 const token = localStorage.getItem("token");
                 if (!token) {
+                    setLoading(false); 
                     return;
                 }
 
@@ -21,11 +22,16 @@ const ProfileCard = () => {
                 const response = await getMemberProfile(userId);
                 setProfile(response.data);
             } catch (error) {
+            } finally {
+                setLoading(false); 
             }
         };
 
         fetchProfile();
     }, []);
+
+
+    const imageSrc = loading ? null : profile.image ? `${Statics.imagesFEUrl}${profile.image}` : Statics.noImageUrl;
 
     return (
         <div className="col-12 col-lg-4 col-xl-3">
@@ -37,11 +43,15 @@ const ProfileCard = () => {
                         </div>
                         <div className="card-body">
                             <div className="text-center mb-3">
-                                <img
-                                    src={profile.image ? `${Statics.imagesUsersLogoUrl}${profile.image}` : Statics.noImageUrl}
-                                    className="img-fluid rounded-circle"
-                                    alt={`${profile.firstName} ${profile.lastName}`}
-                                />
+                                {loading ? (
+                                    <div className="placeholder-image" /> 
+                                ) : (
+                                    <img
+                                        src={imageSrc}
+                                        className="img-fluid rounded-circle"
+                                        alt={`${profile.firstName} ${profile.lastName}`}
+                                    />
+                                )}
                             </div>
                             <h5 className="text-center mb-1">{profile.firstName} {profile.lastName}</h5>
                             <p className="text-center text-secondary mb-4">

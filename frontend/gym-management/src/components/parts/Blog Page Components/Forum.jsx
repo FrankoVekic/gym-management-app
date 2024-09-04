@@ -132,7 +132,7 @@ const Forum = () => {
                                                 <div
                                                     className="avatar-wrapper"
                                                     style={{
-                                                        backgroundImage: `${blog.author.image ? `url(${Statics.imagesUsersLogoUrl}${blog.author.image})` : `url(${Statics.noImageUrl})`}`,
+                                                        backgroundImage: `${blog.author.image ? `url(${Statics.imagesFEUrl}${blog.author.image})` : `url(${Statics.noImageUrl})`}`,
                                                         width: "60px",
                                                         height: "60px",
                                                         backgroundPosition: "center",

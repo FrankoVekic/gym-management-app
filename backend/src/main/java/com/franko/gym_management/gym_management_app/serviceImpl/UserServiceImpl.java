@@ -23,7 +23,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
-    private final Path rootLocation = Paths.get("src/main/resources/static/images/users/logos/");
+    private final Path rootLocation = Paths.get("D:/Projekti - vježbe/Vjezbe/Gym man app/gym-management-app/frontend/gym-management/public/logos/");
+
 
     @Override
     public UserDto createUser(UserCreationDto userDto) {

@@ -28,6 +28,7 @@ const ProtectedRoute = () => {
                     setIsAuthenticated(false);
                 }
             } else {
+                localStorage.removeItem('token');
                 setIsAuthenticated(false); 
             }
             setLoading(false); 
