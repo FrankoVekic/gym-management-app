@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { getTrainerProfile } from "../../api/api"; 
+import { getTrainerProfile } from "../../api/api";
 import { jwtDecode } from 'jwt-decode';
-import { Alert, Spinner } from "react-bootstrap";
+import { Alert } from "react-bootstrap";
 
 const TrainerOverview = () => {
     const [trainer, setTrainer] = useState(null);
@@ -36,9 +36,7 @@ const TrainerOverview = () => {
     if (loading) {
         return (
             <div className="d-flex justify-content-center align-items-center mt-5">
-                <Spinner animation="border" role="status">
-                    <span className="visually-hidden">Loading...</span>
-                </Spinner>
+                Loading...
             </div>
         );
     }
@@ -51,7 +49,7 @@ const TrainerOverview = () => {
         );
     }
 
-    if (!trainer) return <p>No trainer data found.</p>;
+    if (!trainer) return <Alert variant="danger">No trainer data found.</Alert>;
 
     return (
         <div
