@@ -111,7 +111,7 @@ const ContactEntries = () => {
                     </Form.Group>
 
                     {filteredEntries.length === 0 ? (
-                        <Alert variant="primary">No contact entries available.</Alert>
+                        <Alert variant="primary">No contact entries found.</Alert>
                     ) : (
                         <>
                             <Table striped bordered hover>

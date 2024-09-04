@@ -5,6 +5,8 @@ import { getMemberProfile, updateUserProfile, updateProfileImage } from "../../a
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Button, Alert, Spinner } from "react-bootstrap";
 
+
+// TODO: Add validation for firstname and lastname
 const ProfileContent = () => {
     const [profile, setProfile] = useState({});
     const [image, setImage] = useState(null);
