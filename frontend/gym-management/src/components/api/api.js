@@ -220,3 +220,23 @@ export const deleteComment = (id) => {
 export const getTrainerProfile = (userId) => {
     return axios.post(`${API_URL}/public/trainers/getTrainerProfile`, { userId });
 };
+
+// PAYPAL PAYMENT CALL
+export const startPayPalPayment = (price) => {
+    return axios.post(`${API_URL}/public/paypal/pay`, { price });
+};
+
+// SUCCESSFULL PAYMENT URL
+export const executePayPalPayment = (paymentId, payerId) => {
+    return axios.get(`${API_URL}/public/paypal/success`, {
+        params: {
+            paymentId,
+            PayerID: payerId
+        }
+    });
+};
+
+// CANCEL PAYMENT URL
+export const cancelPayPalPayment = () => {
+    return axios.get(`${API_URL}/public/paypal/cancel`);
+};

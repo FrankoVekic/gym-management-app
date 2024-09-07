@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { getTrainingPackageById } from '../../api/api';
+import { getTrainingPackageById, startPayPalPayment } from '../../api/api';
 import { Spinner, Alert } from 'react-bootstrap';
 import URLSaver from '../URLSaver';
 
@@ -25,6 +25,17 @@ const TrainingPackageDetailComponent = () => {
                 setLoading(false);
             });
     }, [id]);
+
+    const handlePay = async () => {
+        try {
+            const response = await startPayPalPayment(trainingPackage.price);
+            console.log(trainingPackage.price)
+            const paypalApprovalUrl = response.data;
+            window.location.href = paypalApprovalUrl; 
+        } catch (error) {
+            console.error('Error while creating PayPal payment:', error);
+        }
+    };
 
     if (loading) {
         return (
@@ -58,7 +69,7 @@ const TrainingPackageDetailComponent = () => {
                             <p className="card-text training-package-price">€{trainingPackage.price} / mo.</p>
                             <p className="training-package-features">{trainingPackage.features}</p>
                             <div className="payment-button">
-                                <button className="btn btn-primary">Pay</button>
+                                <button className="btn btn-primary" onClick={handlePay}>Pay</button>
                             </div>
                         </div>
                     </div>
