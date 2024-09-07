@@ -15,7 +15,8 @@ public class MemberMapper {
             member.getUser(),
             member.getStatus(),
             member.getJoinedDate(),
-            member.getTrainingPackage()
+            member.getTrainingPackage(),
+            member.getTrainingPackageExpirationDate()
         );
     }
 
@@ -25,7 +26,8 @@ public class MemberMapper {
             memberDto.getUser(),
             memberDto.getStatus(),
             memberDto.getJoinedDate(),
-            memberDto.getTrainingPackage()
+            memberDto.getTrainingPackage(),
+            memberDto.getTrainingPackageExpirationDate()
         );
     }
 

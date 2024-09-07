@@ -7,6 +7,7 @@ import com.franko.gym_management.gym_management_app.model.User;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 
 @Data
@@ -20,4 +21,5 @@ public class MemberDto {
     private Status status;
     private LocalDateTime joinedDate;
     private TrainingPackage trainingPackage;
+    private LocalDateTime trainingPackageExpirationDate;
 }

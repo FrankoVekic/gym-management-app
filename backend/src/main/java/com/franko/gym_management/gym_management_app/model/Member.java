@@ -7,6 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -33,5 +34,7 @@ public class Member {
 
     @ManyToOne
     private TrainingPackage trainingPackage;
+
+    private LocalDateTime trainingPackageExpirationDate;
 
 }

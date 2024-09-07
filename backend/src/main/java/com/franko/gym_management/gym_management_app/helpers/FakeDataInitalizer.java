@@ -469,7 +469,7 @@ public class FakeDataInitalizer implements CommandLineRunner {
 
         Status dummyStatus = statusRepository.getReferenceById(1L);
 
-        TrainingPackage dummyTrainingPackage = trainingPackageRepository.getReferenceById(3L);
+        TrainingPackage dummyTrainingPackage = trainingPackageRepository.getReferenceById(2L);
 
 
         Member member = Member
@@ -477,6 +477,7 @@ public class FakeDataInitalizer implements CommandLineRunner {
                 .user(exampleUser)
                 .trainingPackage(dummyTrainingPackage)
                 .status(dummyStatus)
+                .trainingPackageExpirationDate(LocalDateTime.now().plusMonths(1))
                 .build();
 
         memberRepository.save(member);
@@ -500,7 +501,7 @@ public class FakeDataInitalizer implements CommandLineRunner {
 
             Status activeStatus = statusRepository.getReferenceById(1L);
 
-            TrainingPackage trainingPackage = trainingPackageRepository.getReferenceById(3L);
+            TrainingPackage trainingPackage = trainingPackageRepository.getReferenceById(2L);
 
 
             Member exampleMember = Member
@@ -508,6 +509,7 @@ public class FakeDataInitalizer implements CommandLineRunner {
                     .user(savedMember)
                     .trainingPackage(trainingPackage)
                     .status(activeStatus)
+                    .trainingPackageExpirationDate(LocalDateTime.now().plusMonths(1))
                     .build();
 
             memberRepository.save(exampleMember);
