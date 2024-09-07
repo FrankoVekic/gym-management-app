@@ -57,7 +57,7 @@ const UpcomingSessions = () => {
                     <div className="card-body">
                         <ul className="list-group">
                             {sessionsToDisplay.map(session => (
-                                <li key={session.id} className="list-group-item d-flex justify-content-between align-items-center">
+                                <li key={session.sessionId} className="list-group-item d-flex justify-content-between align-items-center">
                                     <div>
                                         <p className="mb-1"><strong>Training Type:</strong> {session.trainingType}</p>
                                         <p className="mb-1"><strong>Trainer:</strong> {session.trainer}</p>

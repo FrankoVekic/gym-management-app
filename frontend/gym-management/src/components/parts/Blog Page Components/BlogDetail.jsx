@@ -25,12 +25,12 @@ const BlogDetail = () => {
 
     const activeComments = comments.filter(comment => comment.deletedAt === null);
     const currentComments = activeComments.slice(indexOfFirstComment, indexOfLastComment);
-    
+
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     const [isEditingBlog, setIsEditingBlog] = useState(false);
     const [editedBlog, setEditedBlog] = useState({ title: "", content: "" });
-    
+
     const [isEditingCommentId, setIsEditingCommentId] = useState(null);
     const [editedCommentContent, setEditedCommentContent] = useState("");
 
@@ -137,7 +137,15 @@ const BlogDetail = () => {
         if (window.confirm("Are you sure you want to delete this comment?")) {
             await deleteComment(commentId);
 
-            setComments(prevComments => prevComments.filter(comment => comment.id !== commentId));
+            const updatedComments = comments.filter(comment => comment.id !== commentId);
+            setComments(updatedComments);
+
+            const activeComments = updatedComments.filter(comment => comment.deletedAt === null);
+
+            const totalPages = Math.ceil(activeComments.length / commentsPerPage);
+            if (currentPage > totalPages) {
+                setCurrentPage(totalPages);
+            }
         }
     };
 
