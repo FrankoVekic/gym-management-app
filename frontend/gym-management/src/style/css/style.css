@@ -472,6 +472,65 @@ html, body {
     margin-bottom: 5px;
 }
 
+.success-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: #ffffff;
+    padding: 0 20px; 
+}
+
+.success-card {
+    background: #fff;
+    color: #333;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 500px; 
+    width: 100%;
+}
+
+
+.success-title {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #4a5568; 
+}
+
+.success-message {
+    font-size: 16px;
+    margin-bottom: 20px;
+    color: #555; 
+}
+
+.success-icon {
+    font-size: 50px;
+    color: #28a745; 
+    margin-bottom: 10px;
+}
+
+.fas.fa-check-circle {
+    font-size: 50px;
+}
+
+.home-button {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s;
+}
+
+.home-button:hover {
+    background-color: #218838;
+}
+
 .profile-logo{
     width: 300px;
     height: 300px;

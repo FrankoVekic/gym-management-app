@@ -31,6 +31,7 @@ import Testimonials from '../parts/Trainer Dashboard Components/View All Pages/T
 import EditTrainingSession from '../parts/Trainer Dashboard Components/View All Pages/EditTrainingSession';
 import ContactEntries from '../parts/Trainer Dashboard Components/View All Pages/ContactEntries';
 import TrainerProfilePage from '../pages/TrainerProfilePage';
+import SuccessComponent from '../parts/SuccessComponent';
 
 
 export default function GymApp() {
@@ -77,7 +78,9 @@ export default function GymApp() {
                                 <Route path="/profile-page" element={<ProfilePage />} />
                             </Route>
 
+
                             <Route path="/" element={<HomeComponent />} />
+                            <Route path="/success" element={<SuccessComponent />} />
                             <Route path="/about" element={<AboutComponent />} />
                             <Route path="/contact" element={<ContactComponent />} />
                             <Route path="/unauthorized" element={<UnauthorizedComponent />} />

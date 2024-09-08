@@ -17,17 +17,16 @@ public class PaypalController {
 
     private final PaypalService paypalService;
 
+    @Value("${paypal.success.url}")
+    private String successUrl;
 
-    private String successUrl = "http://localhost:3000/";
+    @Value("${paypal.cancel.url}")
+    private String cancelUrl;
 
-
-    private String cancelUrl = "http://localhost:3000/training-packages";
 
     @PostMapping("pay")
     public String payment(@RequestBody Map<String, Object> body) {
         Double price = Double.valueOf(body.get("price").toString());
-        String cancelUrl = this.cancelUrl;
-        String successUrl = this.successUrl;
 
         try {
             Payment payment = paypalService.createPayment(
@@ -56,9 +55,12 @@ public class PaypalController {
     @GetMapping("success")
     public String successPay(@RequestParam("paymentId") String paymentId, @RequestParam("PayerID") String payerId) {
         try {
+            System.out.println("Payment ID: " + paymentId);
+            System.out.println("Payer ID: " + payerId);
+
             Payment payment = paypalService.executePayment(paymentId, payerId);
             if (payment.getState().equals("approved")) {
-                return "redirect:/training-packages";
+                return "redirect:/";
             }
         } catch (PayPalRESTException e) {
             e.printStackTrace();
@@ -66,6 +68,7 @@ public class PaypalController {
 
         return "redirect:/";
     }
+
 
     @GetMapping("cancel")
     public String cancelPay() {
