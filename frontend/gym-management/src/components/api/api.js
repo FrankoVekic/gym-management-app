@@ -222,8 +222,8 @@ export const getTrainerProfile = (userId) => {
 };
 
 // PAYPAL PAYMENT CALL
-export const startPayPalPayment = (price) => {
-    return axios.post(`${API_URL}/public/paypal/pay`, { price });
+export const startPayPalPayment = ({price, trainingPackageId, userId}) => {
+    return axios.post(`${API_URL}/public/paypal/pay`, {price, trainingPackageId, userId});
 };
 
 // SUCCESSFULL PAYMENT URL

@@ -59,15 +59,15 @@ const ProfileCard = () => {
                             </p>
                             <ul className="list-group list-group-flush mb-4">
                                 <li className="list-group-item d-flex justify-content-between align-items-center">
-                                    <h6 className="m-0">Status</h6>
+                                    <h6 className="m-0">Status:</h6>
                                     <span>{profile.status}</span>
                                 </li>
                                 <li className="list-group-item d-flex justify-content-between align-items-center">
-                                    <h6 className="m-0">Joined Date</h6>
+                                    <h6 className="m-0">Joined Date:</h6>
                                     <span>{profile.joinedDate ? new Date(profile.joinedDate).toLocaleDateString() : 'N/A'}</span>
                                 </li>
                                 <li className="list-group-item d-flex justify-content-between align-items-center">
-                                    <h6 className="m-0">Training Type</h6>
+                                    <h6 className="m-0">Package:</h6>
                                     <span>{profile.trainingPackageName}</span>
                                 </li>
                             </ul>

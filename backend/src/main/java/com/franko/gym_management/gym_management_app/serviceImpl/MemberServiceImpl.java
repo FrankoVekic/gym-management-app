@@ -4,8 +4,10 @@ package com.franko.gym_management.gym_management_app.serviceImpl;
 import com.franko.gym_management.gym_management_app.dto.MemberDto;
 import com.franko.gym_management.gym_management_app.dto.MemberProfileDto;
 import com.franko.gym_management.gym_management_app.dto.MemberResponseDto;
+import com.franko.gym_management.gym_management_app.dto.TrainingPackageDto;
 import com.franko.gym_management.gym_management_app.exceptions.ResourceNotFoundException;
 import com.franko.gym_management.gym_management_app.mapper.MemberMapper;
+import com.franko.gym_management.gym_management_app.mapper.TrainingPackageMapper;
 import com.franko.gym_management.gym_management_app.model.Member;
 import com.franko.gym_management.gym_management_app.repository.MemberRepository;
 import com.franko.gym_management.gym_management_app.service.MemberService;
@@ -91,6 +93,20 @@ public class MemberServiceImpl implements MemberService {
                 .status((String) userData[6])
                 .joinedDate(((Timestamp) userData[7]).toLocalDateTime())
                 .build();
+    }
+
+    @Override
+    public MemberDto getMemberByUserId(Long id) {
+        return MemberMapper.mapToMemberDto(memberRepository.getMemberByUserId(id));
+
+    }
+
+    @Override
+    public void updateMemberTrainingPackage(Long userId, TrainingPackageDto trainingPackageDto, LocalDateTime expirationDate) {
+        MemberDto member = getMemberByUserId(userId);
+        member.setTrainingPackage(TrainingPackageMapper.mapToTrainingPackage(trainingPackageDto));
+        member.setTrainingPackageExpirationDate(expirationDate);
+        memberRepository.save(MemberMapper.mapToMember(member));
     }
 
 }

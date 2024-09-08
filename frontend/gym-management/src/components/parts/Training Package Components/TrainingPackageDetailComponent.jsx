@@ -3,12 +3,16 @@ import { useParams } from 'react-router-dom';
 import { getTrainingPackageById, startPayPalPayment } from '../../api/api';
 import { Spinner, Alert } from 'react-bootstrap';
 import URLSaver from '../URLSaver';
+import { jwtDecode } from "jwt-decode";
 
 const TrainingPackageDetailComponent = () => {
     const { id } = useParams();
     const [trainingPackage, setTrainingPackage] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+    const token = localStorage.getItem("token");
+    const decodedToken = jwtDecode(token);
+    const userId = decodedToken.userID;
 
     useEffect(() => {
         getTrainingPackageById(id)
@@ -28,11 +32,20 @@ const TrainingPackageDetailComponent = () => {
 
     const handlePay = async () => {
         try {
-            const response = await startPayPalPayment(trainingPackage.price);
-            const paypalApprovalUrl = response.data;
-            window.location.href = paypalApprovalUrl;
+            const response = await startPayPalPayment({ price: trainingPackage.price, trainingPackageId: trainingPackage.id, userId });
+            console.log('Response:', response);
+            console.log(response)
+            if (response.data.startsWith('This package is active until')) {
+                setError(response.data);
+            } else if (response.data.startsWith('This package costs less than your current one.')) {
+                setError(response.data); 
+            } else {
+                const paypalApprovalUrl = response.data;
+                window.location.href = paypalApprovalUrl;
+            }
         } catch (error) {
             console.error('Error while creating PayPal payment:', error);
+            setError('An unexpected error occurred while processing the payment.');
         }
     };
 
@@ -46,17 +59,11 @@ const TrainingPackageDetailComponent = () => {
         );
     }
 
-    if (error) {
-        return (
-            <div className="d-flex flex-column align-items-center" style={{ height: '80vh' }}>
-                <URLSaver />
-                <Alert variant="danger">{error}</Alert>
-            </div>
-        );
-    }
-
     return (
         <div className="container my-5">
+             {error && (
+                <Alert variant="danger">{error}</Alert>
+            )}
             <div className="row justify-content-center">
                 <div className="col-md-5">
                     <div className="card">
