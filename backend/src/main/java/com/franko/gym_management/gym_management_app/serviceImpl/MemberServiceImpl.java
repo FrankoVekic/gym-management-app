@@ -10,6 +10,7 @@ import com.franko.gym_management.gym_management_app.mapper.MemberMapper;
 import com.franko.gym_management.gym_management_app.mapper.TrainingPackageMapper;
 import com.franko.gym_management.gym_management_app.model.Member;
 import com.franko.gym_management.gym_management_app.repository.MemberRepository;
+import com.franko.gym_management.gym_management_app.repository.StatusRepository;
 import com.franko.gym_management.gym_management_app.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -26,6 +27,9 @@ public class MemberServiceImpl implements MemberService {
 
     @Autowired
     private MemberRepository memberRepository;
+
+    @Autowired
+    private StatusRepository statusRepository;
 
 
     @Override
@@ -106,6 +110,7 @@ public class MemberServiceImpl implements MemberService {
         MemberDto member = getMemberByUserId(userId);
         member.setTrainingPackage(TrainingPackageMapper.mapToTrainingPackage(trainingPackageDto));
         member.setTrainingPackageExpirationDate(expirationDate);
+        member.setStatus(statusRepository.getReferenceById(1L));
         memberRepository.save(MemberMapper.mapToMember(member));
     }
 
