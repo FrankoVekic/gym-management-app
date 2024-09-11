@@ -66,10 +66,11 @@ public class MemberServiceImpl implements MemberService {
 
         for (Object[] result : results) {
             MemberResponseDto dto = new MemberResponseDto();
-            dto.setFirstname((String) result[0]);
-            dto.setLastname((String) result[1]);
-            dto.setStatus((String) result[2]);
-            dto.setTrainingPackage((String) result[3]);
+            dto.setId((Long) result[0]);
+            dto.setFirstname((String) result[1]);
+            dto.setLastname((String) result[2]);
+            dto.setStatusId((Long) result[3]);
+            dto.setTrainingPackage((String) result[4]);
 
             members.add(dto);
         }

@@ -22,6 +22,12 @@ public class StatusController {
         return ResponseEntity.ok(statuses);
     }
 
+    @GetMapping("getMemberStatuses")
+    public ResponseEntity<List<StatusDto>> getMemberStatuses() {
+        List<StatusDto> statuses = statusService.getStatuses().stream().limit(5).toList();
+        return ResponseEntity.ok(statuses);
+    }
+
     @PostMapping("addStatus")
     public ResponseEntity<StatusDto> createStatus(@RequestBody StatusDto statusDto) {
         StatusDto savedStatus = statusService.createStatus(statusDto);

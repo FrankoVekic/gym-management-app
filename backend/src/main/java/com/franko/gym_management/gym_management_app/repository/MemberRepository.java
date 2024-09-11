@@ -19,7 +19,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Double getTotalPaid();
 
     @Query(value = """
-    SELECT u.first_name, u.last_name, s.status_type, tp.name
+    SELECT m.id, u.first_name, u.last_name, s.id, tp.name
     FROM users u
     LEFT JOIN members m ON m.user_id = u.id
     LEFT JOIN statuses s ON m.status_id = s.id

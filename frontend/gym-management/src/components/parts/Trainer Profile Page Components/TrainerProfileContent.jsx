@@ -6,7 +6,28 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Button, Alert } from "react-bootstrap";
 
 
-// TODO: Add validation for firstname and lastname
+const validate = values => {
+    const errors = {};
+
+    if (!values.firstName) {
+        errors.firstName = "First Name is required";
+    } else if (values.firstName.length < 2) {
+        errors.firstName = "First Name must be at least 2 characters long";
+    } else if (values.firstName.length > 50) {
+        errors.firstName = "First Name must be less than 50 characters long";
+    }
+
+    if (!values.lastName) {
+        errors.lastName = "Last Name is required";
+    } else if (values.lastName.length < 2) {
+        errors.lastName = "Last Name must be at least 2 characters long";
+    } else if (values.lastName.length > 50) {
+        errors.lastName = "Last Name must be less than 50 characters long";
+    }
+
+    return errors;
+};
+
 const TrainerProfileContent = () => {
     const [trainer, setTrainer] = useState({});
     const [loading, setLoading] = useState(true);
@@ -88,12 +109,10 @@ const TrainerProfileContent = () => {
         }
     };
 
-
-
     if (loading) {
         return (
             <div className="d-flex justify-content-center align-items-center mt-5">
-                    <span className="visually-hidden">Loading...</span>         
+                <span className="visually-hidden">Loading...</span>
             </div>
         );
     }
@@ -113,6 +132,7 @@ const TrainerProfileContent = () => {
                     firstName: trainer.firstName || "",
                     lastName: trainer.lastName || ""
                 }}
+                validate={validate}
                 onSubmit={handleSubmit}
             >
                 {({ handleSubmit }) => (

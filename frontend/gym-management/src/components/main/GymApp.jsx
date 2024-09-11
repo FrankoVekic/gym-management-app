@@ -53,12 +53,12 @@ export default function GymApp() {
 
                             {/* TRAINER ROUTES */}
                             <Route element={<TrainerProtectedRoute />}>
-                                <Route path="trainer-dashboard" element={<TrainerDashboard />} />
+                                <Route path="/trainer-dashboard" element={<TrainerDashboard />} />
                                 <Route path="/trainer-management" element={<ManageComponent />} />
-                                <Route path="/training-sessions" element={<TrainingSessions/>} ></Route>
-                                <Route path="/testimonials" element={<Testimonials/>}></Route>
-                                <Route path="/training-sessions/:id" element={<EditTrainingSession/>}></Route>
-                                <Route path="/contact-entries" element={<ContactEntries/>}></Route>
+                                <Route path="/training-sessions" element={<TrainingSessions />} ></Route>
+                                <Route path="/testimonials" element={<Testimonials />}></Route>
+                                <Route path="/training-sessions/:id" element={<EditTrainingSession />}></Route>
+                                <Route path="/contact-entries" element={<ContactEntries />}></Route>
                                 <Route path="/trainer-profile-page" element={<TrainerProfilePage />} />
                             </Route>
 
@@ -67,20 +67,20 @@ export default function GymApp() {
                                 <Route path="/blogs" element={<BlogComponent />} />
                                 <Route path="/blogs/:id" element={<BlogDetail />} />
                                 <Route path="/blogs/new-discussion" element={<BlogCreation />} />
-                                <Route path="/training-packages" element={<TrainingPackagesComponent />} />
-                                <Route path="/training-package-detail/:id" element={<TrainingPackageDetailComponent />} />
                             </Route>
 
                             {/* MEMBER ROUTES */}
                             <Route element={<MemberProtectedRoute />}>
-                                <Route path="/upcoming-training-sessions" element={<UpcomingTrainings/>}></Route>
-                                <Route path="/my-training-sessions" element={<MyTrainingSessions/>}></Route>
+                                <Route path="/training-packages" element={<TrainingPackagesComponent />} />
+                                <Route path="/training-package-detail/:id" element={<TrainingPackageDetailComponent />} />
+                                <Route path="/upcoming-training-sessions" element={<UpcomingTrainings />}></Route>
+                                <Route path="/my-training-sessions" element={<MyTrainingSessions />}></Route>
                                 <Route path="/profile-page" element={<ProfilePage />} />
+                                <Route path="/success" element={<SuccessComponent />} />
                             </Route>
 
 
                             <Route path="/" element={<HomeComponent />} />
-                            <Route path="/success" element={<SuccessComponent />} />
                             <Route path="/about" element={<AboutComponent />} />
                             <Route path="/contact" element={<ContactComponent />} />
                             <Route path="/unauthorized" element={<UnauthorizedComponent />} />

@@ -1,18 +1,21 @@
 import React, { useState } from 'react';
 import { Form, Button, Alert, Container, Row, Col } from 'react-bootstrap';
 import { forgotPassword } from '../api/api';
+import { useNavigate } from 'react-router-dom';
 
 const ForgotPasswordComponent = () => {
     const [email, setEmail] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await forgotPassword({ email }); 
+            await forgotPassword({ email });
             setSuccessMessage('Reset password email sent successfully.');
             setErrorMessage('');
+            setTimeout(() => navigate('/'), 1500);
         } catch (error) {
             if (error.response && error.response.status === 404) {
                 setErrorMessage('User with this email does not exist in the database.');

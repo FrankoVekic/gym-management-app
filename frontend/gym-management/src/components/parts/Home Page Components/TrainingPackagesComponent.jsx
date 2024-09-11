@@ -18,7 +18,11 @@ const TrainingPackagesComponent = () => {
     const cardStyle = {
         display: 'flex',
         flexDirection: 'column',
-        height: '100%'
+        height: '100%',
+    };
+
+    const buttonContainerStyle = {
+        marginTop: 'auto',
     };
 
     return (
@@ -32,7 +36,7 @@ const TrainingPackagesComponent = () => {
                     {packages.map(pkg => (
                         <div className="col-lg-6 col-xl-4" key={pkg.id}>
                             <div className="card mb-5 mb-xl-0" style={cardStyle}>
-                                <div className="card-body p-5">
+                                <div className="card-body p-5 d-flex flex-column">
                                     <div className="small text-uppercase fw-bold text-muted">{pkg.name}</div>
                                     <div className="mb-3">
                                         <span className="display-4 fw-bold">€{pkg.price}</span>
@@ -43,7 +47,7 @@ const TrainingPackagesComponent = () => {
                                             <li className="mb-2" key={index}><i className="bi bi-check text-primary"></i> {feature}</li>
                                         ))}
                                     </ul>
-                                    <div className="d-grid">
+                                    <div className="d-grid" style={buttonContainerStyle}>
                                         <Link
                                             to={`/training-package-detail/${pkg.id}`}
                                             className="btn btn-outline-primary"

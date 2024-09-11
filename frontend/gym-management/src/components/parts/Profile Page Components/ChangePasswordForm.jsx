@@ -3,6 +3,20 @@ import { Form, Button, Alert } from "react-bootstrap";
 import { changePassword } from "../../api/api";
 import { jwtDecode } from 'jwt-decode';
 
+const validatePassword = (password) => {
+    const errors = {};
+    if (!password) {
+        errors.password = 'Password is required';
+    }
+    else if (password.length > 100) {
+        errors.password = 'Password can have max: 100 characters'
+    } 
+    else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}/.test(password)) {
+        errors.password = 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character, and be at least 8 characters long';
+    }
+    return errors;
+};
+
 const ChangePasswordForm = () => {
     const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
@@ -33,6 +47,12 @@ const ChangePasswordForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        const passwordErrors = validatePassword(newPassword);
+        if (Object.keys(passwordErrors).length > 0) {
+            setErrorMessage(passwordErrors.password);
+            return;
+        }
 
         if (oldPassword === newPassword) {
             setErrorMessage('New password cannot be the same as old password');

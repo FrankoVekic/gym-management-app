@@ -43,7 +43,6 @@ const RecentTestimonials = () => {
         );
     }
 
-    // Limit feedback to maximum 4 items
     const limitedFeedback = feedback.slice(0, 3);
 
     return (

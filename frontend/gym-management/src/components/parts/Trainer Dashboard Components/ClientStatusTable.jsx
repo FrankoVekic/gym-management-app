@@ -1,7 +1,66 @@
-import React from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { useTable, usePagination, useGlobalFilter } from 'react-table';
+import { getMemberStatusesAndTrainingPackages, getAllStatuses } from '../../api/api'; 
 
-const ClientStatusTable = ({ columns, data }) => {
+const ClientStatusTable = () => {
+    const [data, setData] = useState([]);
+    const [statuses, setStatuses] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const fetchMembersData = async () => {
+            try {
+                const response = await getMemberStatusesAndTrainingPackages();
+                setData(response.data);
+
+                const statusResponse = await getAllStatuses();
+                setStatuses(statusResponse.data);
+            } catch (error) {
+                setError('Failed to fetch data.');
+                console.error(error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchMembersData();
+    }, []);
+
+    const handleStatusChange = async (memberId, newStatusId) => {
+        try {
+            // await updateMemberStatus(memberId, newStatusId);
+            setData(prevData => prevData.map(member => 
+                member.id === memberId ? { ...member, statusId: parseInt(newStatusId, 10) } : member
+            ));
+        } catch (error) {
+            console.error('Failed to update status:', error);
+            setError('Failed to update status.');
+        }
+    };
+
+    const columns = useMemo(() => [
+        { Header: 'First Name', accessor: 'firstname' },
+        { Header: 'Last Name', accessor: 'lastname' },
+        { 
+            Header: 'Status', 
+            accessor: 'statusId',
+            Cell: ({ row }) => (
+                <select 
+                    value={row.original.statusId}
+                    onChange={(e) => handleStatusChange(row.original.id, e.target.value)}
+                >
+                    {statuses.map(status => (
+                        <option key={status.id} value={status.id}>
+                            {status.statusType}
+                        </option>
+                    ))}
+                </select>
+            )
+        },
+        { Header: 'Training Package', accessor: 'trainingPackage' }
+    ], [statuses]);
+
     const {
         getTableProps,
         getTableBodyProps,
@@ -25,6 +84,14 @@ const ClientStatusTable = ({ columns, data }) => {
         useGlobalFilter,
         usePagination
     );
+
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+
+    if (error) {
+        return <div>{error}</div>;
+    }
 
     return (
         <div className="card">
@@ -57,7 +124,7 @@ const ClientStatusTable = ({ columns, data }) => {
                         {page.map(row => {
                             prepareRow(row);
                             return (
-                                <tr {...row.getRowProps()} key={row.id}>
+                                <tr {...row.getRowProps()} key={row.original.id}>
                                     {row.cells.map(cell => (
                                         <td {...cell.getCellProps()} key={cell.column.id}>
                                             {cell.render('Cell')}

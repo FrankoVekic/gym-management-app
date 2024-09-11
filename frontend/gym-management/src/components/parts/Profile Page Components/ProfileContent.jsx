@@ -6,7 +6,30 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Button, Alert } from "react-bootstrap";
 
 
-// TODO: Add validation for firstname and lastname
+const validate = (values) => {
+    let errors = {};
+
+    
+    if (!values.firstName.trim()) {
+        errors.firstName = 'First Name is required';
+    } else if (values.firstName.length < 2) {
+        errors.firstName = 'First Name must be at least 2 characters long';
+    } else if (values.firstName.length > 100) {
+        errors.firstName = 'First Name is too long';
+    }
+
+
+    if (!values.lastName.trim()) {
+        errors.lastName = 'Last Name is required';
+    } else if (values.lastName.length < 2) {
+        errors.lastName = 'Last Name must be at least 2 characters long';
+    } else if (values.lastName.length > 100) {
+        errors.lastName = 'Last Name is too long';
+    }
+
+    return errors;
+};
+
 const ProfileContent = () => {
     const [profile, setProfile] = useState({});
     const [loading, setLoading] = useState(true);
@@ -71,10 +94,6 @@ const ProfileContent = () => {
     const handleImageUpload = async () => {
         if (!image) return;
 
-        const formData = new FormData();
-        formData.append('image', image);
-        formData.append('userId', userId);
-
         try {
             await updateProfileImage({ image, userId });
             setSuccessMessage("Profile image updated successfully.");
@@ -88,11 +107,10 @@ const ProfileContent = () => {
         }
     };
 
-
     if (loading) {
         return (
             <div className="d-flex justify-content-center align-items-center mt-5">
-                    <span className="visually-hidden">Loading...</span>         
+                <span className="visually-hidden">Loading...</span>
             </div>
         );
     }
@@ -112,6 +130,7 @@ const ProfileContent = () => {
                     firstName: profile.firstName || "",
                     lastName: profile.lastName || ""
                 }}
+                validate={validate}
                 onSubmit={handleSubmit}
             >
                 {({ handleSubmit }) => (

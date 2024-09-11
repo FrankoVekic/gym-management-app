@@ -1,14 +1,28 @@
 import React, { useState } from 'react';
 import { Form, Button, Alert, Container, Row, Col } from 'react-bootstrap';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { resetPassword } from '../api/api';
-import { useNavigate } from 'react-router-dom';
+
+const validatePassword = (password) => {
+    const errors = {};
+    if (!password) {
+        errors.password = 'Password is required';
+    } 
+    else if (password.length > 100) {
+        errors.password = 'Password can have max: 100 characters'
+    }
+    else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}/.test(password)) {
+        errors.password = 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character, and be at least 8 characters long';
+    }
+
+    return errors;
+};
 
 const ResetPasswordComponent = () => {
     const location = useLocation();
-    const navigate = useNavigate();
     const searchParams = new URLSearchParams(location.search);
     const token = searchParams.get('token');
+    const navigate = useNavigate();
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
@@ -16,6 +30,13 @@ const ResetPasswordComponent = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        const passwordErrors = validatePassword(newPassword);
+        if (Object.keys(passwordErrors).length > 0) {
+            setErrorMessage(passwordErrors.password);
+            return;
+        }
+
         if (newPassword !== confirmPassword) {
             setErrorMessage('Password has to be repeated correctly.');
             return;
@@ -27,7 +48,7 @@ const ResetPasswordComponent = () => {
             setErrorMessage('');
 
             setTimeout(() => {
-                navigate('/login'); 
+                navigate('/login');
             }, 1000);
         } catch (error) {
             setErrorMessage('Failed to reset password.');

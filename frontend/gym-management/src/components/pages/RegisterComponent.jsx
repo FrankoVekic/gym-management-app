@@ -28,6 +28,10 @@ const RegisterComponent = () => {
     if (!values.firstname.trim()) {
       errors.firstname = 'First name is required';
     }
+    else if(values.firstname.length > 100){
+      errors.firstname = 'First can have max: 100 characters';
+    }
+    
 
     // lastname validation
     if (!values.lastname.trim()) {
@@ -44,14 +48,18 @@ const RegisterComponent = () => {
     // password validation
     if (!values.password.trim()) {
       errors.password = 'Password is required';
-    } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}/.test(values.password)) {
+    }
+    else if (values.password.length > 100) {
+      errors.password = 'Password can have max: 100 characters'
+    }
+    else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}/.test(values.password)) {
       errors.password = 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character, and be at least 8 characters long';
     }
 
     if (!values.repeatPassword.trim()) {
       errors.repeatPassword = 'Confirm password field is required';
     }
-    else if(values.repeatPassword !== values.password){
+    else if (values.repeatPassword !== values.password) {
       errors.repeatPassword = 'Password fields do not match'
     }
 

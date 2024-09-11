@@ -11,9 +11,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class MemberResponseDto {
 
+    private Long id;
     private String firstname;
     private String lastname;
-    private String status;
+    private Long statusId;
     private String trainingPackage;
 
 }

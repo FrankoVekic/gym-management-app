@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import ChartsCarouselComponent from '../parts/Trainer Dashboard Components/ChartsCarouselComponent';
 import 'react-circular-progressbar/dist/styles.css';
@@ -6,28 +6,15 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import ClientStatusTable from '../parts/Trainer Dashboard Components/ClientStatusTable';
 import StatsCards from '../parts/Trainer Dashboard Components/StatsCards';
 import UpcomingSessions from '../parts/Trainer Dashboard Components/UpcomingSessions';
-import { getMemberStatusesAndTrainingPackages, getAllContactEntries } from '../api/api';
+import { getAllContactEntries } from '../api/api';
 import { Alert, Spinner } from 'react-bootstrap';
 
 const TrainerDashboard = () => {
-    const [membersData, setMembersData] = useState([]);
     const [contactEntries, setContactEntries] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        const fetchMembersData = async () => {
-            try {
-                const response = await getMemberStatusesAndTrainingPackages();
-                setMembersData(response.data);
-            } catch (error) {
-                setError('Failed to fetch members data.');
-                console.error(error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
         const fetchContactEntries = async () => {
             try {
                 const response = await getAllContactEntries();
@@ -35,13 +22,13 @@ const TrainerDashboard = () => {
             } catch (error) {
                 setError('Failed to fetch contact entries.');
                 console.error(error);
+            } finally {
+                setLoading(false);
             }
         };
 
-        fetchMembersData();
         fetchContactEntries();
     }, []);
-
     const resources = [
         {
             id: 1,
@@ -54,13 +41,6 @@ const TrainerDashboard = () => {
             link: '/resources/core-strength',
         },
     ];
-
-    const columns = useMemo(() => [
-        { Header: 'First Name', accessor: 'firstname' },
-        { Header: 'Last Name', accessor: 'lastname' },
-        { Header: 'Status', accessor: 'status' },
-        { Header: 'Training Package', accessor: 'trainingPackage' }
-    ], []);
 
     if (loading) {
         return (
@@ -85,7 +65,7 @@ const TrainerDashboard = () => {
             <StatsCards />
             <div className="row mb-4">
                 <div className="col-md-12">
-                    <ClientStatusTable columns={columns} data={membersData} />
+                    <ClientStatusTable />
                 </div>
             </div>
             <UpcomingSessions />

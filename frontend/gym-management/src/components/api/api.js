@@ -240,3 +240,8 @@ export const executePayPalPayment = (paymentId, payerId) => {
 export const cancelPayPalPayment = () => {
     return axios.get(`${API_URL}/public/paypal/cancel`);
 };
+
+// GET ALL MEMBER STATUSES
+export const getAllStatuses = () => {
+    return axios.get(`${API_URL}/public/statuses/getMemberStatuses`);
+};
