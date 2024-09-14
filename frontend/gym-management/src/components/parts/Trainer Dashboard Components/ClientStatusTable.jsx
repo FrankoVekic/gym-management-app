@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useTable, usePagination, useGlobalFilter } from 'react-table';
-import { getMemberStatusesAndTrainingPackages, getAllStatuses } from '../../api/api'; 
+import { getMemberStatusesAndTrainingPackages, getAllStatuses, updateMemberStatus } from '../../api/api'; 
 
 const ClientStatusTable = () => {
     const [data, setData] = useState([]);
@@ -29,16 +29,23 @@ const ClientStatusTable = () => {
 
     const handleStatusChange = async (memberId, newStatusId) => {
         try {
-            // await updateMemberStatus(memberId, newStatusId);
-            setData(prevData => prevData.map(member => 
-                member.id === memberId ? { ...member, statusId: parseInt(newStatusId, 10) } : member
-            ));
+            const response = await updateMemberStatus({
+                memberId: memberId,
+                statusId: newStatusId
+            });
+    
+            if (response.status === 200) {
+                setData(prevData =>
+                    prevData.map(member =>
+                        member.id === memberId ? { ...member, statusId: parseInt(newStatusId, 10) } : member
+                    )
+                );
+            }
         } catch (error) {
-            console.error('Failed to update status:', error);
             setError('Failed to update status.');
         }
-    };
-
+    };    
+    
     const columns = useMemo(() => [
         { Header: 'First Name', accessor: 'firstname' },
         { Header: 'Last Name', accessor: 'lastname' },

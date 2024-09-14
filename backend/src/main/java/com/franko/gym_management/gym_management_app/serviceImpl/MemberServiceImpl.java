@@ -1,14 +1,12 @@
 package com.franko.gym_management.gym_management_app.serviceImpl;
 
 
-import com.franko.gym_management.gym_management_app.dto.MemberDto;
-import com.franko.gym_management.gym_management_app.dto.MemberProfileDto;
-import com.franko.gym_management.gym_management_app.dto.MemberResponseDto;
-import com.franko.gym_management.gym_management_app.dto.TrainingPackageDto;
+import com.franko.gym_management.gym_management_app.dto.*;
 import com.franko.gym_management.gym_management_app.exceptions.ResourceNotFoundException;
 import com.franko.gym_management.gym_management_app.mapper.MemberMapper;
 import com.franko.gym_management.gym_management_app.mapper.TrainingPackageMapper;
 import com.franko.gym_management.gym_management_app.model.Member;
+import com.franko.gym_management.gym_management_app.model.Status;
 import com.franko.gym_management.gym_management_app.repository.MemberRepository;
 import com.franko.gym_management.gym_management_app.repository.StatusRepository;
 import com.franko.gym_management.gym_management_app.service.MemberService;
@@ -113,6 +111,19 @@ public class MemberServiceImpl implements MemberService {
         member.setTrainingPackageExpirationDate(expirationDate);
         member.setStatus(statusRepository.getReferenceById(1L));
         memberRepository.save(MemberMapper.mapToMember(member));
+    }
+
+    @Override
+    public void updateMemberStatus(MemberStatusUpdateDto memberStatusUpdateDto) {
+
+        Member member = memberRepository.findById(memberStatusUpdateDto.getMemberId())
+                .orElseThrow(() -> new RuntimeException("Member not found"));
+
+        Status status = statusRepository.findById(memberStatusUpdateDto.getStatusId())
+                .orElseThrow(() -> new RuntimeException("Status not found"));
+
+        member.setStatus(status);
+        memberRepository.save(member);
     }
 
 }

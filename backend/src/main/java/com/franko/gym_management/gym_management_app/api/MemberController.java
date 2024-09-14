@@ -4,6 +4,7 @@ package com.franko.gym_management.gym_management_app.api;
 import com.franko.gym_management.gym_management_app.dto.MemberDto;
 import com.franko.gym_management.gym_management_app.dto.MemberProfileDto;
 import com.franko.gym_management.gym_management_app.dto.MemberResponseDto;
+import com.franko.gym_management.gym_management_app.dto.MemberStatusUpdateDto;
 import com.franko.gym_management.gym_management_app.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,16 +20,16 @@ public class MemberController {
 
 
     @Autowired
-    private MemberService  memberService;
+    private MemberService memberService;
 
     @GetMapping("getMembers")
-    public ResponseEntity<List<MemberDto>> getMembers(){
+    public ResponseEntity<List<MemberDto>> getMembers() {
         List<MemberDto> members = memberService.getMembers();
         return ResponseEntity.ok(members);
     }
 
     @PostMapping("addMember")
-    public ResponseEntity<MemberDto> createMember(@RequestBody MemberDto memberDto){
+    public ResponseEntity<MemberDto> createMember(@RequestBody MemberDto memberDto) {
         MemberDto savedMember = memberService.createMember(memberDto);
         return new ResponseEntity<>(savedMember, HttpStatus.CREATED);
     }
@@ -43,7 +44,7 @@ public class MemberController {
     public ResponseEntity<Double> getTotalPaid() {
         Double totalPaid = memberService.getTotalPaid();
 
-        if(totalPaid == null || totalPaid == 0){
+        if (totalPaid == null || totalPaid == 0) {
             return ResponseEntity.ok(0.0);
         }
 
@@ -61,6 +62,14 @@ public class MemberController {
         Long userId = payload.get("userId");
         MemberProfileDto memberProfile = memberService.getMemberProfile(userId);
         return ResponseEntity.ok(memberProfile);
+    }
+
+    @PutMapping("/update-status")
+    public ResponseEntity<String> updateMemberStatus(@RequestBody MemberStatusUpdateDto request) {
+
+        memberService.updateMemberStatus(request);
+        return ResponseEntity.ok("Status updated successfully");
+
     }
 
 

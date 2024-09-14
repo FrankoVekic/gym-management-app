@@ -245,3 +245,8 @@ export const cancelPayPalPayment = () => {
 export const getAllStatuses = () => {
     return axios.get(`${API_URL}/public/statuses/getMemberStatuses`);
 };
+
+// UPDATE MEMBER STATUS
+export const updateMemberStatus = ({statusId, memberId}) => {
+    return axios.put(`${API_URL}/public/members/update-status`, {statusId, memberId});
+}
