@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Builder
 @Data
 @NoArgsConstructor
@@ -16,5 +18,5 @@ public class MemberResponseDto {
     private String lastname;
     private Long statusId;
     private String trainingPackage;
-
+    private LocalDateTime trainingPackageExpirationDate;
 }

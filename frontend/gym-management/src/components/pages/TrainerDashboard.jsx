@@ -29,18 +29,6 @@ const TrainerDashboard = () => {
 
         fetchContactEntries();
     }, []);
-    const resources = [
-        {
-            id: 1,
-            title: 'How to Improve Client Retention',
-            link: '/resources/client-retention',
-        },
-        {
-            id: 2,
-            title: 'Top 10 Exercises for Core Strength',
-            link: '/resources/core-strength',
-        },
-    ];
 
     if (loading) {
         return (
@@ -101,25 +89,6 @@ const TrainerDashboard = () => {
                                     No Contact Entries Yet
                                 </div>
                             )}
-                        </div>
-                    </div>
-                </div>
-                <div className="col-md-6">
-                    <div className="card">
-                        <div className="card-header d-flex justify-content-between align-items-center">
-                            <h5>Resources for Trainers</h5>
-                            <Link to="/resources" className="btn btn-primary btn-sm">View All</Link>
-                        </div>
-                        <div className="card-body">
-                            <ul className="list-group">
-                                {resources.map(resource => (
-                                    <li key={resource.id} className="list-group-item">
-                                        <a href={resource.link} target="_blank" rel="noopener noreferrer">
-                                            {resource.title}
-                                        </a>
-                                    </li>
-                                ))}
-                            </ul>
                         </div>
                     </div>
                 </div>

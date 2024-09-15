@@ -69,6 +69,7 @@ public class MemberServiceImpl implements MemberService {
             dto.setLastname((String) result[2]);
             dto.setStatusId((Long) result[3]);
             dto.setTrainingPackage((String) result[4]);
+            dto.setTrainingPackageExpirationDate(((Timestamp) result[5]).toLocalDateTime());
 
             members.add(dto);
         }

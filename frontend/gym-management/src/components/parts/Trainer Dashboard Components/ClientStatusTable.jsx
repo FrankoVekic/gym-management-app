@@ -65,8 +65,14 @@ const ClientStatusTable = () => {
                 </select>
             )
         },
-        { Header: 'Training Package', accessor: 'trainingPackage' }
+        { Header: 'Training Package', accessor: 'trainingPackage' },
+        { 
+            Header: 'Expiration Date', 
+            accessor: 'trainingPackageExpirationDate',
+            Cell: ({ value }) => value ? new Date(value).toLocaleDateString() : 'N/A'
+        }
     ], [statuses]);
+    
 
     const {
         getTableProps,
