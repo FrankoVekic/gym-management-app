@@ -106,7 +106,7 @@ export default function HeaderComponent() {
                         style={{ width: '70px', height: '50px' }} />
                     {Statics.navbarTitle}
                 </Link>
-                <button className="navbar-toggler" type="button">
+                <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
