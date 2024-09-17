@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { getMemberProfile } from "../../api/api";
-import {jwtDecode} from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 import { Alert, Spinner } from "react-bootstrap";
 
 const Overview = () => {
@@ -52,7 +52,7 @@ const Overview = () => {
     if (error) {
         return (
             <div className="d-flex justify-content-center align-items-center mt-5">
-                <Alert variant="danger">{error}</Alert>
+                <Alert variant="danger">{error.message}</Alert>
             </div>
         );
     }
@@ -103,6 +103,16 @@ const Overview = () => {
                 </div>
                 <div className="col-7 col-md-9 bg-light border-start border-bottom border-white border-3">
                     <div className="p-2">{user.trainingPackageName !== null ? user.trainingPackageName : "-"}</div>
+                </div>
+                <div className="col-5 col-md-3 bg-light border-bottom border-white border-3">
+                    <div className="p-2">Expiration Date</div>
+                </div>
+                <div className="col-7 col-md-9 bg-light border-start border-bottom border-white border-3">
+                    <div className="p-2">
+                        {user.trainingPackageExpirationDate 
+                            ? new Date(user.trainingPackageExpirationDate).toLocaleDateString() 
+                            : "-"}
+                    </div>
                 </div>
                 <div className="col-5 col-md-3 bg-light border-bottom border-white border-3">
                     <div className="p-2">Status</div>

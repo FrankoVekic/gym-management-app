@@ -75,7 +75,7 @@ const TrainingPackageDetailComponent = () => {
                             <p className="card-text training-package-price">€{trainingPackage.price} / mo.</p>
                             <p className="training-package-features">{trainingPackage.features}</p>
                             <div className="payment-button">
-                                <button className="btn btn-primary" onClick={handlePay}>Purchase {trainingPackage.name}</button>
+                                <button className="btn btn-primary mb-4" onClick={handlePay}>Purchase {trainingPackage.name}</button>
                             </div>
                         </div>
                     </div>

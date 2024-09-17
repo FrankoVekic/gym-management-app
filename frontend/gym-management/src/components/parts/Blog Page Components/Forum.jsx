@@ -145,14 +145,14 @@ const Forum = () => {
                                             <div className="media-body">
                                                 <h6>
                                                     <Link to={`/blogs/${blog.id}`} className="text-body">
-                                                        <h5>{blog.title}</h5>
+                                                        <h5>{blog.title.length > 20 ? `${blog.title.slice(0, 20)}...` : blog.title}</h5>
                                                     </Link>
                                                 </h6>
                                                 <p className="text-secondary">
-                                                    {blog.content}
+                                                    {blog.content.length > 100 ? `${blog.content.slice(0, 100)}...` : blog.content}
                                                 </p>
                                                 <p className="text-muted">
-                                                    <a href="">{`${blog.author.firstName} ${blog.author.lastName}`}</a>
+                                                    <h6 href="">{`${blog.author.firstName} ${blog.author.lastName}`}</h6>
                                                     <span className="text-secondary"> {new Date(blog.createdAt).toLocaleString(undefined, {
                                                         year: 'numeric',
                                                         month: '2-digit',

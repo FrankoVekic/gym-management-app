@@ -68,7 +68,7 @@ const ProfileCard = () => {
                                 </li>
                                 <li className="list-group-item d-flex justify-content-between align-items-center">
                                     <h6 className="m-0">Package:</h6>
-                                    <span>{profile.trainingPackageName}</span>
+                                    <span>{profile.trainingPackageName !== null ? profile.trainingPackageName : "-"}</span>
                                 </li>
                             </ul>
                         </div>

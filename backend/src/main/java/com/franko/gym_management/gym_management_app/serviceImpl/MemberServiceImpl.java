@@ -86,6 +86,9 @@ public class MemberServiceImpl implements MemberService {
         }
 
         Object[] userData = result.get(0);
+        
+        LocalDateTime joinedDate = userData[7] != null ? ((Timestamp) userData[7]).toLocalDateTime() : null;
+        LocalDateTime trainingPackageExpirationDate = userData[8] != null ? ((Timestamp) userData[8]).toLocalDateTime() : null;
 
         return MemberProfileDto.builder()
                 .firstName((String) userData[0])
@@ -95,9 +98,11 @@ public class MemberServiceImpl implements MemberService {
                 .role((String) userData[4])
                 .trainingPackageName((String) userData[5])
                 .status((String) userData[6])
-                .joinedDate(((Timestamp) userData[7]).toLocalDateTime())
+                .joinedDate(joinedDate)
+                .trainingPackageExpirationDate(trainingPackageExpirationDate)
                 .build();
     }
+
 
     @Override
     public MemberDto getMemberByUserId(Long id) {

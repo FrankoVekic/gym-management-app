@@ -9,7 +9,7 @@ import { Button, Alert } from "react-bootstrap";
 const validate = (values) => {
     let errors = {};
 
-    
+
     if (!values.firstName.trim()) {
         errors.firstName = 'First Name is required';
     } else if (values.firstName.length < 2) {
@@ -139,7 +139,14 @@ const ProfileContent = () => {
                             <div className="row gy-2">
                                 <label className="col-12 form-label m-0">Profile Image</label>
                                 <div className="col-12">
-                                    {profile.image ? (
+                                    {profile.image === null || profile.image === 'noLogo.png' ? (
+                                        <input
+                                            type="file"
+                                            accept=".jpg, .jpeg, .png"
+                                            name="image"
+                                            onChange={handleFileChange}
+                                        />
+                                    ) : (
                                         <>
                                             <img
                                                 src={`${Statics.imagesFEUrl}${profile.image}`}
@@ -153,13 +160,6 @@ const ProfileContent = () => {
                                                 onChange={handleFileChange}
                                             />
                                         </>
-                                    ) : (
-                                        <input
-                                            type="file"
-                                            accept=".jpg, .jpeg, .png"
-                                            name="image"
-                                            onChange={handleFileChange}
-                                        />
                                     )}
                                 </div>
                                 <div className="col-12">

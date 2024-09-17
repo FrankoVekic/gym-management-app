@@ -15,6 +15,6 @@ public class MemberProfileDto {
 
     private String firstName, lastName, email, role, image, trainingPackageName, status;
 
-    private LocalDateTime joinedDate;
+    private LocalDateTime joinedDate, trainingPackageExpirationDate;
 
 }

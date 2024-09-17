@@ -32,7 +32,7 @@ const MemberProtectedRoute = () => {
                     setRedirectTo('/'); 
                 }
             } else {
-                setRedirectTo('/unauthorized'); 
+                setRedirectTo('/login'); 
             }
             setLoading(false); 
         };
