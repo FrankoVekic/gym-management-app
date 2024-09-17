@@ -14,6 +14,7 @@ const BlogDetail = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [formErrors, setFormErrors] = useState({ title: "", content: "" });
     const commentsPerPage = 3;
     const { authState } = useContext(AuthContext);
     const token = localStorage.getItem("token");
@@ -50,6 +51,33 @@ const BlogDetail = () => {
         fetchBlog();
     }, [id]);
 
+    const validateBlog = () => {
+        let errors = { title: "", content: "" };
+
+        if (!editedBlog.title.trim()) {
+            errors.title = 'Title is required';
+        } else if (editedBlog.title.length < 3) {
+            errors.title = 'Title must be at least 3 characters long';
+        } else if (editedBlog.title.length > 150) {
+            errors.title = 'Title is too long';
+        } else if (!/[a-zA-Z]/.test(editedBlog.title)) {
+            errors.title = 'Invalid input, try writing something else';
+        }
+
+        
+        if (!editedBlog.content.trim()) {
+            errors.content = 'Content is required';
+        } else if (editedBlog.content.length < 20) {
+            errors.content = 'Content must be at least 20 characters long';
+        } else if (editedBlog.content.length > 4500) {
+            errors.content = 'Content is too large, text must be shorter';
+        }
+
+        setFormErrors(errors);
+
+        return !errors.title && !errors.content;
+    };
+
     const handleDeleteBlog = async () => {
         if (window.confirm("Are you sure you want to delete this blog?")) {
             setShowMessage(true);
@@ -82,20 +110,22 @@ const BlogDetail = () => {
 
     const handleEditBlog = async () => {
         if (isEditingBlog) {
-            try {
-                await updateBlog({
-                    id: blog.id,
-                    title: editedBlog.title,
-                    content: editedBlog.content,
-                });
-                setBlog({
-                    ...blog,
-                    title: editedBlog.title,
-                    content: editedBlog.content,
-                });
-                setIsEditingBlog(false);
-            } catch (error) {
-                setError("Error updating blog. Please try again later.");
+            if (validateBlog()) {
+                try {
+                    await updateBlog({
+                        id: blog.id,
+                        title: editedBlog.title,
+                        content: editedBlog.content,
+                    });
+                    setBlog({
+                        ...blog,
+                        title: editedBlog.title,
+                        content: editedBlog.content,
+                    });
+                    setIsEditingBlog(false);
+                } catch (error) {
+                    setError("Error updating blog. Please try again later.");
+                }
             }
         } else {
             setEditedBlog({ title: blog.title, content: blog.content });
@@ -196,16 +226,22 @@ const BlogDetail = () => {
                     </div>
                 </div>
                 {isEditingBlog ? (
-                    <input
-                        type="text"
-                        value={editedBlog.title}
-                        onChange={(e) =>
-                            setEditedBlog({ ...editedBlog, title: e.target.value })
-                        }
-                        style={isEditingBlog ? { width: "100%", padding: "5px" } : null}
-                    />
+                    <>
+                        <input
+                            type="text"
+                            value={editedBlog.title}
+                            onChange={(e) =>
+                                setEditedBlog({ ...editedBlog, title: e.target.value })
+                            }
+                            style={{ width: "100%", padding: "5px" }}
+                        />
+                        {formErrors.title && <Alert variant="danger">{formErrors.title}</Alert>}
+                    </>
                 ) : (
-                    <h1 className="blog-title">{blog.title}</h1>
+                    <div className="blog-title-container">
+                        <h1 className="blog-title">{blog.title}</h1>
+                    </div>
+
                 )}
                 <p className="blog-meta">
                     By
@@ -223,17 +259,16 @@ const BlogDetail = () => {
                 </p>
                 <div className="blog-content m-5">
                     {isEditingBlog ? (
-                        <textarea
-                            value={editedBlog.content}
-                            onChange={(e) =>
-                                setEditedBlog({ ...editedBlog, content: e.target.value })
-                            }
-                            style={
-                                isEditingBlog
-                                    ? { width: "100%", padding: "5px", height: "100px" }
-                                    : null
-                            }
-                        ></textarea>
+                        <>
+                            <textarea
+                                value={editedBlog.content}
+                                onChange={(e) =>
+                                    setEditedBlog({ ...editedBlog, content: e.target.value })
+                                }
+                                style={{ width: "100%", padding: "5px", height: "300px" }}
+                            ></textarea>
+                            {formErrors.content && <Alert variant="danger">{formErrors.content}</Alert>}
+                        </>
                     ) : (
                         <p>{blog.content}</p>
                     )}
