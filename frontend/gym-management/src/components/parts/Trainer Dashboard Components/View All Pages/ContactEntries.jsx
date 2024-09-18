@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getAllContactEntries } from '../../../api/api'; 
+import { getAllContactEntries, updateIsContacted } from '../../../api/api'; 
 import { Alert, Spinner, Table, Pagination, Form } from 'react-bootstrap';
 import dayjs from 'dayjs';
 import URLSaver from '../../URLSaver';
@@ -53,16 +53,19 @@ const ContactEntries = () => {
         setSearchTerm(e.target.value);
     };
 
-    const toggleContacted = async (id, currentStatus) => {
+    const toggleContacted = async (id, contacted) => {
         try {
-           // await updateContactEntry(id, { contacted: !currentStatus });
+            const data = {
+                id: id,
+                contacted: !contacted
+            };
+        await updateIsContacted(data);
             setEntries(prevEntries =>
                 prevEntries.map(entry => 
-                    entry.id === id ? { ...entry, contacted: !currentStatus } : entry
+                    entry.id === id ? { ...entry, contacted: !contacted } : entry
                 )
             );
         } catch (error) {
-            console.error('Error updating contact entry:', error);
             setError('Failed to update contact entry');
         }
     };

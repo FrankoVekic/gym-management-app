@@ -250,3 +250,8 @@ export const getAllStatuses = () => {
 export const updateMemberStatus = ({statusId, memberId}) => {
     return axios.put(`${API_URL}/public/members/update-status`, {statusId, memberId});
 }
+
+// UPDATE CONTACT ENTRY IS CONTACTED
+export const updateIsContacted = ({id, contacted}) => {
+    return axios.put(`${API_URL}/public/contactFormEntries/changeIsContactedStatus`, {id, contacted});
+}

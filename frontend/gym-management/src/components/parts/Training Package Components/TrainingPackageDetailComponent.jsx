@@ -33,8 +33,6 @@ const TrainingPackageDetailComponent = () => {
     const handlePay = async () => {
         try {
             const response = await startPayPalPayment({ price: trainingPackage.price, trainingPackageId: trainingPackage.id, userId });
-            console.log('Response:', response);
-            console.log(response)
             if (response.data.startsWith('This package is active until')) {
                 setError(response.data);
             } else if (response.data.startsWith('This package costs less than your current one.')) {

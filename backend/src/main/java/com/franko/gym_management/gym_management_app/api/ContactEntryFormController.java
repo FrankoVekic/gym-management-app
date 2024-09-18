@@ -1,6 +1,7 @@
 package com.franko.gym_management.gym_management_app.api;
 
 import com.franko.gym_management.gym_management_app.dto.ContactFormEntryDto;
+import com.franko.gym_management.gym_management_app.dto.ContactFormRequestDto;
 import com.franko.gym_management.gym_management_app.service.ContactFormEntryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,12 @@ public class ContactEntryFormController {
     public ResponseEntity<ContactFormEntryDto> createContactEntry(@RequestBody ContactFormEntryDto contactFormEntryDto){
         ContactFormEntryDto savedContactEntry = contactFormEntryService.createContactFormEntry(contactFormEntryDto);
         return new ResponseEntity<>(savedContactEntry, org.springframework.http.HttpStatus.CREATED);
+    }
+
+    @PutMapping("changeIsContactedStatus")
+    public ResponseEntity<String> changeContactedStatus(@RequestBody ContactFormRequestDto contactFormRequestDto){
+        contactFormEntryService.changeContactedStatus(contactFormRequestDto);
+        return ResponseEntity.ok("Status changed successfully");
     }
 
 }

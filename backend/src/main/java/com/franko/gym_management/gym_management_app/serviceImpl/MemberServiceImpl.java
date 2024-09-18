@@ -128,11 +128,15 @@ public class MemberServiceImpl implements MemberService {
         Status status = statusRepository.findById(memberStatusUpdateDto.getStatusId())
                 .orElseThrow(() -> new RuntimeException("Status not found"));
 
-        if(member.getTrainingPackage() != null && member.getTrainingPackageExpirationDate() != null){
+        if(member.getTrainingPackage() != null || member.getTrainingPackageExpirationDate() != null){
             if(status.getId() == 3){
                 member.setTrainingPackage(null);
                 member.setTrainingPackageExpirationDate(null);
             }
+            if(status.getId() == 4){
+                member.setTrainingPackage(null);
+            }
+
         }
 
         member.setStatus(status);

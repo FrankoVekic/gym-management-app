@@ -41,7 +41,7 @@ const ClientStatusTable = () => {
                             ? {
                                 ...member,
                                 statusId: parseInt(newStatusId, 10),
-                                trainingPackage: (newStatusId === '3') ? null : member.trainingPackage,
+                                trainingPackage: (newStatusId === '3') || (newStatusId === '4') ? null : member.trainingPackage,
                                 trainingPackageExpirationDate: (newStatusId === '3') ? null : member.trainingPackageExpirationDate
                             }
                             : member
@@ -62,6 +62,7 @@ const ClientStatusTable = () => {
             accessor: 'statusId',
             Cell: ({ row }) => (
                 <select
+                    key={row.original.id}
                     value={row.original.statusId}
                     onChange={(e) => handleStatusChange(row.original.id, e.target.value)}
                 >
@@ -73,6 +74,7 @@ const ClientStatusTable = () => {
                 </select>
             )
         },
+        
         {
             Header: 'Training Package',
             accessor: 'trainingPackage',
