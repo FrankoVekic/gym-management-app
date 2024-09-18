@@ -69,7 +69,7 @@ public class MemberServiceImpl implements MemberService {
             dto.setLastname((String) result[2]);
             dto.setStatusId((Long) result[3]);
             dto.setTrainingPackage((String) result[4]);
-            dto.setTrainingPackageExpirationDate(((Timestamp) result[5]).toLocalDateTime());
+            dto.setTrainingPackageExpirationDate(result[5] != null ? ((Timestamp) result[5]).toLocalDateTime() : null);;
 
             members.add(dto);
         }
@@ -127,6 +127,13 @@ public class MemberServiceImpl implements MemberService {
 
         Status status = statusRepository.findById(memberStatusUpdateDto.getStatusId())
                 .orElseThrow(() -> new RuntimeException("Status not found"));
+
+        if(member.getTrainingPackage() != null && member.getTrainingPackageExpirationDate() != null){
+            if(status.getId() == 3){
+                member.setTrainingPackage(null);
+                member.setTrainingPackageExpirationDate(null);
+            }
+        }
 
         member.setStatus(status);
         memberRepository.save(member);

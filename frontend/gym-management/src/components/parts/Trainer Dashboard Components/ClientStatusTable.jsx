@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useTable, usePagination, useGlobalFilter } from 'react-table';
-import { getMemberStatusesAndTrainingPackages, getAllStatuses, updateMemberStatus } from '../../api/api'; 
+import { getMemberStatusesAndTrainingPackages, getAllStatuses, updateMemberStatus } from '../../api/api';
 
 const ClientStatusTable = () => {
     const [data, setData] = useState([]);
@@ -33,27 +33,35 @@ const ClientStatusTable = () => {
                 memberId: memberId,
                 statusId: newStatusId
             });
-    
+
             if (response.status === 200) {
                 setData(prevData =>
                     prevData.map(member =>
-                        member.id === memberId ? { ...member, statusId: parseInt(newStatusId, 10) } : member
+                        member.id === memberId
+                            ? {
+                                ...member,
+                                statusId: parseInt(newStatusId, 10),
+                                trainingPackage: (newStatusId === '3') ? null : member.trainingPackage,
+                                trainingPackageExpirationDate: (newStatusId === '3') ? null : member.trainingPackageExpirationDate
+                            }
+                            : member
                     )
                 );
             }
         } catch (error) {
             setError('Failed to update status.');
         }
-    };    
-    
+    };
+
+
     const columns = useMemo(() => [
         { Header: 'First Name', accessor: 'firstname' },
         { Header: 'Last Name', accessor: 'lastname' },
-        { 
-            Header: 'Status', 
+        {
+            Header: 'Status',
             accessor: 'statusId',
             Cell: ({ row }) => (
-                <select 
+                <select
                     value={row.original.statusId}
                     onChange={(e) => handleStatusChange(row.original.id, e.target.value)}
                 >
@@ -65,14 +73,18 @@ const ClientStatusTable = () => {
                 </select>
             )
         },
-        { Header: 'Training Package', accessor: 'trainingPackage' },
-        { 
-            Header: 'Expiration Date', 
+        {
+            Header: 'Training Package',
+            accessor: 'trainingPackage',
+            Cell: ({ value }) => value ? value : '-'
+        },
+        {
+            Header: 'Expiration Date',
             accessor: 'trainingPackageExpirationDate',
-            Cell: ({ value }) => value ? new Date(value).toLocaleDateString() : 'N/A'
+            Cell: ({ value }) => value ? new Date(value).toLocaleDateString() : '-'
         }
     ], [statuses]);
-    
+
 
     const {
         getTableProps,
