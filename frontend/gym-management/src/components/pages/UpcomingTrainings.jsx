@@ -87,7 +87,6 @@ const UpcomingTrainings = () => {
     };
 
     const handleAttend = async () => {
-        if (window.confirm('Confirm: Are you sure you want to attend this Training?')) {
             try {
                 await registerUserForTraining({ userId, trainingSessionId: selectedTraining.sessionId });
                 setSuccessMessage("Successfully registered for the training!");
@@ -98,11 +97,9 @@ const UpcomingTrainings = () => {
             } finally {
                 handleCloseModal();
             }
-        }
     };
 
     const handleUnattend = async () => {
-        if (window.confirm('Confirm: Are you sure you want to unattend this Training?')) {
             try {
                 await unregisterUserForTraining({ userId, trainingSessionId: selectedTraining.sessionId });
                 setSuccessMessage("Successfully unregistered from the training!");
@@ -117,7 +114,6 @@ const UpcomingTrainings = () => {
             } finally {
                 handleCloseModal();
             }
-        }
     };
 
     const updateNumberOfPeople = (sessionId, change) => {
@@ -147,7 +143,7 @@ const UpcomingTrainings = () => {
     }
 
     return (
-        <div className="container">
+        <div className="container mt-5">
             <h2 className="text-center my-4">Upcoming Trainings</h2>
             {errorMessage && <Alert className="m-5" variant="warning">{errorMessage}</Alert>}
             {successMessage && <Alert className="m-5" variant="success">{successMessage}</Alert>}

@@ -151,8 +151,9 @@ const Forum = () => {
                                                 <p className="text-secondary">
                                                     {blog.content.length > 100 ? `${blog.content.slice(0, 100)}...` : blog.content}
                                                 </p>
+                                                <h6 href="">{`${blog.author.firstName} ${blog.author.lastName}`}</h6>
                                                 <p className="text-muted">
-                                                    <h6 href="">{`${blog.author.firstName} ${blog.author.lastName}`}</h6>
+                                                    
                                                     <span className="text-secondary"> {new Date(blog.createdAt).toLocaleString(undefined, {
                                                         year: 'numeric',
                                                         month: '2-digit',

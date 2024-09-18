@@ -15,6 +15,7 @@ const BlogDetail = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [formErrors, setFormErrors] = useState({ title: "", content: "" });
+    const [commentErrors, setCommentErrors] = useState("");
     const commentsPerPage = 3;
     const { authState } = useContext(AuthContext);
     const token = localStorage.getItem("token");
@@ -57,7 +58,7 @@ const BlogDetail = () => {
         if (!editedBlog.title.trim()) {
             errors.title = 'Title is required';
         } else if (editedBlog.title.length < 3) {
-            errors.title = 'Title must be at least 3 characters long';
+            errors.title = 'Title is too short';
         } else if (editedBlog.title.length > 150) {
             errors.title = 'Title is too long';
         } else if (!/[a-zA-Z]/.test(editedBlog.title)) {
@@ -78,8 +79,20 @@ const BlogDetail = () => {
         return !errors.title && !errors.content;
     };
 
+    const validateComment = () => {
+        let error = "";
+
+        if (editedCommentContent.trim() === "") {
+            error = "Comment cannot be empty.";
+        } else if (editedCommentContent.length > 600) {
+            error = "Comment is too long, remove some text before posting";
+        }
+
+        setCommentErrors(error);
+        return !error;
+    };
+
     const handleDeleteBlog = async () => {
-        if (window.confirm("Are you sure you want to delete this blog?")) {
             setShowMessage(true);
             try {
                 await deleteBlog(id);
@@ -89,7 +102,6 @@ const BlogDetail = () => {
             } catch (error) {
                 setError("Error while deleting blog. Please try again later.");
             }
-        }
     };
 
     const handleAddComment = async () => {
@@ -101,8 +113,10 @@ const BlogDetail = () => {
         };
         try {
             const response = await addCommentToBlog(commentData);
-            setComments([...comments, response.data]);
+            setComments(prevComments => [response.data, ...prevComments]);
             setNewComment("");
+            setCurrentPage(1);
+
         } catch (error) {
             console.error("Error adding comment:", error);
         }
@@ -135,36 +149,37 @@ const BlogDetail = () => {
 
     const handleEditComment = async (comment) => {
         if (isEditingCommentId === comment.id) {
-            if (editedCommentContent.trim() === "") return;
+            if (validateComment()) {
+                const commentUpdateData = {
+                    commentId: comment.id,
+                    content: editedCommentContent,
+                    blogId: blog.id,
+                    userId: decodedToken.userID,
+                };
 
-            const commentUpdateData = {
-                commentId: comment.id,
-                content: editedCommentContent,
-                blogId: blog.id,
-                userId: decodedToken.userID
-            };
+                try {
+                    await updateComment(commentUpdateData);
+                    setComments(prevComments =>
+                        prevComments.map(c =>
+                            c.id === comment.id ? { ...c, content: editedCommentContent } : c
+                        )
+                    );
 
-            try {
-                await updateComment(commentUpdateData);
-                setComments(prevComments =>
-                    prevComments.map(c =>
-                        c.id === comment.id ? { ...c, content: editedCommentContent } : c
-                    )
-                );
-
-                setIsEditingCommentId(null);
-                setEditedCommentContent("");
-            } catch (error) {
-                setError("Error updating comment. Please try again later.");
+                    setIsEditingCommentId(null);
+                    setEditedCommentContent("");
+                    setCommentErrors("");
+                } catch (error) {
+                    setError("Error updating comment. Please try again later.");
+                }
             }
         } else {
             setIsEditingCommentId(comment.id);
             setEditedCommentContent(comment.content);
+            setCommentErrors("");
         }
     };
 
     const handleDeleteComment = async (commentId) => {
-        if (window.confirm("Are you sure you want to delete this comment?")) {
             await deleteComment(commentId);
 
             const updatedComments = comments.filter(comment => comment.id !== commentId);
@@ -176,7 +191,6 @@ const BlogDetail = () => {
             if (currentPage > totalPages) {
                 setCurrentPage(totalPages);
             }
-        }
     };
 
     if (loading) {
@@ -293,11 +307,15 @@ const BlogDetail = () => {
                                     )}
                                 </div>
                                 {isEditingCommentId === comment.id ? (
-                                    <textarea
+                                    <>
+                                      <textarea
                                         value={editedCommentContent}
                                         onChange={(e) => setEditedCommentContent(e.target.value)}
                                         style={{ width: "100%", padding: "5px", height: "100px" }}
                                     />
+                                    {commentErrors && <Alert variant="danger">{commentErrors}</Alert>}
+                                    </>
+                                  
                                 ) : (
                                     <p className="comment-content">{comment.content}</p>
                                 )}

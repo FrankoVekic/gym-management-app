@@ -61,7 +61,6 @@ const ProfileContent = () => {
     }, []);
 
     const handleSubmit = async (values) => {
-        if (window.confirm('Are you sure you want to change your profile?')) {
             try {
                 await updateUserProfile({ id: userId, firstname: values.firstName, lastname: values.lastName });
                 setSuccessMessage("Profile updated successfully.");
@@ -73,7 +72,6 @@ const ProfileContent = () => {
                 setErrorMessage("Failed to update profile.");
                 setSuccessMessage("");
             }
-        }
     };
 
     useEffect(() => {
@@ -139,7 +137,7 @@ const ProfileContent = () => {
                             <div className="row gy-2">
                                 <label className="col-12 form-label m-0">Profile Image</label>
                                 <div className="col-12">
-                                    {profile.image === null || profile.image === 'noLogo.png' ? (
+                                    {profile.image === null || profile.image === 'noLogo.png' || profile.image.trim() === '' ? (
                                         <input
                                             type="file"
                                             accept=".jpg, .jpeg, .png"

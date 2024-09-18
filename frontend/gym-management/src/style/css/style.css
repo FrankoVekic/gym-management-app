@@ -420,6 +420,8 @@ html, body {
     background-color: #fff;
     border: 1px solid #ddd;
     border-radius: 5px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .comment-content {

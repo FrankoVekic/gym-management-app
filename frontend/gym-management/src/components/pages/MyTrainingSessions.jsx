@@ -83,7 +83,6 @@ const MyTrainingSessions = () => {
     };
 
     const handleUnattend = async () => {
-        if (window.confirm('Confirm: Are you sure you want to unattend this Training?')) {
             try {
                 await unregisterUserForTraining({ userId, trainingSessionId: selectedTraining.sessionId });
                 setSuccessMessage("Successfully unregistered from the training!");
@@ -94,7 +93,6 @@ const MyTrainingSessions = () => {
             } finally {
                 handleCloseModal();
             }
-        }
     };
 
     const updateNumberOfPeople = (sessionId, change) => {

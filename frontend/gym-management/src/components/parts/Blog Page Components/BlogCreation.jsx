@@ -12,8 +12,7 @@ const BlogCreation = () => {
 
   const handleSubmit = async (values, { setSubmitting }) => {
 
-    // TODO: add Modal, remove window.confirm
-    if (window.confirm('Are you sure you want to post this blog?')) {
+
       try {
         const blogData = {
           title: values.title,
@@ -32,11 +31,6 @@ const BlogCreation = () => {
       } finally {
         setSubmitting(false);
       }
-    }
-    else {
-      setSubmitting(false);
-    }
-
   };
 
   function validateForm(values) {

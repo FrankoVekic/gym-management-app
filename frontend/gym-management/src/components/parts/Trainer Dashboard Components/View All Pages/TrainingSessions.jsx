@@ -90,7 +90,6 @@ const TrainingSessions = () => {
             attendances: []
         };
 
-        if (window.confirm("Are you sure you want to create this training session?")) {
             try {
                 await createNewTrainingSession(sessionData);
                 setShowModal(false);
@@ -102,7 +101,6 @@ const TrainingSessions = () => {
                 setError("Error while creating new training session. Please try again later.");
                 console.error(error);
             }
-        }
     };
 
     const handleDelete = async (sessionId) => {

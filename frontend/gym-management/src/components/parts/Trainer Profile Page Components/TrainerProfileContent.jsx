@@ -59,7 +59,6 @@ const TrainerProfileContent = () => {
     }, []);
 
     const handleSubmit = async (values) => {
-        if (window.confirm('Are you sure you want to change your profile?')) {
             try {
                 await updateUserProfile({ id: userId, firstname: values.firstName, lastname: values.lastName });
                 setSuccessMessage("Profile updated successfully.");
@@ -71,7 +70,6 @@ const TrainerProfileContent = () => {
                 setErrorMessage("Failed to update profile.");
                 setSuccessMessage("");
             }
-        }
     };
 
     useEffect(() => {

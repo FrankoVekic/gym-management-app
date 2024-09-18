@@ -64,7 +64,6 @@ const ChangePasswordForm = () => {
             return;
         }
 
-        if (window.confirm('Are you sure you want to change your password?')) {
             try {
                 await changePassword({ email: userEmail, oldPassword, newPassword });
                 setSuccessMessage('Password changed successfully.');
@@ -76,7 +75,6 @@ const ChangePasswordForm = () => {
                 setErrorMessage('Failed to change password.');
                 setSuccessMessage('');
             }
-        }
     };
 
     return (
