@@ -28,6 +28,9 @@ const RegisterComponent = () => {
     if (!values.firstname.trim()) {
       errors.firstname = 'First name is required';
     }
+    else if(values.firstname.trim().length < 2){
+      errors.firstname = 'First name is too short'
+    }
     else if(values.firstname.length > 100){
       errors.firstname = 'First can have max: 100 characters';
     }
@@ -36,8 +39,10 @@ const RegisterComponent = () => {
     // lastname validation
     if (!values.lastname.trim()) {
       errors.lastname = 'Last name is required';
-    } else if(values.lastname.length > 100){
+    } else if(values.lastname.trim().length > 100){
       errors.lastname = 'Last name is too long'
+    } else if(values.lastname.trim().length < 2){
+      errors.lastname = 'Last name is too short'
     }
 
     // email validation

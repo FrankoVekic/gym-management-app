@@ -37,7 +37,11 @@ const TrainingPackageDetailComponent = () => {
                 setError(response.data);
             } else if (response.data.startsWith('This package costs less than your current one.')) {
                 setError(response.data); 
-            } else {
+            }
+            else if(response.data.startsWith('You are suspended')){
+                setError(response.data);
+            }
+            else {
                 const paypalApprovalUrl = response.data;
                 window.location.href = paypalApprovalUrl;
             }

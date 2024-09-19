@@ -3,6 +3,7 @@ package com.franko.gym_management.gym_management_app.api;
 import com.franko.gym_management.gym_management_app.config.paypal.PaypalService;
 import com.franko.gym_management.gym_management_app.dto.MemberDto;
 import com.franko.gym_management.gym_management_app.dto.TrainingPackageDto;
+import com.franko.gym_management.gym_management_app.enums.StatusType;
 import com.franko.gym_management.gym_management_app.model.Member;
 import com.franko.gym_management.gym_management_app.service.MemberService;
 import com.franko.gym_management.gym_management_app.service.TrainingPackageService;
@@ -52,6 +53,9 @@ public class PaypalController {
         MemberDto member = memberService.getMemberByUserId(userId);
         LocalDateTime now = LocalDateTime.now();
 
+        if(member.getStatus().getStatusType().equals(StatusType.SUSPENDED)){
+            return "You are suspended there for you cannot purchase Training Package, please contact support for more information";
+        }
 
         if (member.getTrainingPackage() != null) {
             if (member.getTrainingPackageExpirationDate().isAfter(now)) {
