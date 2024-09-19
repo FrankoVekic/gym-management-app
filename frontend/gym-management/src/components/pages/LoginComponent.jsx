@@ -30,10 +30,16 @@ const LoginComponent = () => {
     } else if (!/^\S+@\S+\.\S+$/.test(values.email)) {
         errors.email = 'Invalid email address';
     }
+    else if(values.email.length > 100){
+      errors.email = 'Invalid email address entered';
+    }
 
     // password validation
     if(!values.password.trim()){
       errors.password = 'Password is required';
+    }
+    else if(values.password.length > 100){
+      errors.password = 'Invalid password entered'
     }
 
     return errors;

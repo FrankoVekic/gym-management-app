@@ -5,7 +5,7 @@ import { jwtDecode } from 'jwt-decode';
 
 const validatePassword = (password) => {
     const errors = {};
-    if (!password) {
+    if (!password.trim()) {
         errors.password = 'Password is required';
     }
     else if (password.length > 100) {

@@ -35,12 +35,18 @@ export default function ContactFormComponent() {
         if (!values.fullName.trim()) {
             errors.fullName = 'Full name is required';
         }
+        else if(values.fullName.length > 100){
+            errors.fullName = 'Full name is too long';
+        }
 
         // email validation
         if (!values.email.trim()) {
             errors.email = 'Email is required';
         } else if (!/^\S+@\S+\.\S+$/.test(values.email)) {
             errors.email = 'Invalid email address';
+        }
+        else if(values.email.length > 70){
+            errors.email = 'Email is too long'
         }
 
         // phone number validation
@@ -54,7 +60,7 @@ export default function ContactFormComponent() {
 
         // message validation
         if (!values.message || values.message.trim().length < 1) {
-            errors.message = 'Message is required';
+            errors.message = 'Give us info why do you want us to contact you';
         }
 
         return errors;

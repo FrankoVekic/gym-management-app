@@ -36,6 +36,8 @@ const RegisterComponent = () => {
     // lastname validation
     if (!values.lastname.trim()) {
       errors.lastname = 'Last name is required';
+    } else if(values.lastname.length > 100){
+      errors.lastname = 'Last name is too long'
     }
 
     // email validation
@@ -43,6 +45,9 @@ const RegisterComponent = () => {
       errors.email = 'Email is required';
     } else if (!/^\S+@\S+\.\S+$/.test(values.email)) {
       errors.email = 'Invalid email address';
+    }
+    else if(values.email.length > 100){
+      errors.email = 'Email is too long'
     }
 
     // password validation

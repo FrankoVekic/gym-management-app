@@ -527,7 +527,7 @@ public class FakeDataInitalizer implements CommandLineRunner {
                 .firstName("Test")
                 .lastName("Testich")
                 .email("test@gmail.com")
-                .image("")
+                .image("logo3.jpg")
                 .password(passwordEncoder.encode("test123"))
                 .role(Role.TRAINER)
                 .build();

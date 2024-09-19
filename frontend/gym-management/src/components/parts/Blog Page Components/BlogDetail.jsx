@@ -32,6 +32,7 @@ const BlogDetail = () => {
 
     const [isEditingBlog, setIsEditingBlog] = useState(false);
     const [editedBlog, setEditedBlog] = useState({ title: "", content: "" });
+    const [newCommentErrors, setNewCommentErrors] = useState("");
 
     const [isEditingCommentId, setIsEditingCommentId] = useState(null);
     const [editedCommentContent, setEditedCommentContent] = useState("");
@@ -68,8 +69,8 @@ const BlogDetail = () => {
         
         if (!editedBlog.content.trim()) {
             errors.content = 'Content is required';
-        } else if (editedBlog.content.length < 20) {
-            errors.content = 'Content must be at least 20 characters long';
+        } else if (editedBlog.content.length < 10) {
+            errors.content = 'Content is too short';
         } else if (editedBlog.content.length > 4500) {
             errors.content = 'Content is too large, text must be shorter';
         }
@@ -85,12 +86,26 @@ const BlogDetail = () => {
         if (editedCommentContent.trim() === "") {
             error = "Comment cannot be empty.";
         } else if (editedCommentContent.length > 600) {
-            error = "Comment is too long, remove some text before posting";
+            error = "Comment is too long, remove some text before saving";
         }
 
         setCommentErrors(error);
         return !error;
     };
+
+    const validateNewComment = () => {
+        let error = "";
+    
+        if (newComment.trim() === "") {
+            error = "Comment cannot be empty.";
+        } else if (newComment.length > 600) {
+            error = "Comment is too long, remove some text before posting";
+        }
+    
+        setNewCommentErrors(error);
+        return !error;
+    };
+    
 
     const handleDeleteBlog = async () => {
             setShowMessage(true);
@@ -105,22 +120,24 @@ const BlogDetail = () => {
     };
 
     const handleAddComment = async () => {
-        if (newComment.trim() === "") return;
-        const commentData = {
-            content: newComment,
-            blog: { id: id },
-            user: { id: authState.user.userID },
-        };
-        try {
-            const response = await addCommentToBlog(commentData);
-            setComments(prevComments => [response.data, ...prevComments]);
-            setNewComment("");
-            setCurrentPage(1);
-
-        } catch (error) {
-            console.error("Error adding comment:", error);
+        if (validateNewComment()) {
+            const commentData = {
+                content: newComment,
+                blog: { id: id },
+                user: { id: authState.user.userID },
+            };
+            try {
+                const response = await addCommentToBlog(commentData);
+                setComments(prevComments => [response.data, ...prevComments]);
+                setNewComment("");
+                setCurrentPage(1);
+                setNewCommentErrors("");
+            } catch (error) {
+                console.error("Error adding comment:", error);
+            }
         }
     };
+    
 
     const handleEditBlog = async () => {
         if (isEditingBlog) {
@@ -309,6 +326,7 @@ const BlogDetail = () => {
                                 {isEditingCommentId === comment.id ? (
                                     <>
                                       <textarea
+                                        className="mb-2"
                                         value={editedCommentContent}
                                         onChange={(e) => setEditedCommentContent(e.target.value)}
                                         style={{ width: "100%", padding: "5px", height: "100px" }}
@@ -353,12 +371,13 @@ const BlogDetail = () => {
                     <div className="add-comment-section mt-2">
                         <h4>Add a Comment</h4>
                         <textarea
-                            className="form-control"
+                            className="form-control mb-2"
                             rows="3"
                             value={newComment}
                             onChange={(e) => setNewComment(e.target.value)}
                             placeholder="Write your comment here..."
                         ></textarea>
+                        {newCommentErrors && <Alert variant="danger">{newCommentErrors}</Alert>}
                         <Button className="btn btn-primary mt-2" onClick={handleAddComment}>
                             Add Comment
                         </Button>

@@ -12,17 +12,17 @@ const validate = values => {
     if (!values.firstName) {
         errors.firstName = "First Name is required";
     } else if (values.firstName.length < 2) {
-        errors.firstName = "First Name must be at least 2 characters long";
-    } else if (values.firstName.length > 50) {
-        errors.firstName = "First Name must be less than 50 characters long";
+        errors.firstName = "First Name is too short";
+    } else if (values.firstName.length > 100) {
+        errors.firstName = "First Name is too long";
     }
 
     if (!values.lastName) {
         errors.lastName = "Last Name is required";
     } else if (values.lastName.length < 2) {
-        errors.lastName = "Last Name must be at least 2 characters long";
-    } else if (values.lastName.length > 50) {
-        errors.lastName = "Last Name must be less than 50 characters long";
+        errors.lastName = "Last Name is too short";
+    } else if (values.lastName.length > 100) {
+        errors.lastName = "Last Name is too long";
     }
 
     return errors;
