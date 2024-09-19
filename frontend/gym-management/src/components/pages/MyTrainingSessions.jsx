@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { unregisterUserForTraining, getUserTrainingSessions } from "../api/api";
 import { Button, Alert, Modal, Spinner, Form } from "react-bootstrap";
-import {jwtDecode} from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import { CheckCircle, XCircle } from 'react-bootstrap-icons';
 
-
-// TODO: change filter from frontend to backend calls
 const MyTrainingSessions = () => {
     const [trainings, setTrainings] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -19,6 +17,9 @@ const MyTrainingSessions = () => {
 
     const itemsPerPage = 6;
     const now = new Date().toISOString();
+
+    const pastTrainings = trainings.filter(training => training.sessionDate < now);
+    const futureTrainings = trainings.filter(training => training.sessionDate >= now);
 
     const filteredTrainings = trainings.filter(training => {
         const isFuture = training.sessionDate >= now;
@@ -69,30 +70,27 @@ const MyTrainingSessions = () => {
     }, [errorMessage, successMessage]);
 
     const handleFilterChange = (e) => setFilter(e.target.value);
-
     const handleTimeFilterChange = (e) => setTimeFilter(e.target.value);
-
     const handleShowDetails = (training) => {
         setSelectedTraining(training);
         setShowModal(true);
     };
-
     const handleCloseModal = () => {
         setShowModal(false);
         setSelectedTraining(null);
     };
 
     const handleUnattend = async () => {
-            try {
-                await unregisterUserForTraining({ userId, trainingSessionId: selectedTraining.sessionId });
-                setSuccessMessage("Successfully unregistered from the training!");
-                updateNumberOfPeople(selectedTraining.sessionId, -1);
-                window.location.reload();
-            } catch {
-                setErrorMessage("Failed to unregister from the training.");
-            } finally {
-                handleCloseModal();
-            }
+        try {
+            await unregisterUserForTraining({ userId, trainingSessionId: selectedTraining.sessionId });
+            setSuccessMessage("Successfully unregistered from the training!");
+            updateNumberOfPeople(selectedTraining.sessionId, -1);
+            window.location.reload();
+        } catch {
+            setErrorMessage("Failed to unregister from the training.");
+        } finally {
+            handleCloseModal();
+        }
     };
 
     const updateNumberOfPeople = (sessionId, change) => {
@@ -110,9 +108,22 @@ const MyTrainingSessions = () => {
         }
     };
 
+    const renderTrainingMessage = () => {
+        if (timeFilter === "future" && futureTrainings.length === 0) {
+            return <p className="text-center">You are not attending any future trainings.</p>;
+        }
+        if (timeFilter === "past" && pastTrainings.length === 0) {
+            return <p className="text-center">You did not attend any past trainings.</p>;
+        }
+        if (timeFilter === "all" && trainings.length === 0) {
+            return <p className="text-center">There are no training sessions that you are attending.</p>;
+        }
+        return null;
+    };
+
     if (loading) {
         return (
-            <div className="d-flex justify-content-center align-items-center" style={{ height: "100vh" }}>
+            <div className="d-flex justify-content-center align-items-center">
                 <Spinner animation="border" role="status">
                     <span className="sr-only">Loading...</span>
                 </Spinner>
@@ -139,54 +150,59 @@ const MyTrainingSessions = () => {
                     <option value="past">Past Trainings</option>
                 </Form.Control>
             </div>
-            <div className="row">
-                {currentTrainings.map(training => (
-                    <div key={training.sessionId} className="col-md-6 mb-4">
-                        <div className="card h-100">
-                            <div className="card-body d-flex flex-column">
-                                <h5 className="card-title">
-                                    {training.trainingType}
-                                    <span className={`ms-2 ${training.sessionDate >= now ? 'text-success' : 'text-danger'}`}>
-                                        {training.sessionDate >= now ? <CheckCircle /> : <XCircle />}
-                                    </span>
-                                </h5>
-                                <p className="card-text">
-                                    <strong>Date: </strong>{new Date(training.sessionDate).toLocaleString(undefined, {
-                                        year: 'numeric',
-                                        month: '2-digit',
-                                        day: '2-digit',
-                                        hour: '2-digit',
-                                        minute: '2-digit',
-                                    })}
-                                </p>
-                                <p className="card-text">
-                                    <strong>Trainer: </strong>{training.trainer.join(", ")}
-                                </p>
-                                <p className="card-text">
-                                    <strong>Description: </strong>{training.description}
-                                </p>
-                                <Button
-                                    onClick={() => handleShowDetails(training)}
-                                    className="btn btn-primary mt-auto"
-                                >
-                                    View Details
-                                </Button>
+            {renderTrainingMessage()}
+            {currentTrainings.length > 0 && (
+                <>
+                    <div className="row">
+                        {currentTrainings.map(training => (
+                            <div key={training.sessionId} className="col-md-6 mb-4">
+                                <div className="card h-100">
+                                    <div className="card-body d-flex flex-column">
+                                        <h5 className="card-title">
+                                            {training.trainingType}
+                                            <span className={`ms-2 ${training.sessionDate >= now ? 'text-success' : 'text-danger'}`}>
+                                                {training.sessionDate >= now ? <CheckCircle /> : <XCircle />}
+                                            </span>
+                                        </h5>
+                                        <p className="card-text">
+                                            <strong>Date: </strong>{new Date(training.sessionDate).toLocaleString(undefined, {
+                                                year: 'numeric',
+                                                month: '2-digit',
+                                                day: '2-digit',
+                                                hour: '2-digit',
+                                                minute: '2-digit',
+                                            })}
+                                        </p>
+                                        <p className="card-text">
+                                            <strong>Trainer: </strong>{training.trainer.join(", ")}
+                                        </p>
+                                        <p className="card-text">
+                                            <strong>Description: </strong>{training.description}
+                                        </p>
+                                        <Button
+                                            onClick={() => handleShowDetails(training)}
+                                            className="btn btn-primary mt-auto"
+                                        >
+                                            View Details
+                                        </Button>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                        ))}
                     </div>
-                ))}
-            </div>
-            <div className="d-flex justify-content-center">
-                {[...Array(totalPages).keys()].map(page => (
-                    <button
-                        key={page}
-                        onClick={() => handlePageChange(page)}
-                        className="btn btn-primary mx-1"
-                    >
-                        {page + 1}
-                    </button>
-                ))}
-            </div>
+                    <div className="d-flex justify-content-center">
+                        {[...Array(totalPages).keys()].map(page => (
+                            <button
+                                key={page}
+                                onClick={() => handlePageChange(page)}
+                                className="btn btn-primary mx-1"
+                            >
+                                {page + 1}
+                            </button>
+                        ))}
+                    </div>
+                </>
+            )}
             {selectedTraining && (
                 <Modal show={showModal} onHide={handleCloseModal}>
                     <Modal.Header closeButton>
@@ -195,12 +211,12 @@ const MyTrainingSessions = () => {
                     <Modal.Body>
                         <p><strong>Description:</strong> {selectedTraining.description}</p>
                         <p><strong>Date:</strong> {new Date(selectedTraining.sessionDate).toLocaleString(undefined, {
-                                        year: 'numeric',
-                                        month: '2-digit',
-                                        day: '2-digit',
-                                        hour: '2-digit',
-                                        minute: '2-digit',
-                                    })}</p>
+                            year: 'numeric',
+                            month: '2-digit',
+                            day: '2-digit',
+                            hour: '2-digit',
+                            minute: '2-digit',
+                        })}</p>
                         <p><strong>Trainer:</strong> {selectedTraining.trainer.join(", ")}</p>
                         <p><strong>Duration:</strong> {selectedTraining.duration} minutes</p>
                     </Modal.Body>
