@@ -23,7 +23,8 @@ public interface TrainerRepository extends JpaRepository<Trainer, Long> {
     List<Object[]> getTrainerFirstnamesAndLastNames();
 
     @Query(value = """
-    SELECT u.first_name, u.last_name, u.email, u.image, u."role", s.status_type AS status, t.description FROM users u
+    SELECT u.first_name, u.last_name, u.email, u.image, u."role", s.status_type AS status, t.description, t.id
+    FROM users u
     LEFT JOIN trainers t ON t.user_id = u.id
     LEFT JOIN statuses s ON s.id = t.status_id
     WHERE u.id = :id

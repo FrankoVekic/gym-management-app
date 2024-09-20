@@ -1,10 +1,8 @@
 package com.franko.gym_management.gym_management_app.api;
 
-import com.franko.gym_management.gym_management_app.dto.MemberProfileDto;
-import com.franko.gym_management.gym_management_app.dto.TrainerDto;
-import com.franko.gym_management.gym_management_app.dto.TrainerNameDto;
-import com.franko.gym_management.gym_management_app.dto.TrainerProfileDto;
+import com.franko.gym_management.gym_management_app.dto.*;
 import com.franko.gym_management.gym_management_app.service.TrainerService;
+import org.hibernate.sql.Update;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,6 +42,17 @@ public class TrainerController {
         Long userId = payload.get("userId");
         TrainerProfileDto trainerProfile = trainerService.getTrainerProfile(userId);
         return ResponseEntity.ok(trainerProfile);
+    }
+
+    @PutMapping("updateTrainerStatus")
+    public ResponseEntity<String> updateTrainerStatus(@RequestBody UpdateTrainerStatusDto updateTrainerStatusDto){
+
+        try{
+            trainerService.updateTrainerStatus(updateTrainerStatusDto);
+        }catch(Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while updating the trainer status");
+        }
+        return ResponseEntity.ok("Trainers Status is successfully updated");
     }
 
 }

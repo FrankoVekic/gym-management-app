@@ -5,13 +5,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
 @Builder
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TrainerProfileDto {
+public class UpdateTrainerStatusDto {
 
-    private Long id;
-    private String firstName, lastName, email, image, role, status, description;
+    private Long trainerId;
+    private String status;
 
 }

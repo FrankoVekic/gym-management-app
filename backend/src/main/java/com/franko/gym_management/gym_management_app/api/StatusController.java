@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/public/statuses/")
@@ -25,6 +26,12 @@ public class StatusController {
     @GetMapping("getMemberStatuses")
     public ResponseEntity<List<StatusDto>> getMemberStatuses() {
         List<StatusDto> statuses = statusService.getStatuses().stream().limit(5).toList();
+        return ResponseEntity.ok(statuses);
+    }
+
+    @GetMapping("getTrainerStatuses")
+    public ResponseEntity<List<StatusDto>> getTrainerStatuses() {
+        List<StatusDto> statuses = statusService.getStatuses().stream().filter(statusDto -> statusDto.getId() > 5).collect(Collectors.toList());
         return ResponseEntity.ok(statuses);
     }
 

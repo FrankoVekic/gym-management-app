@@ -1,18 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { getTrainerProfile } from "../../api/api";
+import { getTrainerProfile, getAllTrainerStatuses, updateTrainerStatus } from "../../api/api";
 import { jwtDecode } from 'jwt-decode';
 import Statics from '../../static utils/Statics';
 
 const TrainerProfileCard = () => {
     const [profile, setProfile] = useState({});
-    const [loading, setLoading] = useState(true); 
+    const [loading, setLoading] = useState(true);
+    const [status, setStatus] = useState('');
+    const [statusOptions, setStatusOptions] = useState([]);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         const fetchProfile = async () => {
             try {
                 const token = localStorage.getItem("token");
                 if (!token) {
-                    setLoading(false); 
+                    setLoading(false);
                     return;
                 }
 
@@ -21,15 +24,33 @@ const TrainerProfileCard = () => {
 
                 const response = await getTrainerProfile(userId);
                 setProfile(response.data);
+                setStatus(response.data.status);
+
+                const statusResponse = await getAllTrainerStatuses();
+                setStatusOptions(statusResponse.data);
+
             } catch (error) {
-                console.error(error); 
+                setError("An error occurred while fetching the trainer profile.");
             } finally {
-                setLoading(false); 
+                setLoading(false);
             }
         };
 
         fetchProfile();
     }, []);
+
+    const handleStatusChange = async (e) => {
+        const newStatus = e.target.value;
+        setStatus(newStatus);
+
+        try {
+            await updateTrainerStatus({ trainerId: profile.id, status: newStatus });
+            window.location.reload();
+        } catch (error) {
+            setError("Failed to update status.");
+        }
+    };
+
 
     const imageSrc = loading ? null : profile.image ? `${Statics.imagesFEUrl}${profile.image}` : Statics.noImageUrl;
 
@@ -44,7 +65,7 @@ const TrainerProfileCard = () => {
                         <div className="card-body">
                             <div className="text-center mb-3">
                                 {loading ? (
-                                    <div className="placeholder-image" /> 
+                                    <div className="placeholder-image" />
                                 ) : (
                                     <img
                                         src={imageSrc}
@@ -57,6 +78,24 @@ const TrainerProfileCard = () => {
                             <p className="text-center text-secondary mb-4">
                                 {profile.role}
                             </p>
+
+                            {error && <div className="alert alert-danger" role="alert">{error}</div>}
+
+                            <div className="mb-3">
+                                <label htmlFor="statusSelect" className="form-label">Status:</label>
+                                <select
+                                    id="statusSelect"
+                                    value={status}
+                                    onChange={handleStatusChange}
+                                    className="form-select"
+                                >
+                                    {statusOptions.map(option => (
+                                        <option key={option.id} value={option.statusType}>
+                                            {option.statusType}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>

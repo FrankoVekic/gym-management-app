@@ -246,12 +246,22 @@ export const getAllStatuses = () => {
     return axios.get(`${API_URL}/public/statuses/getMemberStatuses`);
 };
 
+// GET ALL TRAINER STATUSES
+export const getAllTrainerStatuses = () => {
+    return axios.get(`${API_URL}/public/statuses/getTrainerStatuses`);
+};
+
 // UPDATE MEMBER STATUS
 export const updateMemberStatus = ({statusId, memberId}) => {
     return axios.put(`${API_URL}/public/members/update-status`, {statusId, memberId});
-}
+};
+
+// UPDATE TRAINER STATUS
+export const updateTrainerStatus = ({trainerId, status}) => {
+    return axios.put(`${API_URL}/public/trainers/updateTrainerStatus`, {trainerId, status});
+};
 
 // UPDATE CONTACT ENTRY IS CONTACTED
 export const updateIsContacted = ({id, contacted}) => {
     return axios.put(`${API_URL}/public/contactFormEntries/changeIsContactedStatus`, {id, contacted});
-}
+};

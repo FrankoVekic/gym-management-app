@@ -3,7 +3,9 @@ package com.franko.gym_management.gym_management_app.serviceImpl;
 import com.franko.gym_management.gym_management_app.dto.*;
 import com.franko.gym_management.gym_management_app.exceptions.ResourceNotFoundException;
 import com.franko.gym_management.gym_management_app.mapper.TrainerMapper;
+import com.franko.gym_management.gym_management_app.model.Status;
 import com.franko.gym_management.gym_management_app.model.Trainer;
+import com.franko.gym_management.gym_management_app.repository.StatusRepository;
 import com.franko.gym_management.gym_management_app.repository.TrainerRepository;
 import com.franko.gym_management.gym_management_app.service.TrainerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,9 @@ public class TrainerServiceImpl implements TrainerService {
 
     @Autowired
     private TrainerRepository trainerRepository;
+
+    @Autowired
+    private StatusRepository statusRepository;
 
     @Override
     public List<TrainerDto> getTrainers() {
@@ -73,7 +78,30 @@ public class TrainerServiceImpl implements TrainerService {
                 .role((String) userData[4])
                 .status((String) userData[5])
                 .description((String) userData[6])
+                .id((Long) userData[7])
                 .build();
+    }
+
+    @Override
+    public void updateTrainerStatus(UpdateTrainerStatusDto updateTrainerStatusDto) {
+
+        Trainer trainer = trainerRepository.findById(updateTrainerStatusDto.getTrainerId()).orElseThrow(() -> new RuntimeException("Trainer with given ID does not exist"));
+        Status status;
+        try{
+            status = statusRepository.findByStatusType(updateTrainerStatusDto.getStatus());
+            if(status.getId() < 6){
+                throw new RuntimeException("Status that you are trying to set for trainer is for Members!");
+            }
+
+        }catch (Exception e){
+            throw new RuntimeException("Status with given Name is not found");
+        }
+
+
+
+        trainer.setStatus(status);
+        trainerRepository.save(trainer);
+
     }
 
 }
