@@ -18,7 +18,7 @@ const ForgotPasswordComponent = () => {
             setTimeout(() => navigate('/'), 1500);
         } catch (error) {
             if (error.response && error.response.status === 404) {
-                setErrorMessage('User with this email does not exist in the database.');
+                setErrorMessage("The email address you entered is not associated with any account. Please check the email and try again or create a new account.");
             } else {
                 setErrorMessage('Failed to send reset password email.');
             }
