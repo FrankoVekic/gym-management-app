@@ -74,7 +74,7 @@ public class UserController {
             @RequestParam("image") MultipartFile image,
             @RequestParam("userId") Long userId) throws IOException {
 
-        userService.updateProfileImage(image, userId);
-        return ResponseEntity.ok("Profile image updated successfully");
+        String response = userService.updateProfileImage(image, userId);
+        return ResponseEntity.ok(response);
     }
 }

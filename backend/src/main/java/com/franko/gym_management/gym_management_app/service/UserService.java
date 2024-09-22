@@ -24,6 +24,6 @@ public interface UserService {
 
     UserProfileUpdateResponse updateUserProfile(Long id, String firstname, String lastname);
 
-    void updateProfileImage(MultipartFile image, Long userId) throws IOException;
+    String updateProfileImage(MultipartFile image, Long userId) throws IOException;
 
 }

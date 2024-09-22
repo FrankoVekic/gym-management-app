@@ -50,8 +50,25 @@ const ProfileContent = ({ profile, setProfile }) => {
 
     const handleSubmit = async (values) => {
         try {
-            const updatedProfile = { ...profile, firstName: values.firstName, lastName: values.lastName };
-            await updateUserProfile({ id: userId, firstname: updatedProfile.firstName, lastname: updatedProfile.lastName });
+            const updatedProfile = { 
+                ...profile, 
+                firstName: values.firstName, 
+                lastName: values.lastName 
+            };
+            
+            await updateUserProfile({ 
+                id: userId, 
+                firstname: updatedProfile.firstName, 
+                lastname: updatedProfile.lastName 
+            });
+
+            if (image) {
+                const updatedImageUrl = await updateProfileImage({ image, userId });
+                if (typeof updatedImageUrl === 'string') {
+                    updatedProfile.image = updatedImageUrl;
+                }
+            }
+
             setProfile(updatedProfile);
             setSuccessMessage("Profile updated successfully.");
             setErrorMessage("");
@@ -69,9 +86,14 @@ const ProfileContent = ({ profile, setProfile }) => {
         if (!image) return;
 
         try {
-            await updateProfileImage({ image, userId });
+            const updatedImageUrl = await updateProfileImage({ image, userId });
             setSuccessMessage("Profile image updated successfully.");
             setErrorMessage("");
+
+            setProfile((prevProfile) => ({
+                ...prevProfile,
+                image: updatedImageUrl.data
+            }));
         } catch (error) {
             setErrorMessage("Failed to update profile image.");
             setSuccessMessage("");
@@ -102,7 +124,7 @@ const ProfileContent = ({ profile, setProfile }) => {
                             <div className="row gy-2">
                                 <label className="col-12 form-label m-0">Profile Image</label>
                                 <div className="col-12">
-                                    {profile.image === null || profile.image === 'noLogo.png' || profile.image.trim() === '' ? (
+                                    {profile.image === null || profile.image === 'noLogo.png' || !profile.image ? (
                                         <input
                                             type="file"
                                             accept=".jpg, .jpeg, .png"

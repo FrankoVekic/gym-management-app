@@ -23,7 +23,6 @@ const ProfilePage = () => {
                 const decodedToken = jwtDecode(token);
                 const response = await getMemberProfile(decodedToken.userID);
                 setProfile(response.data);
-                console.log(profile);
             } catch (error) {
                 setErrorMessage("Failed to fetch profile.");
             } finally {
