@@ -100,6 +100,7 @@ public class MemberServiceImpl implements MemberService {
                 .status((String) userData[6])
                 .joinedDate(joinedDate)
                 .trainingPackageExpirationDate(trainingPackageExpirationDate)
+                .id((Long) userData[9])
                 .build();
     }
 

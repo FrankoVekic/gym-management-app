@@ -29,7 +29,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     List<Object[]> getMembersWithStatusesAndTrainingPackages();
 
     @Query(value = """
-    SELECT u.first_name, u.last_name, u.email, u.image, u."role", tp."name" as trainingType, s.status_type as status, m.joined_date, m.training_package_expiration_date
+    SELECT u.first_name, u.last_name, u.email, u.image, u."role", tp."name" as trainingType, s.status_type as status, m.joined_date, m.training_package_expiration_date, u.id as id
     FROM users u
     LEFT JOIN members m ON m.user_id = u.id
     LEFT JOIN statuses s ON m.status_id = s.id

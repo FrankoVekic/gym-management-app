@@ -1,37 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { getMemberProfile } from "../../api/api";
-import { jwtDecode } from 'jwt-decode';
+import React from "react";
 import Statics from '../../static utils/Statics';
 
-const ProfileCard = () => {
-    const [profile, setProfile] = useState({});
-    const [loading, setLoading] = useState(true); 
-
-    useEffect(() => {
-        const fetchProfile = async () => {
-            try {
-                const token = localStorage.getItem("token");
-                if (!token) {
-                    setLoading(false); 
-                    return;
-                }
-
-                const decodedToken = jwtDecode(token);
-                const userId = decodedToken.userID;
-
-                const response = await getMemberProfile(userId);
-                setProfile(response.data);
-            } catch (error) {
-            } finally {
-                setLoading(false); 
-            }
-        };
-
-        fetchProfile();
-    }, []);
-
-
-    const imageSrc = loading ? null : profile.image ? `${Statics.imagesFEUrl}${profile.image}` : Statics.noImageUrl;
+const ProfileCard = ({ profile }) => {
+    const imageSrc = profile.image ? `${Statics.imagesFEUrl}${profile.image}` : Statics.noImageUrl;
 
     return (
         <div className="col-12 col-lg-4 col-xl-3">
@@ -43,15 +14,11 @@ const ProfileCard = () => {
                         </div>
                         <div className="card-body">
                             <div className="text-center mb-3">
-                                {loading ? (
-                                    <div className="placeholder-image" /> 
-                                ) : (
-                                    <img
-                                        src={imageSrc}
-                                        className="img-fluid rounded-circle profile-logo"
-                                        alt={`${profile.firstName} ${profile.lastName}`}
-                                    />
-                                )}
+                                <img
+                                    src={imageSrc}
+                                    className="img-fluid rounded-circle profile-logo"
+                                    alt={`${profile.firstName} ${profile.lastName}`}
+                                />
                             </div>
                             <h5 className="text-center mb-1">{profile.firstName} {profile.lastName}</h5>
                             <p className="text-center text-secondary mb-4">

@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Statics from "../../static utils/Statics";
-import { jwtDecode } from "jwt-decode";
-import { getMemberProfile, updateUserProfile, updateProfileImage } from "../../api/api";
+import { updateUserProfile, updateProfileImage } from "../../api/api";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Button, Alert } from "react-bootstrap";
 
-
 const validate = (values) => {
     let errors = {};
-
-
+    
     if (!values.firstName.trim()) {
         errors.firstName = 'First Name is required';
     } else if (values.firstName.length < 2) {
@@ -17,7 +14,6 @@ const validate = (values) => {
     } else if (values.firstName.length > 100) {
         errors.firstName = 'First Name is too long';
     }
-
 
     if (!values.lastName.trim()) {
         errors.lastName = 'Last Name is required';
@@ -30,60 +26,40 @@ const validate = (values) => {
     return errors;
 };
 
-const ProfileContent = () => {
-    const [profile, setProfile] = useState({});
+const ProfileContent = ({ profile, setProfile }) => {
     const [loading, setLoading] = useState(true);
     const [image, setImage] = useState(null);
     const [errorMessage, setErrorMessage] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
-    const [userId, setUserId] = useState(null);
+    const [userId, setUserId] = useState(profile.id || null);
 
     useEffect(() => {
-        const fetchProfile = async () => {
-            try {
-                const token = localStorage.getItem("token");
-                if (!token) {
-                    setErrorMessage("No token found. Please log in again.");
-                    return;
-                }
-                const decodedToken = jwtDecode(token);
-                const tokenId = decodedToken.userID;
-                setUserId(tokenId);
-                const response = await getMemberProfile(tokenId);
-                setProfile(response.data);
-            } catch (error) {
-                setErrorMessage("Failed to fetch profile.");
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchProfile();
-    }, []);
+        setUserId(profile.id);
+        setLoading(false);
+    }, [profile]);
+
+    useEffect(() => {
+        if (successMessage || errorMessage) {
+            const timer = setTimeout(() => {
+                setSuccessMessage("");
+                setErrorMessage("");
+            }, 2000);
+            return () => clearTimeout(timer);
+        }
+    }, [successMessage, errorMessage]);
 
     const handleSubmit = async (values) => {
-            try {
-                await updateUserProfile({ id: userId, firstname: values.firstName, lastname: values.lastName });
-                setSuccessMessage("Profile updated successfully.");
-                setErrorMessage("");
-                setTimeout(() => {
-                    window.location.reload();
-                }, 1000);
-            } catch (error) {
-                setErrorMessage("Failed to update profile.");
-                setSuccessMessage("");
-            }
-    };
-
-    useEffect(() => {
-        const timer = setTimeout(() => {
+        try {
+            const updatedProfile = { ...profile, firstName: values.firstName, lastName: values.lastName };
+            await updateUserProfile({ id: userId, firstname: updatedProfile.firstName, lastname: updatedProfile.lastName });
+            setProfile(updatedProfile);
+            setSuccessMessage("Profile updated successfully.");
             setErrorMessage("");
+        } catch (error) {
+            setErrorMessage("Failed to update profile.");
             setSuccessMessage("");
-        }, 5000);
-
-        return () => {
-            clearTimeout(timer);
-        };
-    }, [errorMessage, successMessage]);
+        }
+    };
 
     const handleFileChange = (e) => {
         setImage(e.target.files[0]);
@@ -96,9 +72,6 @@ const ProfileContent = () => {
             await updateProfileImage({ image, userId });
             setSuccessMessage("Profile image updated successfully.");
             setErrorMessage("");
-            setTimeout(() => {
-                window.location.reload();
-            }, 1000);
         } catch (error) {
             setErrorMessage("Failed to update profile image.");
             setSuccessMessage("");
@@ -109,14 +82,6 @@ const ProfileContent = () => {
         return (
             <div className="d-flex justify-content-center align-items-center mt-5">
                 <span className="visually-hidden">Loading...</span>
-            </div>
-        );
-    }
-
-    if (errorMessage) {
-        return (
-            <div className="d-flex justify-content-center align-items-center mt-5">
-                <Alert variant="danger">{errorMessage}</Alert>
             </div>
         );
     }

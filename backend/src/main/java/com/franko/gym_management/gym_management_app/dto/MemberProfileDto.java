@@ -13,6 +13,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class MemberProfileDto {
 
+    private Long id;
+
     private String firstName, lastName, email, role, image, trainingPackageName, status;
 
     private LocalDateTime joinedDate, trainingPackageExpirationDate;
