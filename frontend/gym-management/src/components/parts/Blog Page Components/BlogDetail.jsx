@@ -45,7 +45,6 @@ const BlogDetail = () => {
                 setComments(response.data.comments || []);
                 setLoading(false);
             } catch (error) {
-                console.error("Error fetching blog:", error);
                 setError("Error fetching blog. Please try again later.");
                 setLoading(false);
             }

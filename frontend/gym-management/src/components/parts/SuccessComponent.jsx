@@ -19,7 +19,6 @@ const SuccessComponent = () => {
                     setLoading(false);
                 })
                 .catch(error => {
-                    console.error('Error while verifying payment:', error);
                     setError('There was an error verifying your payment.');
                     setLoading(false);
                 });

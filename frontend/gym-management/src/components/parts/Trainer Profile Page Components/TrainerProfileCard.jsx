@@ -1,43 +1,30 @@
 import React, { useEffect, useState } from "react";
-import { getTrainerProfile, getAllTrainerStatuses, updateTrainerStatus } from "../../api/api";
-import { jwtDecode } from 'jwt-decode';
+import { getAllTrainerStatuses, updateTrainerStatus } from "../../api/api";
 import Statics from '../../static utils/Statics';
 
-const TrainerProfileCard = () => {
-    const [profile, setProfile] = useState({});
+const TrainerProfileCard = ({ profile, setProfile }) => {
     const [loading, setLoading] = useState(true);
     const [status, setStatus] = useState('');
     const [statusOptions, setStatusOptions] = useState([]);
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        const fetchProfile = async () => {
+        const fetchStatuses = async () => {
             try {
-                const token = localStorage.getItem("token");
-                if (!token) {
-                    setLoading(false);
-                    return;
-                }
-
-                const decodedToken = jwtDecode(token);
-                const userId = decodedToken.userID;
-
-                const response = await getTrainerProfile(userId);
-                setProfile(response.data);
-                setStatus(response.data.status);
-
                 const statusResponse = await getAllTrainerStatuses();
                 setStatusOptions(statusResponse.data);
-
+                setStatus(profile.status || '');
             } catch (error) {
-                setError("An error occurred while fetching the trainer profile.");
+                setError("An error occurred while fetching the trainer statuses.");
             } finally {
                 setLoading(false);
             }
         };
 
-        fetchProfile();
-    }, []);
+        if (profile) {
+            fetchStatuses();
+        }
+    }, [profile]);
 
     const handleStatusChange = async (e) => {
         const newStatus = e.target.value;
@@ -45,14 +32,20 @@ const TrainerProfileCard = () => {
 
         try {
             await updateTrainerStatus({ trainerId: profile.id, status: newStatus });
-            window.location.reload();
+            setProfile(prevProfile => ({
+                ...prevProfile,
+                status: newStatus
+            }));
         } catch (error) {
             setError("Failed to update status.");
         }
     };
 
-
-    const imageSrc = loading ? null : profile.image ? `${Statics.imagesFEUrl}${profile.image}` : Statics.noImageUrl;
+    const imageSrc = loading
+        ? Statics.noImageUrl
+        : profile.image
+        ? `${Statics.imagesFEUrl}${profile.image}`
+        : Statics.noImageUrl;
 
     return (
         <div className="col-12 col-lg-4 col-xl-3">
@@ -64,20 +57,14 @@ const TrainerProfileCard = () => {
                         </div>
                         <div className="card-body">
                             <div className="text-center mb-3">
-                                {loading ? (
-                                    <div className="placeholder-image" />
-                                ) : (
-                                    <img
-                                        src={imageSrc}
-                                        className="img-fluid rounded-circle profile-logo"
-                                        alt={`${profile.firstName} ${profile.lastName}`}
-                                    />
-                                )}
+                                <img
+                                    src={imageSrc}
+                                    className="img-fluid rounded-circle profile-logo"
+                                    alt={`${profile.firstName} ${profile.lastName}`}
+                                />
                             </div>
                             <h5 className="text-center mb-1">{profile.firstName} {profile.lastName}</h5>
-                            <p className="text-center text-secondary mb-4">
-                                {profile.role}
-                            </p>
+                            <p className="text-center text-secondary mb-4">{profile.role}</p>
 
                             {error && <div className="alert alert-danger" role="alert">{error}</div>}
 
@@ -102,6 +89,6 @@ const TrainerProfileCard = () => {
             </div>
         </div>
     );
-}
+};
 
 export default TrainerProfileCard;

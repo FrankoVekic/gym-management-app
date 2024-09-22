@@ -24,7 +24,6 @@ const StatsCards = () => {
                 setTotalPaid(totalPaidResponse.data);
 
             } catch (error) {
-                console.error('Error fetching data:', error);
                 setError('Failed to load data');
             } finally {
                 setLoading(false);

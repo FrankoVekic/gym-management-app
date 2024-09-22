@@ -49,7 +49,6 @@ const TrainingPackageDetailComponent = () => {
                 window.location.href = paypalApprovalUrl;
             }
         } catch (error) {
-            console.error('Error while creating PayPal payment:', error);
             setError('An unexpected error occurred while processing the payment.');
             setIsPaying(false);
         }

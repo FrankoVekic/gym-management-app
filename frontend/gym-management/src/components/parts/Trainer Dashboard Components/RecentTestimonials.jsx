@@ -15,7 +15,6 @@ const RecentTestimonials = () => {
                 const response = await getTestimonialUsers();
                 setFeedback(response.data);
             } catch (error) {
-                console.error('Error fetching testimonials:', error);
                 setError('Failed to load testimonials');
             } finally {
                 setLoading(false);

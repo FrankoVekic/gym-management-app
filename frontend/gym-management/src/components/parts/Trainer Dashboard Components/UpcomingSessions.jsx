@@ -17,7 +17,6 @@ const UpcomingSessions = () => {
                 setUpcomingSessions(response.data);
             } catch (error) {
                 setError('Failed to fetch upcoming training sessions.');
-                console.error(error);
             } finally {
                 setLoading(false);
             }

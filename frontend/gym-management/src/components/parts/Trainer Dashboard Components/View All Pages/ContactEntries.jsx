@@ -23,7 +23,6 @@ const ContactEntries = () => {
                 setFilteredEntries(response.data);
                 setTotalPages(Math.ceil(response.data.length / itemsPerPage));
             } catch (error) {
-                console.error('Error fetching contact entries:', error);
                 setError('Failed to load contact entries');
             } finally {
                 setLoading(false);

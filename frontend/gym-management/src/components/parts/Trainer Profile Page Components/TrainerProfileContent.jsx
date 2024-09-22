@@ -1,87 +1,80 @@
 import React, { useEffect, useState } from "react";
 import Statics from "../../static utils/Statics";
-import { jwtDecode } from "jwt-decode";
-import { getTrainerProfile, updateUserProfile, updateProfileImage } from "../../api/api";
+import { updateUserProfile, updateProfileImage } from "../../api/api";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Button, Alert } from "react-bootstrap";
 
+const validate = (values) => {
+    let errors = {};
 
-const validate = values => {
-    const errors = {};
-
-    if (!values.firstName) {
-        errors.firstName = "First Name is required";
+    if (!values.firstName.trim()) {
+        errors.firstName = 'First Name is required';
     } else if (values.firstName.length < 2) {
-        errors.firstName = "First Name is too short";
+        errors.firstName = 'First Name must be at least 2 characters long';
     } else if (values.firstName.length > 100) {
-        errors.firstName = "First Name is too long";
+        errors.firstName = 'First Name is too long';
     }
 
-    if (!values.lastName) {
-        errors.lastName = "Last Name is required";
+    if (!values.lastName.trim()) {
+        errors.lastName = 'Last Name is required';
     } else if (values.lastName.length < 2) {
-        errors.lastName = "Last Name is too short";
+        errors.lastName = 'Last Name must be at least 2 characters long';
     } else if (values.lastName.length > 100) {
-        errors.lastName = "Last Name is too long";
+        errors.lastName = 'Last Name is too long';
     }
 
     return errors;
 };
 
-const TrainerProfileContent = () => {
-    const [trainer, setTrainer] = useState({});
+const TrainerProfileContent = ({ profile, setProfile }) => {
     const [loading, setLoading] = useState(true);
     const [image, setImage] = useState(null);
     const [errorMessage, setErrorMessage] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
-    const [userId, setUserId] = useState(null);
 
     useEffect(() => {
-        const fetchProfile = async () => {
-            try {
-                const token = localStorage.getItem("token");
-                if (!token) {
-                    setErrorMessage("No token found. Please log in again.");
-                    return;
-                }
-                const decodedToken = jwtDecode(token);
-                const tokenId = decodedToken.userID;
-                setUserId(tokenId);
-                const response = await getTrainerProfile(tokenId);
-                setTrainer(response.data);
-            } catch (error) {
-                setErrorMessage("Failed to fetch profile.");
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchProfile();
-    }, []);
+        setLoading(false);
+    }, [profile]);
+
+    useEffect(() => {
+        if (successMessage || errorMessage) {
+            const timer = setTimeout(() => {
+                setSuccessMessage("");
+                setErrorMessage("");
+            }, 2000);
+            return () => clearTimeout(timer);
+        }
+    }, [successMessage, errorMessage]);
 
     const handleSubmit = async (values) => {
-            try {
-                await updateUserProfile({ id: userId, firstname: values.firstName, lastname: values.lastName });
-                setSuccessMessage("Profile updated successfully.");
-                setErrorMessage("");
-                setTimeout(() => {
-                    window.location.reload();
-                }, 1000);
-            } catch (error) {
-                setErrorMessage("Failed to update profile.");
-                setSuccessMessage("");
+        try {
+            const updatedProfile = { 
+                ...profile, 
+                firstName: values.firstName, 
+                lastName: values.lastName 
+            };
+            
+            await updateUserProfile({ 
+                id: profile.id, 
+                firstname: updatedProfile.firstName, 
+                lastname: updatedProfile.lastName 
+            });
+
+            if (image) {
+                const updatedImageUrl = await updateProfileImage({ image, userId: profile.id });
+                if (typeof updatedImageUrl === 'string') {
+                    updatedProfile.image = updatedImageUrl;
+                }
             }
-    };
 
-    useEffect(() => {
-        const timer = setTimeout(() => {
+            setProfile(updatedProfile);
+            setSuccessMessage("Profile updated successfully.");
             setErrorMessage("");
+        } catch (error) {
+            setErrorMessage("Failed to update profile.");
             setSuccessMessage("");
-        }, 5000);
-
-        return () => {
-            clearTimeout(timer);
-        };
-    }, [errorMessage, successMessage]);
+        }
+    };
 
     const handleFileChange = (e) => {
         setImage(e.target.files[0]);
@@ -90,17 +83,15 @@ const TrainerProfileContent = () => {
     const handleImageUpload = async () => {
         if (!image) return;
 
-        const formData = new FormData();
-        formData.append('image', image);
-        formData.append('userId', userId);
-
         try {
-            await updateProfileImage({ image, userId });
+            const updatedImageUrl = await updateProfileImage({ image, userId: profile.id });
             setSuccessMessage("Profile image updated successfully.");
             setErrorMessage("");
-            setTimeout(() => {
-                window.location.reload();
-            }, 1000);
+
+            setProfile((prevProfile) => ({
+                ...prevProfile,
+                image: updatedImageUrl.data
+            }));
         } catch (error) {
             setErrorMessage("Failed to update profile image.");
             setSuccessMessage("");
@@ -115,20 +106,12 @@ const TrainerProfileContent = () => {
         );
     }
 
-    if (errorMessage) {
-        return (
-            <div className="d-flex justify-content-center align-items-center mt-5">
-                <Alert variant="danger">{errorMessage}</Alert>
-            </div>
-        );
-    }
-
     return (
         <div className="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabIndex={0}>
             <Formik
                 initialValues={{
-                    firstName: trainer.firstName || "",
-                    lastName: trainer.lastName || ""
+                    firstName: profile.firstName || "",
+                    lastName: profile.lastName || ""
                 }}
                 validate={validate}
                 onSubmit={handleSubmit}
@@ -139,12 +122,12 @@ const TrainerProfileContent = () => {
                             <div className="row gy-2">
                                 <label className="col-12 form-label m-0">Profile Image</label>
                                 <div className="col-12">
-                                    {trainer.image ? (
+                                    {profile.image ? (
                                         <>
                                             <img
-                                                src={`${Statics.imagesFEUrl}${trainer.image}`}
+                                                src={`${Statics.imagesFEUrl}${profile.image}`}
                                                 className="img-fluid profile-image"
-                                                alt={`${trainer.firstname} ${trainer.lastName}`}
+                                                alt={`${profile.firstName} ${profile.lastName}`}
                                             />
                                             <input
                                                 type="file"

@@ -40,7 +40,6 @@ const TrainingSessions = () => {
                 setTrainers(trainersResp.data);
             } catch (error) {
                 setError('Failed to fetch data.');
-                console.error(error);
             } finally {
                 setLoading(false);
             }
@@ -70,39 +69,45 @@ const TrainingSessions = () => {
 
     const handleSubmit = async () => {
         const { trainingType, sessionDate, trainer } = formData;
-
+    
         if (!trainingType || !trainer || !sessionDate) {
             setValidationError('All fields must be filled out.');
             return;
         }
-
+    
         const selectedDate = new Date(sessionDate);
         const now = new Date();
         if (selectedDate <= now) {
             setValidationError('The session date must be in the future.');
             return;
         }
-
+    
         const sessionData = {
             trainingType: { id: trainingType },
             date: sessionDate,
             trainer: { id: trainer },
             attendances: []
         };
-
-            try {
-                await createNewTrainingSession(sessionData);
-                setShowModal(false);
-                setShowMessage(true);
-                setTimeout(() => {
-                    window.location.reload();
-                }, 1000);
-            } catch (error) {
-                setError("Error while creating new training session. Please try again later.");
-                console.error(error);
-            }
+    
+        try {
+            await createNewTrainingSession(sessionData);
+            setShowModal(false);
+            setShowMessage(true);
+            const req = await getUpcomingTrainingSessions();
+            setUpcomingSessions(req.data);
+            
+            setTimeout(() => {
+                setShowMessage(false);
+            }, 3000);
+        } catch (error) {
+            setError("Error while creating new training session. Please try again later.");
+            
+            setTimeout(() => {
+                setError(null);
+            }, 3000);
+        }
     };
-
+    
     const handleDelete = async (sessionId) => {
         if (window.confirm("Are you sure you want to delete this training session?")) {
             try {
@@ -111,15 +116,20 @@ const TrainingSessions = () => {
                     prevSessions.filter(session => session.sessionId !== sessionId)
                 );
                 setShowDeleteMessage(true);
+    
                 setTimeout(() => {
                     setShowDeleteMessage(false);
                 }, 3000);
             } catch (error) {
                 setError("Failed to delete the session.");
-                console.error(error);
+                
+                setTimeout(() => {
+                    setError(null);
+                }, 3000);
             }
         }
     };
+    
     
 
     const handleEditSession = (id) => {

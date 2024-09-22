@@ -18,7 +18,6 @@ const ClientStatusTable = () => {
                 setStatuses(statusResponse.data);
             } catch (error) {
                 setError('Failed to fetch data.');
-                console.error(error);
             } finally {
                 setLoading(false);
             }

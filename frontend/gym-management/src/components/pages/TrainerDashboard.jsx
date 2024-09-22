@@ -21,7 +21,6 @@ const TrainerDashboard = () => {
                 setContactEntries(response.data.slice(0, 2));
             } catch (error) {
                 setError('Failed to fetch contact entries.');
-                console.error(error);
             } finally {
                 setLoading(false);
             }

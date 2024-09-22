@@ -24,7 +24,6 @@ const Testimonials = () => {
                 setFilteredFeedback(response.data);
                 setTotalPages(Math.ceil(totalItems / itemsPerPage));
             } catch (error) {
-                console.error('Error fetching testimonials:', error);
                 setError('Failed to load testimonials');
             } finally {
                 setLoading(false);
