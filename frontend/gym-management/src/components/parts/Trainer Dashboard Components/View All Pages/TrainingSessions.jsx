@@ -107,16 +107,20 @@ const TrainingSessions = () => {
         if (window.confirm("Are you sure you want to delete this training session?")) {
             try {
                 await deleteTrainingSession(sessionId);
+                setUpcomingSessions(prevSessions => 
+                    prevSessions.filter(session => session.sessionId !== sessionId)
+                );
                 setShowDeleteMessage(true);
                 setTimeout(() => {
-                    window.location.reload();
-                }, 1000);
+                    setShowDeleteMessage(false);
+                }, 3000);
             } catch (error) {
                 setError("Failed to delete the session.");
                 console.error(error);
             }
         }
     };
+    
 
     const handleEditSession = (id) => {
         navigate(`/training-sessions/${id}`);

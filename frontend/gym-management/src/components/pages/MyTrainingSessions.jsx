@@ -64,7 +64,7 @@ const MyTrainingSessions = () => {
             const timer = setTimeout(() => {
                 setErrorMessage("");
                 setSuccessMessage("");
-            }, 5000);
+            }, 2000);
             return () => clearTimeout(timer);
         }
     }, [errorMessage, successMessage]);
@@ -84,14 +84,17 @@ const MyTrainingSessions = () => {
         try {
             await unregisterUserForTraining({ userId, trainingSessionId: selectedTraining.sessionId });
             setSuccessMessage("Successfully unregistered from the training!");
+    
             updateNumberOfPeople(selectedTraining.sessionId, -1);
-            window.location.reload();
+    
+            setTrainings(prevTrainings => prevTrainings.filter(training => training.sessionId !== selectedTraining.sessionId));
         } catch {
             setErrorMessage("Failed to unregister from the training.");
         } finally {
             handleCloseModal();
         }
     };
+    
 
     const updateNumberOfPeople = (sessionId, change) => {
         const updateTrainingList = (list) => list.map(training =>

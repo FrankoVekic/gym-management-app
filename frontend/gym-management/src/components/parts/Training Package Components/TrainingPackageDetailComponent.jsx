@@ -10,6 +10,7 @@ const TrainingPackageDetailComponent = () => {
     const [trainingPackage, setTrainingPackage] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+    const [isPaying, setIsPaying] = useState(false);
     const token = localStorage.getItem("token");
     const decodedToken = jwtDecode(token);
     const userId = decodedToken.userID;
@@ -31,23 +32,26 @@ const TrainingPackageDetailComponent = () => {
     }, [id]);
 
     const handlePay = async () => {
+        setIsPaying(true);
         try {
             const response = await startPayPalPayment({ price: trainingPackage.price, trainingPackageId: trainingPackage.id, userId });
             if (response.data.startsWith('This package is active until')) {
                 setError(response.data);
+                setIsPaying(false);
             } else if (response.data.startsWith('This package costs less than your current one.')) {
-                setError(response.data); 
-            }
-            else if(response.data.startsWith('You are suspended')){
                 setError(response.data);
-            }
-            else {
+                setIsPaying(false);
+            } else if (response.data.startsWith('You are suspended')) {
+                setError(response.data);
+                setIsPaying(false);
+            } else {
                 const paypalApprovalUrl = response.data;
                 window.location.href = paypalApprovalUrl;
             }
         } catch (error) {
             console.error('Error while creating PayPal payment:', error);
             setError('An unexpected error occurred while processing the payment.');
+            setIsPaying(false);
         }
     };
 
@@ -77,7 +81,13 @@ const TrainingPackageDetailComponent = () => {
                             <p className="card-text training-package-price">€{trainingPackage.price} / mo.</p>
                             <p className="training-package-features">{trainingPackage.features}</p>
                             <div className="payment-button">
-                                <button className="btn btn-primary mb-4" onClick={handlePay}>Purchase {trainingPackage.name}</button>
+                                <button
+                                    className="btn btn-primary mb-4"
+                                    onClick={handlePay}
+                                    disabled={isPaying}
+                                >
+                                    {isPaying ? 'Please wait...' : `Purchase ${trainingPackage.name}`}
+                                </button>
                             </div>
                         </div>
                     </div>
