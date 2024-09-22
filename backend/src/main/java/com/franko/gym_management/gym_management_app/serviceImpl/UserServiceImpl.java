@@ -101,7 +101,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateProfileImage(MultipartFile image, Long userId) throws IOException {
+    public String updateProfileImage(MultipartFile image, Long userId) throws IOException {
         if (!Files.exists(rootLocation)) {
             Files.createDirectories(rootLocation);
         }
@@ -111,7 +111,7 @@ public class UserServiceImpl implements UserService {
         }
 
         String originalFilename = image.getOriginalFilename();
-        if (originalFilename == null) {
+        if (originalFilename == null || originalFilename.isEmpty()) {
             throw new IllegalArgumentException("Image file has no original filename");
         }
 
@@ -135,6 +135,7 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
         user.setImage(filename);
         userRepository.save(user);
+        return filename;
     }
 
     private String getBaseName(String filename) {
