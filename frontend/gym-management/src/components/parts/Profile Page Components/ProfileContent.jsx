@@ -6,7 +6,7 @@ import { Button, Alert } from "react-bootstrap";
 
 const validate = (values) => {
     let errors = {};
-    
+
     if (!values.firstName.trim()) {
         errors.firstName = 'First Name is required';
     } else if (values.firstName.length < 2) {
@@ -50,16 +50,27 @@ const ProfileContent = ({ profile, setProfile }) => {
 
     const handleSubmit = async (values) => {
         try {
-            const updatedProfile = { 
-                ...profile, 
-                firstName: values.firstName, 
-                lastName: values.lastName 
+            const updatedProfile = {
+                ...profile,
+                firstName: values.firstName,
+                lastName: values.lastName
             };
-            
-            await updateUserProfile({ 
-                id: userId, 
-                firstname: updatedProfile.firstName, 
-                lastname: updatedProfile.lastName 
+
+            const isUnchanged = (
+                profile.firstName === values.firstName &&
+                profile.lastName === values.lastName
+            );
+
+            if (isUnchanged) {
+                setErrorMessage("No changes made to the profile.");
+                setSuccessMessage("");
+                return;
+            }
+
+            await updateUserProfile({
+                id: userId,
+                firstname: updatedProfile.firstName,
+                lastname: updatedProfile.lastName
             });
 
             setProfile(updatedProfile);
@@ -117,28 +128,12 @@ const ProfileContent = ({ profile, setProfile }) => {
                             <div className="row gy-2">
                                 <label className="col-12 form-label m-0">Profile Image</label>
                                 <div className="col-12">
-                                    {profile.image === null || profile.image === 'noLogo.png' || !profile.image ? (
-                                        <input
-                                            type="file"
-                                            accept=".jpg, .jpeg, .png"
-                                            name="image"
-                                            onChange={handleFileChange}
-                                        />
-                                    ) : (
-                                        <>
-                                            <img
-                                                src={`${Statics.imagesFEUrl}${profile.image}`}
-                                                className="img-fluid profile-image"
-                                                alt={`${profile.firstName} ${profile.lastName}`}
-                                            />
-                                            <input
-                                                type="file"
-                                                accept=".jpg, .jpeg, .png"
-                                                name="image"
-                                                onChange={handleFileChange}
-                                            />
-                                        </>
-                                    )}
+                                    <input
+                                        type="file"
+                                        accept=".jpg, .jpeg, .png"
+                                        name="image"
+                                        onChange={handleFileChange}
+                                    />
                                 </div>
                                 <div className="col-12">
                                     <Button onClick={handleImageUpload} className="btn btn-primary">
