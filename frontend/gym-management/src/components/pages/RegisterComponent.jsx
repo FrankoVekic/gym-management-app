@@ -59,7 +59,7 @@ const RegisterComponent = () => {
     if (!values.password.trim()) {
       errors.password = 'Password is required';
     }
-    else if (values.password.trim().length > 100) {
+    else if (values.password.length > 100) {
       errors.password = 'Password can have max: 100 characters'
     }
     else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}/.test(values.password)) {

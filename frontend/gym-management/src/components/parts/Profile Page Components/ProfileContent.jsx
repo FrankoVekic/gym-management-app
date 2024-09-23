@@ -16,9 +16,9 @@ const validate = (values) => {
 
     if (!values.lastName.trim()) {
         errors.lastName = 'Last Name is required';
-    } else if (values.lastName.length < 2) {
+    } else if (values.lastName.trim().length < 2) {
         errors.lastName = 'Last Name must be at least 2 characters long';
-    } else if (values.lastName.length > 100) {
+    } else if (values.lastName.trim().length > 100) {
         errors.lastName = 'Last Name is too long';
     }
 
