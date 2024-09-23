@@ -6,7 +6,7 @@ import { Button, Alert } from "react-bootstrap";
 
 const validate = (values) => {
     let errors = {};
-    
+
     if (!values.firstName.trim()) {
         errors.firstName = 'First Name is required';
     } else if (values.firstName.length < 2) {
@@ -50,16 +50,16 @@ const ProfileContent = ({ profile, setProfile }) => {
 
     const handleSubmit = async (values) => {
         try {
-            const updatedProfile = { 
-                ...profile, 
-                firstName: values.firstName, 
-                lastName: values.lastName 
+            const updatedProfile = {
+                ...profile,
+                firstName: values.firstName,
+                lastName: values.lastName
             };
-            
-            await updateUserProfile({ 
-                id: userId, 
-                firstname: updatedProfile.firstName, 
-                lastname: updatedProfile.lastName 
+
+            await updateUserProfile({
+                id: userId,
+                firstname: updatedProfile.firstName,
+                lastname: updatedProfile.lastName
             });
 
             if (image) {
@@ -81,24 +81,26 @@ const ProfileContent = ({ profile, setProfile }) => {
     const handleFileChange = (e) => {
         setImage(e.target.files[0]);
     };
-
     const handleImageUpload = async () => {
         if (!image) return;
-
+    
         try {
             const updatedImageUrl = await updateProfileImage({ image, userId });
             setSuccessMessage("Profile image updated successfully.");
             setErrorMessage("");
-
+    
             setProfile((prevProfile) => ({
                 ...prevProfile,
                 image: updatedImageUrl.data
             }));
+            return true;
         } catch (error) {
             setErrorMessage("Failed to update profile image.");
             setSuccessMessage("");
+            return false;
         }
     };
+    
 
     if (loading) {
         return (
@@ -148,9 +150,10 @@ const ProfileContent = ({ profile, setProfile }) => {
                                     )}
                                 </div>
                                 <div className="col-12">
-                                    <Button onClick={handleImageUpload} className="btn btn-primary">
+                                    <Button onClick={handleImageUpload} className="btn btn-primary" type="button">
                                         Upload Image
                                     </Button>
+
                                 </div>
                             </div>
                         </div>
