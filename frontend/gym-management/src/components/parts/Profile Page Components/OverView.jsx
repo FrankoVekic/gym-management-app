@@ -37,13 +37,13 @@ const Overview = ({ profile, loading, error }) => {
             </p>
             <h5 className="mb-3">Profile</h5>
             <div className="row g-0">
-                {renderProfileRow("First Name", profile.firstName)}
-                {renderProfileRow("Last Name", profile.lastName)}
-                {renderProfileRow("Email", profile.email)}
-                {renderProfileRow("Role", profile.role)}
-                {renderProfileRow("Training Package", profile.trainingPackageName)}
-                {renderProfileRow("Expiration Date", profile.trainingPackageExpirationDate ? new Date(profile.trainingPackageExpirationDate).toLocaleDateString() : "-")}
-                {renderProfileRow("Status", profile.status)}
+                {renderProfileRow("First Name:", profile.firstName)}
+                {renderProfileRow("Last Name:", profile.lastName)}
+                {renderProfileRow("Email:", profile.email)}
+                {renderProfileRow("Role:", profile.role)}
+                {renderProfileRow("Training Package:", profile.trainingPackageName)}
+                {renderProfileRow("Expiration Date:", profile.trainingPackageExpirationDate ? new Date(profile.trainingPackageExpirationDate).toLocaleDateString() : "-")}
+                {renderProfileRow("Status:", profile.status)}
             </div>
         </div>
     );
@@ -51,11 +51,11 @@ const Overview = ({ profile, loading, error }) => {
 
 const renderProfileRow = (label, value) => (
     <>
-        <div className="col-5 col-md-3 bg-light border-bottom border-white border-3">
+        <div className="col-5 col-md-3 bg-light border-bottom border-white border-3 text-start">
             <div className="p-2">{label}</div>
         </div>
         <div className="col-7 col-md-9 bg-light border-start border-bottom border-white border-3">
-            <div className="p-2">{value !== null ? value : "-"}</div>
+            <div className="p-2 text-start">{value !== null ? value : "-"}</div>
         </div>
     </>
 );

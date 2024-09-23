@@ -34,11 +34,11 @@ const TrainerOverview = ({ profile }) => {
 
 const renderProfileRow = (label, value) => (
     <>
-        <div className="col-5 col-md-3 bg-light border-bottom border-white border-3">
+        <div className="col-5 col-md-3 bg-light border-bottom border-white border-3 ">
             <div className="p-2">{label}</div>
         </div>
         <div className="col-7 col-md-9 bg-light border-start border-bottom border-white border-3">
-            <div className="p-2">{value !== null ? value : "-"}</div>
+            <div className="p-2 text-align-start text-start">{value !== null ? value : "-"}</div>
         </div>
     </>
 );

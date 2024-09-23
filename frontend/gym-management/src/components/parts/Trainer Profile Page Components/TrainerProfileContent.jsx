@@ -60,13 +60,6 @@ const TrainerProfileContent = ({ profile, setProfile }) => {
                 lastname: updatedProfile.lastName 
             });
 
-            if (image) {
-                const updatedImageUrl = await updateProfileImage({ image, userId: profile.id });
-                if (typeof updatedImageUrl === 'string') {
-                    updatedProfile.image = updatedImageUrl;
-                }
-            }
-
             setProfile(updatedProfile);
             setSuccessMessage("Profile updated successfully.");
             setErrorMessage("");
