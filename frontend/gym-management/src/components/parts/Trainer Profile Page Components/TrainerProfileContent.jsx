@@ -2,23 +2,24 @@ import React, { useEffect, useState } from "react";
 import { updateUserProfile, updateProfileImage } from "../../api/api";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Button, Alert } from "react-bootstrap";
+import Statics from '../../static utils/Statics';
 
 const validate = (values) => {
     let errors = {};
 
     if (!values.firstName.trim()) {
         errors.firstName = 'First Name is required';
-    } else if (values.firstName.length < 2) {
+    } else if (values.firstName.trim().length < 2) {
         errors.firstName = 'First Name must be at least 2 characters long';
-    } else if (values.firstName.length > 100) {
+    } else if (values.firstName.trim().length > 100) {
         errors.firstName = 'First Name is too long';
     }
 
     if (!values.lastName.trim()) {
         errors.lastName = 'Last Name is required';
-    } else if (values.lastName.length < 2) {
+    } else if (values.lastName.trim().length < 2) {
         errors.lastName = 'Last Name must be at least 2 characters long';
-    } else if (values.lastName.length > 100) {
+    } else if (values.lastName.trim().length > 100) {
         errors.lastName = 'Last Name is too long';
     }
 

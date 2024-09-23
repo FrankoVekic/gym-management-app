@@ -8,9 +8,9 @@ const validate = (values) => {
 
     if (!values.firstName.trim()) {
         errors.firstName = 'First Name is required';
-    } else if (values.firstName.length < 2) {
+    } else if (values.firstName.trim().length < 2) {
         errors.firstName = 'First Name must be at least 2 characters long';
-    } else if (values.firstName.length > 100) {
+    } else if (values.firstName.trim().length > 100) {
         errors.firstName = 'First Name is too long';
     }
 

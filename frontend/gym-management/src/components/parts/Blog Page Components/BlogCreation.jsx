@@ -39,9 +39,9 @@ const BlogCreation = () => {
     // title validation
     if (!values.title.trim()) {
       errors.title = 'Title is required';
-    } else if (values.title.length < 3) {
+    } else if (values.title.trim().length < 3) {
       errors.title = 'Title must be at least 3 characters long';
-    } else if (values.title.length > 2000) {
+    } else if (values.title.trim().length > 150) {
       errors.title = 'Title is too long';
     } else if (!/[a-zA-Z]/.test(values.title)) {
       errors.title = 'Title must contain at least one letter';
@@ -50,9 +50,9 @@ const BlogCreation = () => {
     // content validation
     if (!values.content.trim()) {
       errors.content = 'Content is required';
-    } else if (values.content.length < 20) {
-      errors.content = 'Content must be at least 20 characters long';
-    } else if (values.content.length > 5000) {
+    } else if (values.content.trim().length < 10) {
+      errors.content = 'Content must be at least 10 characters long';
+    } else if (values.content.trim().length > 4500) {
       errors.content = 'Content is too large, text must be shorter';
     }
 

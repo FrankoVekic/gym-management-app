@@ -31,7 +31,7 @@ const RegisterComponent = () => {
     else if(values.firstname.trim().length < 2){
       errors.firstname = 'First name is too short'
     }
-    else if(values.firstname.length > 100){
+    else if(values.firstname.trim().length > 100){
       errors.firstname = 'First can have max: 100 characters';
     }
     
@@ -51,7 +51,7 @@ const RegisterComponent = () => {
     } else if (!/^\S+@\S+\.\S+$/.test(values.email)) {
       errors.email = 'Invalid email address';
     }
-    else if(values.email.length > 100){
+    else if(values.email.trim().length > 100){
       errors.email = 'Email is too long'
     }
 
@@ -59,7 +59,7 @@ const RegisterComponent = () => {
     if (!values.password.trim()) {
       errors.password = 'Password is required';
     }
-    else if (values.password.length > 100) {
+    else if (values.password.trim().length > 100) {
       errors.password = 'Password can have max: 100 characters'
     }
     else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}/.test(values.password)) {
@@ -81,7 +81,7 @@ const RegisterComponent = () => {
       <div className="container-fluid h-custom">
         <div className="row d-flex justify-content-center align-items-center h-100">
           <div className="col-md-9 col-lg-6 col-xl-5">
-            <img src="https://img.freepik.com/premium-vector/account-login-line-icon-new-user-register_1948-2986.jpg?w=1480" className="img-fluid" alt="Sample image" />
+            <img src="https://img.freepik.com/premium-vector/account-login-line-icon-new-user-register_1948-2986.jpg?w=1480" className="img-fluid" alt="" />
           </div>
           <div className="col-md-8 col-lg-6 col-xl-4 offset-xl-1 container">
             <h2 className='fw-bolder m-5'>Register a New Account</h2>

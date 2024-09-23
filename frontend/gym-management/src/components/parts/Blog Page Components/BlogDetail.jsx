@@ -57,9 +57,9 @@ const BlogDetail = () => {
 
         if (!editedBlog.title.trim()) {
             errors.title = 'Title is required';
-        } else if (editedBlog.title.length < 3) {
+        } else if (editedBlog.title.trim().length < 3) {
             errors.title = 'Title is too short';
-        } else if (editedBlog.title.length > 150) {
+        } else if (editedBlog.title.trim().length > 150) {
             errors.title = 'Title is too long';
         } else if (!/[a-zA-Z]/.test(editedBlog.title)) {
             errors.title = 'Invalid input, try writing something else';
@@ -68,9 +68,9 @@ const BlogDetail = () => {
         
         if (!editedBlog.content.trim()) {
             errors.content = 'Content is required';
-        } else if (editedBlog.content.length < 10) {
+        } else if (editedBlog.content.trim().length < 10) {
             errors.content = 'Content is too short';
-        } else if (editedBlog.content.length > 4500) {
+        } else if (editedBlog.content.trim().length > 4500) {
             errors.content = 'Content is too large, text must be shorter';
         }
 
