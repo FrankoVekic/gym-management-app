@@ -8,7 +8,7 @@ import { getMemberProfile } from "../api/api";
 import { jwtDecode } from "jwt-decode";
 
 const ProfilePage = () => {
-    const [profile, setProfile] = useState({});
+    const [profile, setProfile] = useState(null);
     const [loading, setLoading] = useState(true);
     const [errorMessage, setErrorMessage] = useState("");
 
@@ -35,12 +35,19 @@ const ProfilePage = () => {
     if (loading) return <div>Loading...</div>;
     if (errorMessage) return <div>{errorMessage}</div>;
 
+    const handleImageUpdated = (newImage) => {
+        setProfile((prevProfile) => ({
+            ...prevProfile,
+            image: newImage
+        }));
+    };
+
     return (
         <div className="container mt-5">
             <section className="bg-light py-3 py-md-5 py-xl-8">
                 <div className="container">
                     <div className="row gy-4 gy-lg-0">
-                        <ProfileCard profile={profile} />
+                        <ProfileCard profile={profile} onImageUpdated={handleImageUpdated} />
                         <div className="col-12 col-lg-8 col-xl-9">
                             <div className="card widget-card border-light shadow-sm">
                                 <div className="card-body p-4">

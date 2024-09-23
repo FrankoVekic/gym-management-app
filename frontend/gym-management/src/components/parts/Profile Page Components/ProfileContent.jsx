@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Statics from "../../static utils/Statics";
-import { updateUserProfile, updateProfileImage } from "../../api/api";
+import { updateUserProfile } from "../../api/api";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Button, Alert } from "react-bootstrap";
 
@@ -28,7 +27,6 @@ const validate = (values) => {
 
 const ProfileContent = ({ profile, setProfile }) => {
     const [loading, setLoading] = useState(true);
-    const [image, setImage] = useState(null);
     const [errorMessage, setErrorMessage] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
     const [userId, setUserId] = useState(profile.id || null);
@@ -56,18 +54,22 @@ const ProfileContent = ({ profile, setProfile }) => {
                 lastName: values.lastName
             };
 
+            const isUnchanged = (
+                profile.firstName === values.firstName &&
+                profile.lastName === values.lastName
+            );
+
+            if (isUnchanged) {
+                setErrorMessage("No changes made to the profile.");
+                setSuccessMessage("");
+                return;
+            }
+
             await updateUserProfile({
                 id: userId,
                 firstname: updatedProfile.firstName,
                 lastname: updatedProfile.lastName
             });
-
-            if (image) {
-                const updatedImageUrl = await updateProfileImage({ image, userId });
-                if (typeof updatedImageUrl === 'string') {
-                    updatedProfile.image = updatedImageUrl;
-                }
-            }
 
             setProfile(updatedProfile);
             setSuccessMessage("Profile updated successfully.");
@@ -77,30 +79,6 @@ const ProfileContent = ({ profile, setProfile }) => {
             setSuccessMessage("");
         }
     };
-
-    const handleFileChange = (e) => {
-        setImage(e.target.files[0]);
-    };
-    const handleImageUpload = async () => {
-        if (!image) return;
-    
-        try {
-            const updatedImageUrl = await updateProfileImage({ image, userId });
-            setSuccessMessage("Profile image updated successfully.");
-            setErrorMessage("");
-    
-            setProfile((prevProfile) => ({
-                ...prevProfile,
-                image: updatedImageUrl.data
-            }));
-            return true;
-        } catch (error) {
-            setErrorMessage("Failed to update profile image.");
-            setSuccessMessage("");
-            return false;
-        }
-    };
-    
 
     if (loading) {
         return (
@@ -122,41 +100,6 @@ const ProfileContent = ({ profile, setProfile }) => {
             >
                 {({ handleSubmit }) => (
                     <Form onSubmit={handleSubmit} className="row gy-3 gy-xxl-4">
-                        <div className="col-12">
-                            <div className="row gy-2">
-                                <label className="col-12 form-label m-0">Profile Image</label>
-                                <div className="col-12">
-                                    {profile.image === null || profile.image === 'noLogo.png' || !profile.image ? (
-                                        <input
-                                            type="file"
-                                            accept=".jpg, .jpeg, .png"
-                                            name="image"
-                                            onChange={handleFileChange}
-                                        />
-                                    ) : (
-                                        <>
-                                            <img
-                                                src={`${Statics.imagesFEUrl}${profile.image}`}
-                                                className="img-fluid profile-image"
-                                                alt={`${profile.firstName} ${profile.lastName}`}
-                                            />
-                                            <input
-                                                type="file"
-                                                accept=".jpg, .jpeg, .png"
-                                                name="image"
-                                                onChange={handleFileChange}
-                                            />
-                                        </>
-                                    )}
-                                </div>
-                                <div className="col-12">
-                                    <Button onClick={handleImageUpload} className="btn btn-primary" type="button">
-                                        Upload Image
-                                    </Button>
-
-                                </div>
-                            </div>
-                        </div>
                         <div className="col-12 col-md-6 d-flex flex-column align-items-center">
                             <label htmlFor="firstName" className="form-label">First Name</label>
                             <Field type="text" className="form-control" id="firstName" name="firstName" />

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Statics from "../../static utils/Statics";
 import { updateUserProfile, updateProfileImage } from "../../api/api";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Button, Alert } from "react-bootstrap";

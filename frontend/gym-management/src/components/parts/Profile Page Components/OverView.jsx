@@ -32,7 +32,7 @@ const Overview = ({ profile, loading, error }) => {
         >
             <h5 className="mb-3">About</h5>
             <p className="lead mb-3">
-                {profile.firstName} {profile.lastName} is a valued member with a role of {profile.role}.
+                {profile.firstName} {profile.lastName} is a valued {profile.role}.
                 They are currently enrolled in the {profile.trainingPackageName} and their status is {profile.status}.
             </p>
             <h5 className="mb-3">Profile</h5>
