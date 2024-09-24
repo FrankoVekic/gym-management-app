@@ -1,5 +1,6 @@
 package com.franko.gym_management.gym_management_app.config.auth;
 
+import com.franko.gym_management.gym_management_app.dto.TrainerDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +18,12 @@ public class AuthenticationController {
     @PostMapping("register")
     public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request) {
         return ResponseEntity.ok(authenticationService.register(request));
+    }
+
+    @PostMapping("registerTrainer")
+    public ResponseEntity<String> registerTrainer(@RequestBody RegisterTrainerRequest request) {
+        authenticationService.registerTrainer(request);
+        return ResponseEntity.ok("Successfully added new trainer");
     }
 
     @PostMapping("authenticate")
