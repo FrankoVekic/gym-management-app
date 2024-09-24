@@ -19,4 +19,6 @@ public interface TrainerService {
 
     void updateTrainerStatus(UpdateTrainerStatusDto updateTrainerStatusDto);
 
+    void softRemoveById(Long id);
+
 }

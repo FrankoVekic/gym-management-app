@@ -97,10 +97,16 @@ public class TrainerServiceImpl implements TrainerService {
             throw new RuntimeException("Status with given Name is not found");
         }
 
-
-
         trainer.setStatus(status);
         trainerRepository.save(trainer);
+
+    }
+
+    @Override
+    public void softRemoveById(Long id) {
+
+        trainerRepository.findById(id).orElseThrow(() -> new RuntimeException("Trainer with given ID does not exist"));
+        trainerRepository.softDeleteById(id);
 
     }
 

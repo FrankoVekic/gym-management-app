@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'; 
-import { getAllTrainers, addNewTrainer } from '../api/api';
+import { getAllTrainers, addNewTrainer, removeTrainer } from '../api/api';
 import { Button, Spinner, Alert, Modal, Form } from 'react-bootstrap';
 import URLSaver from '../parts/URLSaver';
 import Statics from '../static utils/Statics';
@@ -42,7 +42,7 @@ const Trainers = () => {
             return;
         }
         try {
-            // await deleteTrainer(id);
+             await removeTrainer(id);
             console.log(id);
             setTrainers(trainers.filter((trainer) => trainer.id !== id));
             setSelectedTrainer(null);
@@ -99,19 +99,56 @@ const Trainers = () => {
 
     const validateNewTrainer = (trainer) => {
         const errors = {};
-        if (!trainer.firstname) errors.firstname = 'First name is required';
-        if (!trainer.lastname) errors.lastname = 'Last name is required';
+    
+        if (!trainer.firstname) {
+            errors.firstname = 'First name is required';
+        } else if (trainer.firstname.trim().length < 2) {
+            errors.firstname = 'First name is too short';
+        } else if (trainer.firstname.trim().length > 100) {
+            errors.firstname = 'First name can have max: 100 characters';
+        }
+    
+        if (!trainer.lastname) {
+            errors.lastname = 'Last name is required';
+        } else if (trainer.lastname.trim().length < 2) {
+            errors.lastname = 'Last name is too short';
+        } else if (trainer.lastname.trim().length > 100) {
+            errors.lastname = 'Last name is too long';
+        }
+    
         if (!trainer.email) {
             errors.email = 'Email is required';
         } else if (!/\S+@\S+\.\S+/.test(trainer.email)) {
             errors.email = 'Email is invalid';
+        } else if (trainer.email.trim().length > 100) {
+            errors.email = 'Email is too long';
         }
-        if (!trainer.description) errors.description = 'Description is required';
-        if (!trainer.password) errors.password = 'Password is required';
-        if (trainer.password !== trainer.confirmPassword) errors.confirmPassword = 'Passwords do not match';
-
+    
+        if (!trainer.password) {
+            errors.password = 'Password is required';
+        } else if (trainer.password.length > 100) {
+            errors.password = 'Password can have max: 100 characters';
+        } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}/.test(trainer.password)) {
+            errors.password = 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character, and be at least 8 characters long';
+        }
+    
+        if (!trainer.confirmPassword) {
+            errors.confirmPassword = 'Confirm password field is required';
+        } else if (trainer.confirmPassword !== trainer.password) {
+            errors.confirmPassword = 'Passwords do not match';
+        }
+    
+        if (!trainer.description) {
+            errors.description = 'Description is required';
+        } else if (trainer.description.trim().length < 10) {
+            errors.description = 'Description is too short';
+        } else if (trainer.description.length > 3000) {
+            errors.description = 'Description is too large';
+        }
+    
         return errors;
     };
+    
 
     if (loading) {
         return (

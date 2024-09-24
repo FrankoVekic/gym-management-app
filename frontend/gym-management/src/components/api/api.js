@@ -271,6 +271,12 @@ export const getAllTrainers = () => {
     return axios.get(`${API_URL}/public/trainers/getTrainers`);
 };
 
+// ADD NEW TRAINER
 export const addNewTrainer = (values) =>{
     return axios.post(`${API_URL}/public/api/auth/registerTrainer`, values);
 }
+
+// REMOVE TRAINER
+export const removeTrainer = (id) => {
+    return axios.post(`${API_URL}/public/trainers/removeTrainer`, { id });
+};
