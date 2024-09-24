@@ -2,6 +2,7 @@ import React from "react";
 import { Alert, Spinner } from "react-bootstrap";
 
 const Overview = ({ profile, loading, error }) => {
+    
     if (loading) {
         return (
             <div className="d-flex justify-content-center align-items-center mt-5">

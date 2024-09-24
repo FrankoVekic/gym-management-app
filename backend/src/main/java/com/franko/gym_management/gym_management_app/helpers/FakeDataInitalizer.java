@@ -460,7 +460,7 @@ public class FakeDataInitalizer implements CommandLineRunner {
                 .firstName("Franko")
                 .lastName("Vekić")
                 .email("franko.vekic@gmail.com")
-                .image("")
+                .image("logo4.jpg")
                 .password(passwordEncoder.encode("test123"))
                 .role(Role.MEMBER)
                 .build();

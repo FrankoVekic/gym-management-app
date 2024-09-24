@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { updateUserProfile } from "../../api/api";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { Button, Alert } from "react-bootstrap";
+import { Button, Alert, Spinner } from "react-bootstrap";
 
 const validate = (values) => {
     let errors = {};
@@ -82,8 +82,10 @@ const ProfileContent = ({ profile, setProfile }) => {
 
     if (loading) {
         return (
-            <div className="d-flex justify-content-center align-items-center mt-5">
-                <span className="visually-hidden">Loading...</span>
+            <div className="d-flex justify-content-center align-items-center" style={{ height: '80vh' }}>
+                <Spinner animation="border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                </Spinner>
             </div>
         );
     }

@@ -6,7 +6,7 @@
     text-align: left;
 }
 
-.navbar-toggler{
+.navbar-toggler {
     color: #2980b9;
 }
 
@@ -21,6 +21,7 @@
     overflow-y: auto;
     word-wrap: break-word;
     overflow-wrap: break-word;
+    margin: 20px 0;
 }
 
 .blog-content p {
@@ -32,7 +33,6 @@
     width: 100%;
     box-sizing: border-box;
 }
-
 
 .custom-navbar .nav-link {
     margin-right: 15px;
@@ -48,7 +48,7 @@
     font-size: 0.8rem; 
     padding: 0.25rem 0.5rem; 
     margin: 0.1rem; 
-  }
+}
 
 .feature {
     display: inline-flex;
@@ -57,7 +57,7 @@
     height: 4rem;
     width: 4rem;
     font-size: 2rem;
-  }
+}
 
 .header-bg {
     background-image: url('/src/style/images/homepageImage1.jpg');
@@ -83,14 +83,13 @@
     height: 500px;
 }
 
-.header-bg-training-packages{
+.header-bg-training-packages {
     background-image: url('/src/style/images/trainingpackages.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     height: 500px;
 }
-
 
 .header-bg-blogs {
     background-image: url('/src/style/images/blogbg.jpg');
@@ -123,18 +122,18 @@
 
 .divider:after,
 .divider:before {
-content: "";
-flex: 1;
-height: 1px;
-background: #eee;
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: #eee;
 }
 .h-custom {
-height: calc(100% - 73px);
+    height: calc(100% - 73px);
 }
 @media (max-width: 450px) {
-.h-custom {
-height: 100%;
-}
+    .h-custom {
+        height: 100%;
+    }
 }
 
 .custom-next-icon {
@@ -159,20 +158,20 @@ html, body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-  }
+}
   
-  .GymApp {
+.GymApp {
     flex: 1;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-  }
+}
   
-  .content {
+.content {
     flex: 1;
-  }
+}
   
-  .footer {
+.footer {
     padding: 20px 0;
     background: linear-gradient(to right, #1e3c72, #2a5298, #4b79a1, #6c92b2, #98b9ce);
     color: #ffffff;
@@ -180,7 +179,7 @@ html, body {
     position: relative;
     width: 100%;
     bottom: 0;
-  }
+}
   
 .footer p {
     margin: 0;
@@ -201,9 +200,7 @@ html, body {
     max-width: 600px;
     max-height: 600px; 
     border-radius: 8px; 
-  }
-
-
+}
 
 @media (max-width: 992px) {
     .navbar-collapse.show .nav-link {
@@ -311,17 +308,17 @@ html, body {
     }
 }
 
-.nav .show>.nav-link.nav-link-faded,
+.nav .show > .nav-link.nav-link-faded,
 .nav-link.nav-link-faded.active,
 .nav-link.nav-link-faded:active,
 .nav-pills .nav-link.nav-link-faded.active,
-.navbar-nav .show>.nav-link.nav-link-faded {
+.navbar-nav .show > .nav-link.nav-link-faded {
     color: #3367b5;
     background-color: #c9d8f0;
 }
 
 .nav-pills .nav-link.active,
-.nav-pills .show>.nav-link {
+.nav-pills .show > .nav-link {
     color: #fff;
     background-color: #467bcb;
 }
@@ -367,44 +364,46 @@ html, body {
 
 .blog-detail-container {
     max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f9f9f9;
+    margin: 20px auto;
+    padding: 25px;
+    background-color: #fff;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .blog-header {
-    text-align: center;
-    margin-bottom: 20px;
+    text-align: left;
 }
 
 .blog-title-container {
-  width: 100%;
-  overflow-wrap: break-word;
+    width: 100%;
+    overflow-wrap: break-word;
 }
 
 .blog-title {
-  font-size: 2rem;
-  font-weight: bold;
-  white-space: normal;
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
 }
 
 .blog-meta {
-    font-size: 1em;
-    color: #777;
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 1.5rem;
 }
 
-.blog-author {
-    font-weight: bold;
-}
-
-.blog-date {
-    color: #555;
+.blog-content {
+    margin: 20px 0;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #444;
 }
 
 .comments-section {
     margin-top: 40px;
+    padding: 15px 0;
+    border-top: 2px solid #f1f1f1;
 }
 
 .comments-section h3 {
@@ -414,17 +413,16 @@ html, body {
 }
 
 .comment {
-    padding: 10px 15px;
+    padding: 15px;
     margin-bottom: 15px;
-    background-color: #fff;
+    background-color: #f9f9f9;
     border: 1px solid #ddd;
     border-radius: 5px;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
+    text-align: left;
 }
 
 .comment-content {
-    font-size: 1.1em;
+    font-size: 1rem;
     color: #555;
 }
 
@@ -440,6 +438,13 @@ html, body {
 
 .comment-date {
     color: #777;
+    font-size: 0.9rem;
+}
+
+.add-comment-section {
+    margin-top: 30px;
+    padding: 10px;
+    border-top: 1px solid #ddd;
 }
 
 .loading {
@@ -509,7 +514,6 @@ html, body {
     width: 100%;
 }
 
-
 .success-title {
     font-size: 24px;
     margin-bottom: 10px;
@@ -548,7 +552,7 @@ html, body {
     background-color: #218838;
 }
 
-.profile-logo{
+.profile-logo {
     width: 300px;
     height: 300px;
     object-fit: cover;

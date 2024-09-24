@@ -6,6 +6,7 @@ import ProfileNavbar from "../parts/Profile Page Components/ProfileNavbar";
 import ProfileCard from "../parts/Profile Page Components/ProfileCard";
 import { getMemberProfile } from "../api/api";
 import { jwtDecode } from "jwt-decode";
+import { Spinner } from "react-bootstrap";
 
 const ProfilePage = () => {
     const [profile, setProfile] = useState(null);
@@ -32,7 +33,15 @@ const ProfilePage = () => {
         fetchProfile();
     }, []);
 
-    if (loading) return <div>Loading...</div>;
+    if (loading) {
+        return (
+            <div className="d-flex justify-content-center align-items-center" style={{ height: '80vh' }}>
+                <Spinner animation="border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                </Spinner>
+            </div>
+        );
+    }
     if (errorMessage) return <div>{errorMessage}</div>;
 
     const handleImageUpdated = (newImage) => {

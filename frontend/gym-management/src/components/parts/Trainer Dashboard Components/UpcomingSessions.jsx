@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import RecentTestimonials from './RecentTestimonials';
 import { getUpcomingTrainingSessions } from '../../api/api';
-import { Alert, Spinner } from 'react-bootstrap';
+import { Alert } from 'react-bootstrap';
 
 
 const UpcomingSessions = () => {
@@ -28,9 +28,7 @@ const UpcomingSessions = () => {
     if (loading) {
         return (
             <div className="d-flex justify-content-center align-items-center mt-5">
-                <Spinner animation="border" role="status">
-                    <span className="visually-hidden">Loading...</span>
-                </Spinner>
+                <span className="visually-hidden">Loading...</span>
             </div>
         );
     }
