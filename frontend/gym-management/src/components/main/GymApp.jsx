@@ -16,7 +16,6 @@ import TrainingPackageDetailComponent from '../parts/Training Package Components
 import BlogComponent from '../pages/BlogComponent';
 import BlogDetail from '../parts/Blog Page Components/BlogDetail';
 import BlogCreation from '../parts/Blog Page Components/BlogCreation';
-import ManageComponent from '../pages/ManageComponent';
 import ProfilePage from '../pages/ProfilePage';
 import TrainerDashboard from '../pages/TrainerDashboard';
 import MemberProtectedRoute from '../protected routes/MemberProtectedRoute';
@@ -32,6 +31,8 @@ import EditTrainingSession from '../parts/Trainer Dashboard Components/View All 
 import ContactEntries from '../parts/Trainer Dashboard Components/View All Pages/ContactEntries';
 import TrainerProfilePage from '../pages/TrainerProfilePage';
 import SuccessComponent from '../parts/SuccessComponent';
+import TrainersManage from '../pages/Trainers.jsx';
+
 
 
 export default function GymApp() {
@@ -54,12 +55,12 @@ export default function GymApp() {
                             {/* TRAINER ROUTES */}
                             <Route element={<TrainerProtectedRoute />}>
                                 <Route path="/trainer-dashboard" element={<TrainerDashboard />} />
-                                <Route path="/trainer-management" element={<ManageComponent />} />
                                 <Route path="/training-sessions" element={<TrainingSessions />} ></Route>
                                 <Route path="/testimonials" element={<Testimonials />}></Route>
                                 <Route path="/training-sessions/:id" element={<EditTrainingSession />}></Route>
                                 <Route path="/contact-entries" element={<ContactEntries />}></Route>
                                 <Route path="/trainer-profile-page" element={<TrainerProfilePage />} />
+                                <Route path="/manage-trainers" element={<TrainersManage/>} />
                             </Route>
 
                             {/* ROUTES FOR ALL AUTHENTICATED USERS */}
