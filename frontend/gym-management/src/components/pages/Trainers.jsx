@@ -1,16 +1,25 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { getAllTrainers } from '../api/api';
-import { Button, Table, Spinner, Alert, Modal } from 'react-bootstrap';
+import React, { useEffect, useState } from 'react'; 
+import { getAllTrainers, addNewTrainer } from '../api/api';
+import { Button, Spinner, Alert, Modal, Form } from 'react-bootstrap';
 import URLSaver from '../parts/URLSaver';
+import Statics from '../static utils/Statics';
 
 const Trainers = () => {
     const [trainers, setTrainers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+    const [showAddTrainerModal, setShowAddTrainerModal] = useState(false);
     const [selectedTrainer, setSelectedTrainer] = useState(null);
-    const navigate = useNavigate();
+    const [newTrainer, setNewTrainer] = useState({
+        firstname: '',
+        lastname: '',
+        email: '',
+        description: '',
+        password: '',
+        confirmPassword: ''
+    });
+    const [validationErrors, setValidationErrors] = useState({});
 
     useEffect(() => {
         const fetchData = async () => {
@@ -20,18 +29,21 @@ const Trainers = () => {
             } catch (error) {
                 setError("Failed to fetch trainer data.");
             } finally {
-                setLoading(false); 
+                setLoading(false);
             }
         };
-    
+
         fetchData();
     }, []);
-    
-    
 
     const handleDeleteTrainer = async (id) => {
+        if (!id) {
+            console.error("Invalid trainer ID:", id);
+            return;
+        }
         try {
-         //   await deleteTrainer(id);
+            // await deleteTrainer(id);
+            console.log(id);
             setTrainers(trainers.filter((trainer) => trainer.id !== id));
             setSelectedTrainer(null);
         } catch (error) {
@@ -39,11 +51,66 @@ const Trainers = () => {
         }
         setShowDeleteConfirmation(false);
     };
-
-
+    
     const handleShowDeleteConfirmation = (trainer) => {
         setSelectedTrainer(trainer);
         setShowDeleteConfirmation(true);
+    };
+    
+    const handleAddTrainer = async () => {
+        const errors = validateNewTrainer(newTrainer);
+        if (Object.keys(errors).length > 0) {
+            setValidationErrors(errors);
+            return;
+        }
+
+        const newTrainerWithUser = {
+            user: {
+                image: null,
+                firstName: newTrainer.firstname,
+                lastName: newTrainer.lastname,
+                email: newTrainer.email,
+                password: newTrainer.password,
+                confirmPassword: newTrainer.confirmPassword
+            },
+            description: newTrainer.description,
+            status: { statusType: 'AVAILABLE' },
+            id: trainers.length + 1
+        };
+
+        const newTrainerToSend = {
+            firstname: newTrainer.firstname,
+            lastname: newTrainer.lastname,
+            email: newTrainer.email,
+            description: newTrainer.description,
+            password: newTrainer.password,
+        };
+
+        try {
+            await addNewTrainer(newTrainerToSend);
+            setTrainers([...trainers, newTrainerWithUser]);
+            setShowAddTrainerModal(false);
+            setNewTrainer({ firstname: '', lastname: '', email: '', description: '', password: '', confirmPassword: '' }); 
+            setValidationErrors({});
+        } catch (error) {
+            setError("Failed to add the trainer.");
+        }
+    };
+
+    const validateNewTrainer = (trainer) => {
+        const errors = {};
+        if (!trainer.firstname) errors.firstname = 'First name is required';
+        if (!trainer.lastname) errors.lastname = 'Last name is required';
+        if (!trainer.email) {
+            errors.email = 'Email is required';
+        } else if (!/\S+@\S+\.\S+/.test(trainer.email)) {
+            errors.email = 'Email is invalid';
+        }
+        if (!trainer.description) errors.description = 'Description is required';
+        if (!trainer.password) errors.password = 'Password is required';
+        if (trainer.password !== trainer.confirmPassword) errors.confirmPassword = 'Passwords do not match';
+
+        return errors;
     };
 
     if (loading) {
@@ -70,52 +137,179 @@ const Trainers = () => {
                 <URLSaver />
             </div>
             <h2 className="mb-4 text-center">Manage Trainers</h2>
-            <Table striped bordered hover>
-                <thead>
-                    <tr>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Email</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {trainers && trainers.map((trainer, index) => (
-                        <tr key={index}>
-                            <td>{trainer.user.firstName}</td>
-                            <td>{trainer.user.lastName}</td>
-                            <td>{trainer.user.email}</td>
-                            <td>{trainer.status.statusType}</td>
-                            <td>
-                                <Button className='btn btn-primary btn-sm me-2' onClick={() => navigate(`/edit-trainer/${trainer.id}`)}>
-                                <i className="bi bi-pen"></i>
-                                </Button>
-                                <Button className='btn btn-danger btn-sm' onClick={() => handleShowDeleteConfirmation(trainer)}>
-                                   <i className="bi bi-trash"></i>
-                                </Button>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </Table>
+            <div className="row">
+                {trainers && trainers.map((trainer, index) => (
+                    <div className="col-md-4 mb-4" key={index}>
+                        <div className="card h-100" style={{ borderRadius: '15px' }}>
+                            <div className="card-body text-center">
+                                <img
+                                    src={trainer.user.image ? `${Statics.imagesFEUrl}${trainer.user.image}` : Statics.noImageUrl}
+                                    alt={`${trainer.user.firstName} ${trainer.user.lastName}`}
+                                    className="rounded-circle mb-3"
+                                    style={{ width: '150px', height: '150px', objectFit: 'cover' }}
+                                />
+                                <h5 className="card-title">{trainer.user.firstName} {trainer.user.lastName}</h5>
+                                <p className="card-text"><strong>Email:</strong> {trainer.user.email}</p>
+                                <p className="card-text"><strong>Status:</strong> {trainer.status.statusType}</p>
+                                <div className="d-flex justify-content-between">
+                                    <Button className='btn btn-primary btn-sm me-2' onClick={() => selectedTrainer ? null : setSelectedTrainer(trainer)}>
+                                        <i className="bi bi-eye"></i> View
+                                    </Button>
+
+                                    <Button className='btn btn-danger btn-sm' onClick={() => handleShowDeleteConfirmation(trainer)}>
+                                        <i className="bi bi-trash"></i> Remove
+                                    </Button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </div>
+
             <div className="d-flex justify-content-center mt-3">
-                <Button variant="primary" onClick={() => navigate('/add-trainer')}>
+                <Button variant="primary" onClick={() => setShowAddTrainerModal(true)}>
                     Add New Trainer
                 </Button>
             </div>
 
-            <Modal show={showDeleteConfirmation} onHide={() => setShowDeleteConfirmation(false)}>
+            {/* delete modal */}
+            <Modal show={showDeleteConfirmation} onHide={() => setShowDeleteConfirmation(false)} centered>
                 <Modal.Header closeButton>
                     <Modal.Title>Confirm Deletion</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>Are you sure you want to delete {selectedTrainer?.firstname} {selectedTrainer?.lastname}?</Modal.Body>
+                <Modal.Body>Are you sure you want to delete {selectedTrainer?.user?.firstName} {selectedTrainer?.user?.lastName}?</Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={() => setShowDeleteConfirmation(false)}>
                         Cancel
                     </Button>
                     <Button variant="danger" onClick={() => handleDeleteTrainer(selectedTrainer.id)}>
                         Delete
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+
+            {/* view modal */}
+            <Modal show={!!selectedTrainer && !showDeleteConfirmation} onHide={() => setSelectedTrainer(null)} centered>
+                <Modal.Header closeButton>
+                    <Modal.Title>Trainer Details</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <div className="text-center">
+                        <img
+                            src={selectedTrainer?.user?.image ? `${Statics.imagesFEUrl}${selectedTrainer.user.image}` : Statics.noImageUrl}
+                            alt={`${selectedTrainer?.user?.firstName} ${selectedTrainer?.user?.lastName}`}
+                            className="rounded-circle mb-3"
+                            style={{ width: '100px', height: '100px', objectFit: 'cover' }}
+                        />
+                    </div>
+                    <div className="mb-3">
+                        <strong>First Name:</strong> {selectedTrainer?.user?.firstName || ''}
+                    </div>
+                    <div className="mb-3">
+                        <strong>Last Name:</strong> {selectedTrainer?.user?.lastName || ''}
+                    </div>
+                    <div className="mb-3">
+                        <strong>Email:</strong> {selectedTrainer?.user?.email || ''}
+                    </div>
+                    <div className="mb-3" style={{ maxHeight: '100px', overflowY: 'auto' }}>
+                        <strong>Description:</strong>
+                        <div>
+                            {selectedTrainer?.description || ''}
+                        </div>
+                    </div>
+                    <div className="mb-3">
+                        <strong>Status:</strong> {selectedTrainer?.status?.statusType || ''}
+                    </div>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setSelectedTrainer(null)}>
+                        Close
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+
+            {/* add trainer modal */}
+            <Modal show={showAddTrainerModal} onHide={() => setShowAddTrainerModal(false)} centered>
+                <Modal.Header closeButton>
+                    <Modal.Title>Add New Trainer</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form>
+                        <Form.Group controlId="formFirstname">
+                            <Form.Label>First Name</Form.Label>
+                            <Form.Control 
+                                type="text" 
+                                placeholder="Enter first name" 
+                                value={newTrainer.firstname} 
+                                onChange={(e) => setNewTrainer({ ...newTrainer, firstname: e.target.value })} 
+                                isInvalid={!!validationErrors.firstname}
+                            />
+                            <Form.Control.Feedback type="invalid">{validationErrors.firstname}</Form.Control.Feedback>
+                        </Form.Group>
+                        <Form.Group controlId="formLastname">
+                            <Form.Label>Last Name</Form.Label>
+                            <Form.Control 
+                                type="text" 
+                                placeholder="Enter last name" 
+                                value={newTrainer.lastname} 
+                                onChange={(e) => setNewTrainer({ ...newTrainer, lastname: e.target.value })} 
+                                isInvalid={!!validationErrors.lastname}
+                            />
+                            <Form.Control.Feedback type="invalid">{validationErrors.lastname}</Form.Control.Feedback>
+                        </Form.Group>
+                        <Form.Group controlId="formEmail">
+                            <Form.Label>Email</Form.Label>
+                            <Form.Control 
+                                type="email" 
+                                placeholder="Enter email" 
+                                value={newTrainer.email} 
+                                onChange={(e) => setNewTrainer({ ...newTrainer, email: e.target.value })} 
+                                isInvalid={!!validationErrors.email}
+                            />
+                            <Form.Control.Feedback type="invalid">{validationErrors.email}</Form.Control.Feedback>
+                        </Form.Group>
+                        <Form.Group controlId="formDescription">
+                            <Form.Label>Description</Form.Label>
+                            <Form.Control 
+                                as="textarea" 
+                                rows={3} 
+                                placeholder="Enter description" 
+                                value={newTrainer.description} 
+                                onChange={(e) => setNewTrainer({ ...newTrainer, description: e.target.value })} 
+                                isInvalid={!!validationErrors.description}
+                            />
+                            <Form.Control.Feedback type="invalid">{validationErrors.description}</Form.Control.Feedback>
+                        </Form.Group>
+                        <Form.Group controlId="formPassword">
+                            <Form.Label>Password</Form.Label>
+                            <Form.Control 
+                                type="password" 
+                                placeholder="Enter password" 
+                                value={newTrainer.password} 
+                                onChange={(e) => setNewTrainer({ ...newTrainer, password: e.target.value })} 
+                                isInvalid={!!validationErrors.password}
+                            />
+                            <Form.Control.Feedback type="invalid">{validationErrors.password}</Form.Control.Feedback>
+                        </Form.Group>
+                        <Form.Group controlId="formConfirmPassword">
+                            <Form.Label>Confirm Password</Form.Label>
+                            <Form.Control 
+                                type="password" 
+                                placeholder="Confirm password" 
+                                value={newTrainer.confirmPassword} 
+                                onChange={(e) => setNewTrainer({ ...newTrainer, confirmPassword: e.target.value })} 
+                                isInvalid={!!validationErrors.confirmPassword}
+                            />
+                            <Form.Control.Feedback type="invalid">{validationErrors.confirmPassword}</Form.Control.Feedback>
+                        </Form.Group>
+                    </Form>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setShowAddTrainerModal(false)}>
+                        Cancel
+                    </Button>
+                    <Button variant="primary" onClick={handleAddTrainer}>
+                        Add
                     </Button>
                 </Modal.Footer>
             </Modal>

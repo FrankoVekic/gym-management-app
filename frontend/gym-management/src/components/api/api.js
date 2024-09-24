@@ -270,3 +270,7 @@ export const updateIsContacted = ({id, contacted}) => {
 export const getAllTrainers = () => {
     return axios.get(`${API_URL}/public/trainers/getTrainers`);
 };
+
+export const addNewTrainer = (values) =>{
+    return axios.post(`${API_URL}/public/api/auth/registerTrainer`, values);
+}
