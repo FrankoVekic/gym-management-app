@@ -143,6 +143,15 @@ public class AuthenticationService {
         var user = repository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new UnauthorizedException("Invalid email"));
 
+        if(user.getRole().equals(Role.TRAINER)){
+
+            Trainer trainer = trainerRepository.findByUserId(user.getId()).orElseThrow(() -> new RuntimeException("Trainer with given User ID does not exist"));
+
+            if(trainer.getRemovedAt() != null){
+                throw new UnauthorizedException("This account is no longer active.");
+            }
+        }
+
         var jwtToken = jwtService.generateToken(user, user.getId(), user.getRole().name());
 
         return AuthenticationResponse
@@ -161,6 +170,15 @@ public class AuthenticationService {
 
         User user = repository.findByEmail(email)
                 .orElseThrow(() -> new UnauthorizedException("User with this email does not exist.", HttpStatus.NOT_FOUND));
+
+        if(user.getRole().equals(Role.TRAINER)){
+
+            Trainer trainer = trainerRepository.findByUserId(user.getId()).orElseThrow(() -> new RuntimeException("Trainer with given User ID does not exist"));
+
+            if(trainer.getRemovedAt() != null){
+                throw new UnauthorizedException("This account is removed, you cannot reset password now. Create new account.");
+            }
+        }
 
         user.setResetToken(resetToken);
         user.setTokenExpiryTime(tokenExpiryTime);
