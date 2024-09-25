@@ -110,7 +110,11 @@ const Trainers = () => {
             setNewTrainer({ firstname: '', lastname: '', email: '', description: '', password: '', confirmPassword: '' });
             setValidationErrors({});
         } catch (error) {
-            setError("Failed to add the trainer.");
+            if(error.response && error.response.status === 400 && error.response.data.message.includes('email')){
+                setValidationErrors({email: 'Email is already in use'})
+            }else {
+                setError("Failed to add the trainer.");
+            }
         }
     };
 
