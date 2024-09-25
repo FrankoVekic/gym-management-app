@@ -53,6 +53,11 @@ const ClientStatusTable = () => {
         }
     };
 
+    const isExpired = (expirationDate) => {
+        if (!expirationDate) return false;
+        const date = new Date(expirationDate);
+        return date < new Date();
+    };
 
     const columns = useMemo(() => [
         { Header: 'First Name', accessor: 'firstname' },
@@ -156,8 +161,15 @@ const ClientStatusTable = () => {
                     <tbody {...getTableBodyProps()}>
                         {page.map(row => {
                             prepareRow(row);
+                            const isRowExpired = isExpired(row.original.trainingPackageExpirationDate);
+                            const isStatusExpired = row.original.statusId === 4;
+
                             return (
-                                <tr {...row.getRowProps()} key={row.original.id}>
+                                <tr 
+                                    {...row.getRowProps()} 
+                                    key={row.original.id} 
+                                    className={isRowExpired && !isStatusExpired ? 'table-danger' : ''}
+                                >
                                     {row.cells.map(cell => (
                                         <td {...cell.getCellProps()} key={cell.column.id}>
                                             {cell.render('Cell')}
