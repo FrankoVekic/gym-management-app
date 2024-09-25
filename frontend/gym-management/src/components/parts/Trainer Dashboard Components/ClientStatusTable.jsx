@@ -2,6 +2,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { useTable, usePagination, useGlobalFilter } from 'react-table';
 import { getMemberStatusesAndTrainingPackages, getAllStatuses, updateMemberStatus } from '../../api/api';
 import { Spinner } from 'react-bootstrap';
+import { Alert } from 'react-bootstrap';
 
 const ClientStatusTable = () => {
     const [data, setData] = useState([]);
@@ -128,7 +129,11 @@ const ClientStatusTable = () => {
     }
 
     if (error) {
-        return <div>{error}</div>;
+        return (
+            <div className="d-flex justify-content-center align-items-center mt-5">
+                <Alert variant="danger">{error}</Alert>
+            </div>
+        );
     }
 
     return (

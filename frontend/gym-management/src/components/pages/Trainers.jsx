@@ -22,7 +22,7 @@ const Trainers = () => {
         confirmPassword: ''
     });
     const [validationErrors, setValidationErrors] = useState({});
-    
+
     const [deletePassword, setDeletePassword] = useState('');
     const [passwordError, setPasswordError] = useState('');
 
@@ -43,6 +43,19 @@ const Trainers = () => {
 
         fetchData();
     }, []);
+
+    const resetNewTrainerForm = () => {
+        setNewTrainer({
+            firstname: '',
+            lastname: '',
+            email: '',
+            description: '',
+            password: '',
+            confirmPassword: ''
+        });
+        setValidationErrors({});
+    };
+
 
     const handleDeleteTrainer = async (id) => {
         if (!id) {
@@ -110,9 +123,9 @@ const Trainers = () => {
             setNewTrainer({ firstname: '', lastname: '', email: '', description: '', password: '', confirmPassword: '' });
             setValidationErrors({});
         } catch (error) {
-            if(error.response && error.response.status === 400 && error.response.data.message.includes('email')){
-                setValidationErrors({email: 'Email is already in use'})
-            }else {
+            if (error.response && error.response.status === 400 && error.response.data.message.includes('email')) {
+                setValidationErrors({ email: 'Email is already in use' })
+            } else {
                 setError("Failed to add the trainer.");
             }
         }
@@ -273,7 +286,7 @@ const Trainers = () => {
 
 
             {/* view modal */}
-            <Modal show={!!selectedTrainer && !showDeleteConfirmation} onHide={() => setSelectedTrainer(null)} centered>
+            <Modal show={!!selectedTrainer && !showDeleteConfirmation} onHide={() => setSelectedTrainer(null)} centered size="lg">
                 <Modal.Header closeButton>
                     <Modal.Title>Trainer Details</Modal.Title>
                 </Modal.Header>
@@ -313,7 +326,10 @@ const Trainers = () => {
             </Modal>
 
             {/* add trainer modal */}
-            <Modal show={showAddTrainerModal} onHide={() => setShowAddTrainerModal(false)} centered>
+            <Modal show={showAddTrainerModal} onHide={() => {
+                setShowAddTrainerModal(false);
+                resetNewTrainerForm();
+            }} centered>
                 <Modal.Header closeButton>
                     <Modal.Title>Add New Trainer</Modal.Title>
                 </Modal.Header>
@@ -389,7 +405,10 @@ const Trainers = () => {
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={() => setShowAddTrainerModal(false)}>
+                    <Button variant="secondary" onClick={() => {
+                        setShowAddTrainerModal(false);
+                        resetNewTrainerForm();
+                    }}>
                         Cancel
                     </Button>
                     <Button variant="primary" onClick={handleAddTrainer}>

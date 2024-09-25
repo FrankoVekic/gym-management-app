@@ -59,23 +59,25 @@ const EditTrainingSession = () => {
             [e.target.name]: e.target.value
         });
     };
-
     const handleSubmit = async () => {
         const { trainingType, sessionDate, trainer } = formData;
-
+    
         if (!trainingType || !trainer || !sessionDate) {
             setValidationError('All fields must be filled out.');
             return;
         }
-
+    
         const selectedDate = new Date(sessionDate);
         const now = new Date();
         if (selectedDate <= now) {
             setValidationError('The session date must be in the future.');
             return;
         }
-
+    
         try {
+            setValidationError('');
+            setError('');
+    
             await updateTrainingSession({ id: id, trainingType, date: sessionDate, trainer });
             setSuccessMessage('Successfully updated Training Session');
             setTimeout(() => {
@@ -85,6 +87,7 @@ const EditTrainingSession = () => {
             setError('Failed to update training session.');
         }
     };
+    
 
     if (loading) {
         return (
