@@ -18,6 +18,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 
 @Component
@@ -451,9 +452,10 @@ public class FakeDataInitalizer implements CommandLineRunner {
         }
     }
 
-    private void insertFakeUsersMemberRole(int numberOfMemberUsers) {
 
+    private void insertFakeUsersMemberRole(int numberOfMemberUsers) {
         int memberCounter = 1;
+        Random random = new Random();
 
         var exampleUser = User
                 .builder()
@@ -468,9 +470,7 @@ public class FakeDataInitalizer implements CommandLineRunner {
         userRepository.save(exampleUser);
 
         Status dummyStatus = statusRepository.getReferenceById(1L);
-
         TrainingPackage dummyTrainingPackage = trainingPackageRepository.getReferenceById(2L);
-
 
         Member member = Member
                 .builder()
@@ -482,7 +482,7 @@ public class FakeDataInitalizer implements CommandLineRunner {
 
         memberRepository.save(member);
 
-        while (memberCounter <= numberOfMemberUsers) {
+        while (memberCounter < numberOfMemberUsers) {
             var user = User
                     .builder()
                     .firstName(faker.name().firstName())
@@ -496,27 +496,32 @@ public class FakeDataInitalizer implements CommandLineRunner {
             if (userRepository.findByEmail(user.getEmail()).isPresent()) {
                 continue;
             }
+
             User savedMember = userRepository.save(user);
             memberCounter++;
 
             Status activeStatus = statusRepository.getReferenceById(1L);
-
             TrainingPackage trainingPackage = trainingPackageRepository.getReferenceById(2L);
 
+            LocalDateTime expirationDate;
+            if (random.nextBoolean()) {
+                expirationDate = LocalDateTime.now().plusMonths(1);
+            } else {
+                expirationDate = LocalDateTime.now().minusDays(1);
+            }
 
             Member exampleMember = Member
                     .builder()
                     .user(savedMember)
                     .trainingPackage(trainingPackage)
                     .status(activeStatus)
-                    .trainingPackageExpirationDate(LocalDateTime.now().plusMonths(1))
+                    .trainingPackageExpirationDate(expirationDate)
                     .build();
 
             memberRepository.save(exampleMember);
-
         }
-
     }
+
 
     private void insertFakeUsersTrainerRole(int numberOfTrainerUsers) {
 
