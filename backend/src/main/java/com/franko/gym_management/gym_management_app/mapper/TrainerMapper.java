@@ -13,6 +13,7 @@ public class TrainerMapper {
                 trainer.getDescription(),
                 trainer.getUser(),
                 trainer.getStatus(),
+                trainer.getRemovedAt(),
                 trainer.getTrainingSessions()
         );
     }
@@ -23,6 +24,7 @@ public class TrainerMapper {
                 trainerDto.getDescription(),
                 trainerDto.getUser(),
                 trainerDto.getStatus(),
+                trainerDto.getRemovedAt(),
                 trainerDto.getTrainingSessions()
         );
     }

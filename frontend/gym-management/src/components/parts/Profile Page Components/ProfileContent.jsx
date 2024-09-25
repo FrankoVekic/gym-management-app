@@ -1,25 +1,24 @@
 import React, { useEffect, useState } from "react";
-import Statics from "../../static utils/Statics";
-import { updateUserProfile, updateProfileImage } from "../../api/api";
+import { updateUserProfile } from "../../api/api";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { Button, Alert } from "react-bootstrap";
+import { Button, Alert, Spinner } from "react-bootstrap";
 
 const validate = (values) => {
     let errors = {};
 
     if (!values.firstName.trim()) {
         errors.firstName = 'First Name is required';
-    } else if (values.firstName.length < 2) {
+    } else if (values.firstName.trim().length < 2) {
         errors.firstName = 'First Name must be at least 2 characters long';
-    } else if (values.firstName.length > 100) {
+    } else if (values.firstName.trim().length > 100) {
         errors.firstName = 'First Name is too long';
     }
 
     if (!values.lastName.trim()) {
         errors.lastName = 'Last Name is required';
-    } else if (values.lastName.length < 2) {
+    } else if (values.lastName.trim().length < 2) {
         errors.lastName = 'Last Name must be at least 2 characters long';
-    } else if (values.lastName.length > 100) {
+    } else if (values.lastName.trim().length > 100) {
         errors.lastName = 'Last Name is too long';
     }
 
@@ -28,7 +27,6 @@ const validate = (values) => {
 
 const ProfileContent = ({ profile, setProfile }) => {
     const [loading, setLoading] = useState(true);
-    const [image, setImage] = useState(null);
     const [errorMessage, setErrorMessage] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
     const [userId, setUserId] = useState(profile.id || null);
@@ -82,32 +80,12 @@ const ProfileContent = ({ profile, setProfile }) => {
         }
     };
 
-    const handleFileChange = (e) => {
-        setImage(e.target.files[0]);
-    };
-
-    const handleImageUpload = async () => {
-        if (!image) return;
-
-        try {
-            const updatedImageUrl = await updateProfileImage({ image, userId });
-            setSuccessMessage("Profile image updated successfully.");
-            setErrorMessage("");
-
-            setProfile((prevProfile) => ({
-                ...prevProfile,
-                image: updatedImageUrl.data
-            }));
-        } catch (error) {
-            setErrorMessage("Failed to update profile image.");
-            setSuccessMessage("");
-        }
-    };
-
     if (loading) {
         return (
-            <div className="d-flex justify-content-center align-items-center mt-5">
-                <span className="visually-hidden">Loading...</span>
+            <div className="d-flex justify-content-center align-items-center" style={{ height: '80vh' }}>
+                <Spinner animation="border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                </Spinner>
             </div>
         );
     }
@@ -124,24 +102,6 @@ const ProfileContent = ({ profile, setProfile }) => {
             >
                 {({ handleSubmit }) => (
                     <Form onSubmit={handleSubmit} className="row gy-3 gy-xxl-4">
-                        <div className="col-12">
-                            <div className="row gy-2">
-                                <label className="col-12 form-label m-0">Profile Image</label>
-                                <div className="col-12">
-                                    <input
-                                        type="file"
-                                        accept=".jpg, .jpeg, .png"
-                                        name="image"
-                                        onChange={handleFileChange}
-                                    />
-                                </div>
-                                <div className="col-12">
-                                    <Button onClick={handleImageUpload} className="btn btn-primary">
-                                        Upload Image
-                                    </Button>
-                                </div>
-                            </div>
-                        </div>
                         <div className="col-12 col-md-6 d-flex flex-column align-items-center">
                             <label htmlFor="firstName" className="form-label">First Name</label>
                             <Field type="text" className="form-control" id="firstName" name="firstName" />

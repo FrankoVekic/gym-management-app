@@ -6,6 +6,7 @@ import TrainerProfileNavbar from "../parts/Trainer Profile Page Components/Train
 import ChangePasswordForm from "../parts/Profile Page Components/ChangePasswordForm";
 import { getTrainerProfile } from "../api/api";
 import { jwtDecode } from "jwt-decode";
+import { Spinner } from "react-bootstrap";
 
 const TrainerProfilePage = () => {
     const [profile, setProfile] = useState({});
@@ -32,7 +33,15 @@ const TrainerProfilePage = () => {
         fetchProfile();
     }, []);
 
-    if (loading) return <div>Loading...</div>;
+    if (loading) {
+        return (
+            <div className="d-flex justify-content-center align-items-center mt-5">
+                <Spinner animation="border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                </Spinner>
+            </div>
+        );
+    }
     if (errorMessage) return <div>{errorMessage}</div>;
 
     return (

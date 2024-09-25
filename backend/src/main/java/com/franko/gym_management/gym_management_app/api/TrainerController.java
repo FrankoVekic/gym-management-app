@@ -18,10 +18,15 @@ public class TrainerController {
     @Autowired
     private TrainerService trainerService;
 
-    // TODO: change response model, its giving too much information back
     @GetMapping("getTrainers")
     public ResponseEntity<List<TrainerDto>> getTrainers(){
         List<TrainerDto> trainers = trainerService.getTrainers();
+        return ResponseEntity.ok(trainers);
+    }
+
+    @PostMapping("getTrainersForOneTrainer")
+    public ResponseEntity<List<TrainerDto>> getTrainersForOneTrainer(@RequestBody DeleteBlogRequestDto deleteBlogRequestDto){
+        List<TrainerDto> trainers = trainerService.getTrainersForOneTrainer(deleteBlogRequestDto.getId());
         return ResponseEntity.ok(trainers);
     }
 
@@ -53,6 +58,15 @@ public class TrainerController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while updating the trainer status");
         }
         return ResponseEntity.ok("Trainers Status is successfully updated");
+    }
+
+    @PostMapping("removeTrainer")
+    public ResponseEntity<String> removeTrainer(@RequestBody DeleteBlogRequestDto deleteBlogRequestDto){
+
+        trainerService.softRemoveById(deleteBlogRequestDto.getId());
+
+        return ResponseEntity.ok().build();
+
     }
 
 }

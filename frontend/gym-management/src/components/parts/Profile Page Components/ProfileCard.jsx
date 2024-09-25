@@ -1,8 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import Statics from '../../static utils/Statics';
+import { updateProfileImage } from "../../api/api";
 
-const ProfileCard = ({ profile }) => {
-    const imageSrc = profile.image ? `${Statics.imagesFEUrl}${profile.image}` : Statics.noImageUrl;
+const ProfileCard = ({ profile, onImageUpdated }) => {
+    const [imageSrc, setImageSrc] = useState(profile.image ? `${Statics.imagesFEUrl}${profile.image}` : Statics.noImageUrl);
+
+    const handleFileChange = async (e) => {
+        const selectedImage = e.target.files[0];
+        if (selectedImage) {
+            try {
+                const updatedImageUrl = await updateProfileImage({ image: selectedImage, userId: profile.id });
+                setImageSrc(`${Statics.imagesFEUrl}${updatedImageUrl.data}`);
+                onImageUpdated(updatedImageUrl.data);
+            } catch (error) {
+                console.error("Failed to update profile image:", error);
+            }
+        }
+    };
 
     return (
         <div className="col-12 col-lg-4 col-xl-3">
@@ -14,16 +28,23 @@ const ProfileCard = ({ profile }) => {
                         </div>
                         <div className="card-body">
                             <div className="text-center mb-3">
-                                <img
-                                    src={imageSrc}
-                                    className="img-fluid rounded-circle profile-logo"
-                                    alt={`${profile.firstName} ${profile.lastName}`}
-                                />
+                                <label>
+                                    <img
+                                        src={imageSrc}
+                                        className="img-fluid rounded-circle profile-logo"
+                                        alt={`${profile.firstName} ${profile.lastName}`}
+                                        style={{ cursor: 'pointer' }}
+                                    />
+                                    <input
+                                        type="file"
+                                        accept=".jpg, .jpeg, .png"
+                                        onChange={handleFileChange}
+                                        style={{ display: 'none' }}
+                                    />
+                                </label>
                             </div>
                             <h5 className="text-center mb-1">{profile.firstName} {profile.lastName}</h5>
-                            <p className="text-center text-secondary mb-4">
-                                {profile.role}
-                            </p>
+                            <p className="text-center text-secondary mb-4">{profile.role}</p>
                             <ul className="list-group list-group-flush mb-4">
                                 <li className="list-group-item d-flex justify-content-between align-items-center">
                                     <h6 className="m-0">Status:</h6>
@@ -44,6 +65,6 @@ const ProfileCard = ({ profile }) => {
             </div>
         </div>
     );
-}
+};
 
 export default ProfileCard;

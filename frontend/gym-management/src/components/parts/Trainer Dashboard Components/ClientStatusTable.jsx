@@ -1,12 +1,14 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useTable, usePagination, useGlobalFilter } from 'react-table';
 import { getMemberStatusesAndTrainingPackages, getAllStatuses, updateMemberStatus } from '../../api/api';
-
+import { Spinner } from 'react-bootstrap';
+import { Alert } from 'react-bootstrap';
 const ClientStatusTable = () => {
     const [data, setData] = useState([]);
     const [statuses, setStatuses] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [currentPageIndex, setCurrentPageIndex] = useState(0);
 
     useEffect(() => {
         const fetchMembersData = async () => {
@@ -46,12 +48,18 @@ const ClientStatusTable = () => {
                             : member
                     )
                 );
+                gotoPage(currentPageIndex);
             }
         } catch (error) {
             setError('Failed to update status.');
         }
     };
 
+    const isExpired = (expirationDate) => {
+        if (!expirationDate) return false;
+        const date = new Date(expirationDate);
+        return date < new Date();
+    };
 
     const columns = useMemo(() => [
         { Header: 'First Name', accessor: 'firstname' },
@@ -73,7 +81,7 @@ const ClientStatusTable = () => {
                 </select>
             )
         },
-        
+
         {
             Header: 'Training Package',
             accessor: 'trainingPackage',
@@ -85,7 +93,6 @@ const ClientStatusTable = () => {
             Cell: ({ value }) => value ? new Date(value).toLocaleDateString() : '-'
         }
     ], [statuses]);
-
 
     const {
         getTableProps,
@@ -105,18 +112,32 @@ const ClientStatusTable = () => {
         {
             columns,
             data,
-            initialState: { pageSize: 10 }
+            initialState: { pageSize: 10, pageIndex: currentPageIndex },
         },
         useGlobalFilter,
         usePagination
     );
 
+    useEffect(() => {
+        setCurrentPageIndex(pageIndex);
+    }, [pageIndex]);
+
     if (loading) {
-        return <div>Loading...</div>;
+        return (
+            <div className="d-flex justify-content-center align-items-center mt-5">
+                <Spinner animation="border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                </Spinner>
+            </div>
+        );
     }
 
     if (error) {
-        return <div>{error}</div>;
+        return (
+            <div className="d-flex justify-content-center align-items-center mt-5">
+                <Alert variant="danger">{error}</Alert>
+            </div>
+        );
     }
 
     return (
@@ -134,7 +155,7 @@ const ClientStatusTable = () => {
                         className="form-control"
                     />
                 </div>
-                <table {...getTableProps()} className="table table-striped">
+                <table {...getTableProps()} className="table">
                     <thead>
                         {headerGroups.map(headerGroup => (
                             <tr {...headerGroup.getHeaderGroupProps()} key={headerGroup.id}>
@@ -149,8 +170,15 @@ const ClientStatusTable = () => {
                     <tbody {...getTableBodyProps()}>
                         {page.map(row => {
                             prepareRow(row);
+                            const isRowExpired = isExpired(row.original.trainingPackageExpirationDate);
+                            const isStatusExpired = row.original.statusId === 4;
+
                             return (
-                                <tr {...row.getRowProps()} key={row.original.id}>
+                                <tr
+                                    {...row.getRowProps()}
+                                    key={row.original.id}
+                                    className={isRowExpired && !isStatusExpired ? 'table-danger' : ''}
+                                >
                                     {row.cells.map(cell => (
                                         <td {...cell.getCellProps()} key={cell.column.id}>
                                             {cell.render('Cell')}

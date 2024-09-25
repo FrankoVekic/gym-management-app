@@ -36,6 +36,15 @@ public class TrainerServiceImpl implements TrainerService {
     }
 
     @Override
+    public List<TrainerDto> getTrainersForOneTrainer(Long id) {
+        List<Trainer> trainers = trainerRepository.findTrainersForSpecTrainer(id);
+        return trainers
+                .stream()
+                .map(TrainerMapper::mapToTrainerDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public TrainerDto createTrainer(TrainerDto trainerDto) {
         Trainer trainer = TrainerMapper.mapToTrainer(trainerDto);
         return TrainerMapper.mapToTrainerDto(trainerRepository.save(trainer));
@@ -97,10 +106,16 @@ public class TrainerServiceImpl implements TrainerService {
             throw new RuntimeException("Status with given Name is not found");
         }
 
-
-
         trainer.setStatus(status);
         trainerRepository.save(trainer);
+
+    }
+
+    @Override
+    public void softRemoveById(Long id) {
+
+        trainerRepository.findById(id).orElseThrow(() -> new RuntimeException("Trainer with given ID does not exist"));
+        trainerRepository.softDeleteById(id);
 
     }
 

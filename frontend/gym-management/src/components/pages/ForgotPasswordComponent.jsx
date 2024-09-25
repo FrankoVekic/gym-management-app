@@ -19,7 +19,11 @@ const ForgotPasswordComponent = () => {
         } catch (error) {
             if (error.response && error.response.status === 404) {
                 setErrorMessage("The email address you entered is not associated with any account. Please check the email and try again or create a new account.");
-            } else {
+            }else if(error.response && error.response.status === 401){
+                setErrorMessage("The email address you entered is deactivated, you need to create a new account.");
+
+            }
+             else {
                 setErrorMessage('Failed to send reset password email.');
             }
             setSuccessMessage('');

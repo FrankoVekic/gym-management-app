@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import ChartsCarouselComponent from '../parts/Trainer Dashboard Components/ChartsCarouselComponent';
 import 'react-circular-progressbar/dist/styles.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ClientStatusTable from '../parts/Trainer Dashboard Components/ClientStatusTable';
@@ -91,9 +90,6 @@ const TrainerDashboard = () => {
                         </div>
                     </div>
                 </div>
-            </div>
-            <div className="card">
-                <ChartsCarouselComponent />
             </div>
         </div>
     );

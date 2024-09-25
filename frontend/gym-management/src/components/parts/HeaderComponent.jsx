@@ -61,6 +61,7 @@ export default function HeaderComponent() {
                 </a>
                 <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
                     <li><Link className="dropdown-item" to="/contact-entries">Contact Entries</Link></li>
+                    <li><Link className="dropdown-item" to="/manage-trainers">Trainers</Link></li>
                     <li><Link className="dropdown-item" to="/training-sessions">Training Sessions</Link></li>
                     <li><Link className="dropdown-item" to="/testimonials">Testimonials</Link></li>
                 </ul>

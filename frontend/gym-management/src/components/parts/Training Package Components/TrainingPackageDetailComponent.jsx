@@ -71,7 +71,7 @@ const TrainingPackageDetailComponent = () => {
             )}
             <div className="row justify-content-center">
                 <div className="col-md-5">
-                    <div className="card">
+                    <div className="card-bg">
                         <div className="card-body">
                             <div className="d-flex justify-content-start mb-3">
                                 <URLSaver />
@@ -81,7 +81,7 @@ const TrainingPackageDetailComponent = () => {
                             <p className="training-package-features">{trainingPackage.features}</p>
                             <div className="payment-button">
                                 <button
-                                    className="btn btn-primary mb-4"
+                                    className="btn btn-primary m-2"
                                     onClick={handlePay}
                                     disabled={isPaying}
                                 >

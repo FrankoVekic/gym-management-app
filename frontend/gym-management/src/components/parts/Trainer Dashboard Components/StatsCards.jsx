@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getMembersCount, getTraningSessionsCount, getTotalPaid } from '../../api/api';
-import { Alert, Spinner } from 'react-bootstrap';
+import { Alert } from 'react-bootstrap';
 
 
 const StatsCards = () => {
@@ -43,9 +43,7 @@ const StatsCards = () => {
     if (loading) {
         return (
             <div className="d-flex justify-content-center align-items-center mt-5">
-                <Spinner animation="border" role="status">
                     <span className="visually-hidden">Loading...</span>
-                </Spinner>
             </div>
         );
     }

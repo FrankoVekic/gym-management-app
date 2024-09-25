@@ -158,7 +158,7 @@ const UpcomingTrainings = () => {
             <div className="row">
                 {currentTrainings.map(training => (
                     <div key={training.sessionId} className="col-md-4 mb-4">
-                        <div className="card h-100">
+                        <div className="card-bg h-100">
                             <div className="card-body d-flex flex-column">
                                 <h5 className="card-title">
                                     {training.trainingType}
@@ -183,7 +183,7 @@ const UpcomingTrainings = () => {
                                 </p>
                                 <Button
                                     onClick={() => handleShowDetails(training)}
-                                    className="btn btn-primary mt-auto"
+                                    className="btn btn-primary mt-3"
                                 >
                                     View Details
                                 </Button>

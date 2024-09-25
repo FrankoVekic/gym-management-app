@@ -23,9 +23,6 @@ const TrainingPackagesSelectionComponent = () => {
     return (
         <section className="bg-light py-5 border-bottom">
             <div className="container px-5 my-5">
-                <div className="text-center mb-5">
-                    <h2 className="fw-bolder">Join our Training Groups!</h2>
-                </div>
                 <div className="row justify-content-center">
                     {packages.map(pkg => (
                         <div className="col-lg-10 col-xl-8 mb-4" key={pkg.id}>
@@ -39,7 +36,7 @@ const TrainingPackagesSelectionComponent = () => {
                                         ))}
                                     </ul>
                                     <button
-                                        className="btn btn-outline-primary"
+                                        className="btn btn-primary"
                                         onClick={() => handleChoosePlan(pkg.id)}
                                     >
                                         Choose plan

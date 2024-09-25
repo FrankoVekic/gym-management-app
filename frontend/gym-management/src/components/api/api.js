@@ -265,3 +265,23 @@ export const updateTrainerStatus = ({trainerId, status}) => {
 export const updateIsContacted = ({id, contacted}) => {
     return axios.put(`${API_URL}/public/contactFormEntries/changeIsContactedStatus`, {id, contacted});
 };
+
+// GET ALL TRAINERS
+export const getAllTrainers = () => {
+    return axios.get(`${API_URL}/public/trainers/getTrainers`);
+};
+
+// ADD NEW TRAINER
+export const addNewTrainer = (values) =>{
+    return axios.post(`${API_URL}/public/api/auth/registerTrainer`, values);
+}
+
+// REMOVE TRAINER
+export const removeTrainer = (id) => {
+    return axios.post(`${API_URL}/public/trainers/removeTrainer`, { id });
+};
+
+// GET ALL TRAINERS FOR ONE TRAINER
+export const getAllTrainersForOneTrainer = (id) => {
+    return axios.post(`${API_URL}/public/trainers/getTrainersForOneTrainer`, {id});
+};

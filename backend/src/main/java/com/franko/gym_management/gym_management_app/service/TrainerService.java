@@ -11,6 +11,8 @@ public interface TrainerService {
 
     List<TrainerDto> getTrainers();
 
+    List<TrainerDto> getTrainersForOneTrainer(Long id);
+
     TrainerDto createTrainer(TrainerDto trainerDto);
 
     List<TrainerNameDto> getTrainerNames();
@@ -18,5 +20,7 @@ public interface TrainerService {
     TrainerProfileDto getTrainerProfile(Long id);
 
     void updateTrainerStatus(UpdateTrainerStatusDto updateTrainerStatusDto);
+
+    void softRemoveById(Long id);
 
 }

@@ -1,15 +1,19 @@
 package com.franko.gym_management.gym_management_app.config.auth;
 
 import com.franko.gym_management.gym_management_app.config.jwt.JwtService;
+import com.franko.gym_management.gym_management_app.dto.TrainerDto;
 import com.franko.gym_management.gym_management_app.enums.Role;
 import com.franko.gym_management.gym_management_app.enums.StatusType;
 import com.franko.gym_management.gym_management_app.exceptions.EmailExistsException;
 import com.franko.gym_management.gym_management_app.exceptions.UnauthorizedException;
+import com.franko.gym_management.gym_management_app.mapper.TrainerMapper;
 import com.franko.gym_management.gym_management_app.model.Member;
 import com.franko.gym_management.gym_management_app.model.Status;
+import com.franko.gym_management.gym_management_app.model.Trainer;
 import com.franko.gym_management.gym_management_app.model.User;
 import com.franko.gym_management.gym_management_app.repository.MemberRepository;
 import com.franko.gym_management.gym_management_app.repository.StatusRepository;
+import com.franko.gym_management.gym_management_app.repository.TrainerRepository;
 import com.franko.gym_management.gym_management_app.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +44,7 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
     private final MemberRepository memberRepository;
     private final StatusRepository statusRepository;
+    private final TrainerRepository trainerRepository;
 
     private final static String LOCAL_DEV_URL = "http://localhost:3000/";
 
@@ -84,6 +89,42 @@ public class AuthenticationService {
 
     }
 
+    public void registerTrainer(RegisterTrainerRequest request) {
+
+
+        Optional<User> userByEmail = repository.findByEmail(request.getEmail());
+
+        if (userByEmail.isPresent()) {
+            throw new EmailExistsException("User with entered email already exists");
+        }
+
+        var user = User
+                .builder()
+                .firstName(request.getFirstname())
+                .lastName(request.getLastname())
+                .email(request.getEmail())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .image("noLogo.png")
+                .role(Role.TRAINER)
+                .build();
+
+        repository.save(user);
+
+
+        Status status = statusRepository.getReferenceById(6L);
+
+        var trainer = Trainer
+                .builder()
+                .user(user)
+                .status(status)
+                .description(request.getDescription())
+                .build();
+
+
+        trainerRepository.save(trainer);
+
+    }
+
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
 
         if (request.getEmail() == null || request.getEmail().isEmpty()) {
@@ -101,6 +142,15 @@ public class AuthenticationService {
 
         var user = repository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new UnauthorizedException("Invalid email"));
+
+        if(user.getRole().equals(Role.TRAINER)){
+
+            Trainer trainer = trainerRepository.findByUserId(user.getId()).orElseThrow(() -> new RuntimeException("Trainer with given User ID does not exist"));
+
+            if(trainer.getRemovedAt() != null){
+                throw new UnauthorizedException("This account is no longer active.");
+            }
+        }
 
         var jwtToken = jwtService.generateToken(user, user.getId(), user.getRole().name());
 
@@ -120,6 +170,15 @@ public class AuthenticationService {
 
         User user = repository.findByEmail(email)
                 .orElseThrow(() -> new UnauthorizedException("User with this email does not exist.", HttpStatus.NOT_FOUND));
+
+        if(user.getRole().equals(Role.TRAINER)){
+
+            Trainer trainer = trainerRepository.findByUserId(user.getId()).orElseThrow(() -> new RuntimeException("Trainer with given User ID does not exist"));
+
+            if(trainer.getRemovedAt() != null){
+                throw new UnauthorizedException("This account is removed, you cannot reset password now. Create new account.");
+            }
+        }
 
         user.setResetToken(resetToken);
         user.setTokenExpiryTime(tokenExpiryTime);

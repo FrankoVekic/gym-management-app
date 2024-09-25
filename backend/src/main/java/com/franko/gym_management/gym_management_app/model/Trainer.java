@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -26,6 +27,9 @@ public class Trainer {
 
     @ManyToOne
     private Status status;
+
+    @Column
+    private LocalDateTime removedAt;
 
     @JsonIgnore
     @OneToMany(mappedBy = "trainer", cascade = CascadeType.ALL)
