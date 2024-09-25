@@ -209,7 +209,8 @@ const Trainers = () => {
             </div>
             <div className="d-flex justify-content-center mb-5">
                 <Button variant="primary" onClick={() => setShowAddTrainerModal(true)}>
-                    Add New Trainer
+                <i className="bi bi-person-plus me-2"/>
+                Add New Trainer
                 </Button>
             </div>
             <div className="row">
