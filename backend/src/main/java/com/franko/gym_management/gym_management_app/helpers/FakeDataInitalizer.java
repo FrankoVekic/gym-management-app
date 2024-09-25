@@ -78,7 +78,7 @@ public class FakeDataInitalizer implements CommandLineRunner {
             insertTrainingTypes();
             insertStatuses();
             insertFakeUsersTrainerRole(2);
-            insertFakeUsersMemberRole(10);
+            insertFakeUsersMemberRole(30);
             insertUserTestimonials();
             insertBlogs();
             insertTrainingSessions();
