@@ -24,6 +24,12 @@ public class TrainerController {
         return ResponseEntity.ok(trainers);
     }
 
+    @PostMapping("getTrainersForOneTrainer")
+    public ResponseEntity<List<TrainerDto>> getTrainersForOneTrainer(@RequestBody DeleteBlogRequestDto deleteBlogRequestDto){
+        List<TrainerDto> trainers = trainerService.getTrainersForOneTrainer(deleteBlogRequestDto.getId());
+        return ResponseEntity.ok(trainers);
+    }
+
     @PostMapping("addTrainer")
     public ResponseEntity<TrainerDto> createTrainer(@RequestBody TrainerDto trainerDto){
         TrainerDto savedTrainer = trainerService.createTrainer(trainerDto);

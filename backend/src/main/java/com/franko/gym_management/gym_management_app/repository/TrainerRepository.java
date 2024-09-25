@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface TrainerRepository extends JpaRepository<Trainer, Long> {
@@ -39,4 +40,6 @@ public interface TrainerRepository extends JpaRepository<Trainer, Long> {
     WHERE u.id = :id
 """, nativeQuery = true)
     List<Object[]> getTrainerProfileDetails(@Param("id") Long id);
+
+    Optional<Trainer> findByUserId(Long userId);
 }

@@ -36,6 +36,15 @@ public class TrainerServiceImpl implements TrainerService {
     }
 
     @Override
+    public List<TrainerDto> getTrainersForOneTrainer(Long id) {
+        List<Trainer> trainers = trainerRepository.findTrainersForSpecTrainer(id);
+        return trainers
+                .stream()
+                .map(TrainerMapper::mapToTrainerDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public TrainerDto createTrainer(TrainerDto trainerDto) {
         Trainer trainer = TrainerMapper.mapToTrainer(trainerDto);
         return TrainerMapper.mapToTrainerDto(trainerRepository.save(trainer));

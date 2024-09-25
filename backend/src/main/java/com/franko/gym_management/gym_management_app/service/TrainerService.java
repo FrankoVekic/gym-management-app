@@ -11,6 +11,8 @@ public interface TrainerService {
 
     List<TrainerDto> getTrainers();
 
+    List<TrainerDto> getTrainersForOneTrainer(Long id);
+
     TrainerDto createTrainer(TrainerDto trainerDto);
 
     List<TrainerNameDto> getTrainerNames();

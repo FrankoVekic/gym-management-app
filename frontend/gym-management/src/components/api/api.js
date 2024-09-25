@@ -280,3 +280,8 @@ export const addNewTrainer = (values) =>{
 export const removeTrainer = (id) => {
     return axios.post(`${API_URL}/public/trainers/removeTrainer`, { id });
 };
+
+// GET ALL TRAINERS FOR ONE TRAINER
+export const getAllTrainersForOneTrainer = (id) => {
+    return axios.post(`${API_URL}/public/trainers/getTrainersForOneTrainer`, {id});
+};
