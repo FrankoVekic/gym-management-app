@@ -207,7 +207,6 @@ const Trainers = () => {
             <div className="d-flex flex-row mb-3">
                 <URLSaver />
             </div>
-            <h2 className="mb-4 text-center">Manage Trainers</h2>
             <div className="d-flex justify-content-center mb-5">
                 <Button variant="primary" onClick={() => setShowAddTrainerModal(true)}>
                     Add New Trainer
@@ -216,7 +215,7 @@ const Trainers = () => {
             <div className="row">
                 {trainers && trainers.map((trainer, index) => (
                     <div className="col-md-4 mb-4" key={index}>
-                        <div className="card h-100" style={{ borderRadius: '15px' }}>
+                        <div className="card-bg h-100" style={{ borderRadius: '15px' }}>
                             <div className="card-body text-center">
                                 <img
                                     src={trainer.user.image ? `${Statics.imagesFEUrl}${trainer.user.image}` : Statics.noImageUrl}

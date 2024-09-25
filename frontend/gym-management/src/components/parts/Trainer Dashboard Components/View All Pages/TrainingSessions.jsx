@@ -177,7 +177,7 @@ const TrainingSessions = () => {
             <div className="row">
                 {upcomingSessions.map(session => (
                     <div key={session.sessionId} className="col-md-4 mb-4">
-                        <div className="card position-relative">
+                        <div className="card-bg position-relative">
                             <div className="card-body">
                                 <div className="d-flex justify-content-end">
                                     <Button className='btn btn-primary btn-sm me-2' onClick={() => handleEditSession(session.sessionId)}>

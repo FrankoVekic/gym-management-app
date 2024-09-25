@@ -3,12 +3,12 @@ import { useTable, usePagination, useGlobalFilter } from 'react-table';
 import { getMemberStatusesAndTrainingPackages, getAllStatuses, updateMemberStatus } from '../../api/api';
 import { Spinner } from 'react-bootstrap';
 import { Alert } from 'react-bootstrap';
-
 const ClientStatusTable = () => {
     const [data, setData] = useState([]);
     const [statuses, setStatuses] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [currentPageIndex, setCurrentPageIndex] = useState(0);
 
     useEffect(() => {
         const fetchMembersData = async () => {
@@ -48,6 +48,7 @@ const ClientStatusTable = () => {
                             : member
                     )
                 );
+                gotoPage(currentPageIndex);
             }
         } catch (error) {
             setError('Failed to update status.');
@@ -80,7 +81,7 @@ const ClientStatusTable = () => {
                 </select>
             )
         },
-        
+
         {
             Header: 'Training Package',
             accessor: 'trainingPackage',
@@ -92,7 +93,6 @@ const ClientStatusTable = () => {
             Cell: ({ value }) => value ? new Date(value).toLocaleDateString() : '-'
         }
     ], [statuses]);
-
 
     const {
         getTableProps,
@@ -112,11 +112,15 @@ const ClientStatusTable = () => {
         {
             columns,
             data,
-            initialState: { pageSize: 10 }
+            initialState: { pageSize: 10, pageIndex: currentPageIndex },
         },
         useGlobalFilter,
         usePagination
     );
+
+    useEffect(() => {
+        setCurrentPageIndex(pageIndex);
+    }, [pageIndex]);
 
     if (loading) {
         return (
@@ -151,7 +155,7 @@ const ClientStatusTable = () => {
                         className="form-control"
                     />
                 </div>
-                <table {...getTableProps()} className="table table-striped">
+                <table {...getTableProps()} className="table">
                     <thead>
                         {headerGroups.map(headerGroup => (
                             <tr {...headerGroup.getHeaderGroupProps()} key={headerGroup.id}>
@@ -170,9 +174,9 @@ const ClientStatusTable = () => {
                             const isStatusExpired = row.original.statusId === 4;
 
                             return (
-                                <tr 
-                                    {...row.getRowProps()} 
-                                    key={row.original.id} 
+                                <tr
+                                    {...row.getRowProps()}
+                                    key={row.original.id}
                                     className={isRowExpired && !isStatusExpired ? 'table-danger' : ''}
                                 >
                                     {row.cells.map(cell => (
