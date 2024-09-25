@@ -17,14 +17,14 @@ const TrainingSessions = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [showModal, setShowModal] = useState(false);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [formData, setFormData] = useState({
         trainingType: '',
         sessionDate: '',
         trainer: ''
     });
+    const [selectedSessionId, setSelectedSessionId] = useState(null);
     const [validationError, setValidationError] = useState('');
-    const [showMessage, setShowMessage] = useState(false);
-    const [showDeleteMessage, setShowDeleteMessage] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -59,6 +59,7 @@ const TrainingSessions = () => {
     };
 
     const handleCloseModal = () => setShowModal(false);
+    const handleCloseDeleteModal = () => setShowDeleteModal(false);
 
     const handleFormChange = (e) => {
         setFormData({
@@ -69,68 +70,60 @@ const TrainingSessions = () => {
 
     const handleSubmit = async () => {
         const { trainingType, sessionDate, trainer } = formData;
-    
+
         if (!trainingType || !trainer || !sessionDate) {
             setValidationError('All fields must be filled out.');
             return;
         }
-    
+
         const selectedDate = new Date(sessionDate);
         const now = new Date();
         if (selectedDate <= now) {
             setValidationError('The session date must be in the future.');
             return;
         }
-    
+
         const sessionData = {
             trainingType: { id: trainingType },
             date: sessionDate,
             trainer: { id: trainer },
             attendances: []
         };
-    
+
         try {
             await createNewTrainingSession(sessionData);
             setShowModal(false);
-            setShowMessage(true);
             const req = await getUpcomingTrainingSessions();
             setUpcomingSessions(req.data);
-            
-            setTimeout(() => {
-                setShowMessage(false);
-            }, 3000);
         } catch (error) {
             setError("Error while creating new training session. Please try again later.");
-            
             setTimeout(() => {
                 setError(null);
             }, 3000);
         }
     };
-    
-    const handleDelete = async (sessionId) => {
-        if (window.confirm("Are you sure you want to delete this training session?")) {
+
+    const handleDelete = (sessionId) => {
+        setSelectedSessionId(sessionId);
+        setShowDeleteModal(true);
+    };
+
+    const confirmDelete = async () => {
+        if (selectedSessionId) {
             try {
-                await deleteTrainingSession(sessionId);
-                setUpcomingSessions(prevSessions => 
-                    prevSessions.filter(session => session.sessionId !== sessionId)
+                await deleteTrainingSession(selectedSessionId);
+                setUpcomingSessions(prevSessions =>
+                    prevSessions.filter(session => session.sessionId !== selectedSessionId)
                 );
-                setShowDeleteMessage(true);
-    
-                setTimeout(() => {
-                    setShowDeleteMessage(false);
-                }, 3000);
+                handleCloseDeleteModal();
             } catch (error) {
                 setError("Failed to delete the session.");
-                
                 setTimeout(() => {
                     setError(null);
                 }, 3000);
             }
         }
     };
-    
-    
 
     const handleEditSession = (id) => {
         navigate(`/training-sessions/${id}`);
@@ -144,8 +137,8 @@ const TrainingSessions = () => {
                 </Spinner>
             </div>
         );
-    } 
-    
+    }
+
     if (error) {
         return (
             <div className="d-flex justify-content-center align-items-center mt-5">
@@ -159,16 +152,6 @@ const TrainingSessions = () => {
             <div className="d-flex flex-row mb-3">
                 <URLSaver />
             </div>
-
-            {showMessage &&
-                <div className="d-flex justify-content-center align-items-center mb-5">
-                    <Alert variant="success">Training Session was Successfully Created!</Alert>
-                </div>}
-
-            {showDeleteMessage &&
-                <div className="d-flex justify-content-center align-items-center mb-5">
-                    <Alert variant="danger">Training Session was Successfully Deleted!</Alert>
-                </div>}
 
             <h2 className="mb-4 text-center">All Upcoming Training Sessions</h2>
             <div className="text-center mb-4">
@@ -204,6 +187,7 @@ const TrainingSessions = () => {
                     </div>
                 ))}
             </div>
+            
             <Modal show={showModal} onHide={handleCloseModal}>
                 <Modal.Header closeButton>
                     <Modal.Title>Create New Training Session</Modal.Title>
@@ -246,17 +230,36 @@ const TrainingSessions = () => {
                             >
                                 <option value="">Select Trainer</option>
                                 {trainers.map(trainer => (
-                                    <option key={trainer.id} value={trainer.id}>
-                                        {`${trainer.firstname} ${trainer.lastname}`}
-                                    </option>
+                                    <option key={trainer.id} value={trainer.id}>{trainer.firstname} {trainer.lastname}</option>
                                 ))}
                             </Form.Control>
                         </Form.Group>
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={handleCloseModal}>Close</Button>
-                    <Button variant="primary" onClick={handleSubmit}>Create</Button>
+                    <Button variant="secondary" onClick={handleCloseModal}>
+                        Close
+                    </Button>
+                    <Button variant="primary" onClick={handleSubmit}>
+                        Save Changes
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+
+            <Modal show={showDeleteModal} onHide={handleCloseDeleteModal}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Confirm Deletion</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    Are you sure you want to delete this training session?
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleCloseDeleteModal}>
+                        Cancel
+                    </Button>
+                    <Button variant="danger" onClick={confirmDelete}>
+                        Delete
+                    </Button>
                 </Modal.Footer>
             </Modal>
         </div>
