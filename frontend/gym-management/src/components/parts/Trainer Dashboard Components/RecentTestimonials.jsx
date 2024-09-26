@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getTestimonialUsers } from "../../api/api";
-import { Alert, Spinner } from 'react-bootstrap';
+import { Alert } from 'react-bootstrap';
 
 
 const RecentTestimonials = () => {
@@ -27,9 +27,7 @@ const RecentTestimonials = () => {
     if (loading) {
         return (
             <div className="d-flex justify-content-center align-items-center mt-5">
-                <Spinner animation="border" role="status">
-                    <span className="visually-hidden">Loading...</span>
-                </Spinner>
+                <span className="visually-hidden">Loading...</span>
             </div>
         );
     }
@@ -42,7 +40,7 @@ const RecentTestimonials = () => {
         );
     }
 
-    const limitedFeedback = feedback.slice(0, 3);
+    const limitedFeedback = feedback.slice(0, 5);
 
     return (
         <div className="col-md-6">

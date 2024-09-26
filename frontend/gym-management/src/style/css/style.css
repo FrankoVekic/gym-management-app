@@ -172,6 +172,7 @@ html, body {
     height: 100%;
     margin: 0;
     display: flex;
+    overflow-x: hidden;
     flex-direction: column;
     min-height: 100vh;
 }
@@ -185,6 +186,7 @@ html, body {
   
 .content {
     flex: 1;
+    overflow: auto;
 }
   
 .footer {
@@ -195,6 +197,7 @@ html, body {
     position: relative;
     width: 100%;
     bottom: 0;
+    margin-top: auto;
 }
   
 .footer p {

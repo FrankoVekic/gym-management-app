@@ -47,35 +47,40 @@ const ChangePasswordForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+    
         const passwordErrors = validatePassword(newPassword);
         if (Object.keys(passwordErrors).length > 0) {
             setErrorMessage(passwordErrors.password);
             return;
         }
-
+    
         if (oldPassword === newPassword) {
             setErrorMessage('New password cannot be the same as old password');
             return;
         }
-
+    
         if (newPassword !== confirmPassword) {
             setErrorMessage('Passwords do not match');
             return;
         }
-
-            try {
-                await changePassword({ email: userEmail, oldPassword, newPassword });
-                setSuccessMessage('Password changed successfully.');
-                setErrorMessage('');
-                setTimeout(() => {
-                    window.location.reload();
-                }, 1000);
-            } catch (error) {
-                setErrorMessage('Failed to change password.');
+    
+        try {
+            await changePassword({ email: userEmail, oldPassword, newPassword });
+            setSuccessMessage('Password changed successfully.');
+            setErrorMessage('');
+            setOldPassword('');
+            setNewPassword('');
+            setConfirmPassword('');
+            
+            setTimeout(() => {
                 setSuccessMessage('');
-            }
+            }, 2000);
+        } catch (error) {
+            setErrorMessage('Failed to change password.');
+            setSuccessMessage('');
+        }
     };
+    
 
     return (
         <div
