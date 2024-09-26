@@ -21,9 +21,9 @@ public class AuthenticationController {
     }
 
     @PostMapping("registerTrainer")
-    public ResponseEntity<String> registerTrainer(@RequestBody RegisterTrainerRequest request) {
-        authenticationService.registerTrainer(request);
-        return ResponseEntity.ok("Successfully added new trainer");
+    public ResponseEntity<Long> registerTrainer(@RequestBody RegisterTrainerRequest request) {
+        Long id = authenticationService.registerTrainer(request);
+        return ResponseEntity.ok(id);
     }
 
     @PostMapping("authenticate")

@@ -30,7 +30,7 @@ public class ContactFormEntry {
     @Email(message = "Email is not valid")
     @NotBlank(message = "Email is required")
     @NotEmpty(message = "Email is required")
-    @Column(columnDefinition = "varchar(255)", nullable = false, unique = true)
+    @Column(columnDefinition = "varchar(255)", nullable = false)
     private String email;
 
     @Pattern(regexp="^\\+385\\d{8,10}$", message="Invalid phone number")

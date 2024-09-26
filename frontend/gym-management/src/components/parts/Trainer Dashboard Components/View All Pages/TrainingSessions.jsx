@@ -246,7 +246,7 @@ const TrainingSessions = () => {
                 </Modal.Footer>
             </Modal>
 
-            <Modal show={showDeleteModal} onHide={handleCloseDeleteModal}>
+            <Modal show={showDeleteModal} onHide={handleCloseDeleteModal} centered>
                 <Modal.Header closeButton>
                     <Modal.Title>Confirm Deletion</Modal.Title>
                 </Modal.Header>

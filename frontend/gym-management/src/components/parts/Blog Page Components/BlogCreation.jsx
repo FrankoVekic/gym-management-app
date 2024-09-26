@@ -13,24 +13,24 @@ const BlogCreation = () => {
   const handleSubmit = async (values, { setSubmitting }) => {
 
 
-      try {
-        const blogData = {
-          title: values.title,
-          content: values.content,
-          author: {
-            id: authState.user.userID,
-            role: authState.user.role,
-          },
-        };
+    try {
+      const blogData = {
+        title: values.title,
+        content: values.content,
+        author: {
+          id: authState.user.userID,
+          role: authState.user.role,
+        },
+      };
 
-        await createNewBlog(blogData);
-        setErrorMessage('');
-        navigate('/blogs');
-      } catch (error) {
-        setErrorMessage('Creating a new blog failed');
-      } finally {
-        setSubmitting(false);
-      }
+      await createNewBlog(blogData);
+      setErrorMessage('');
+      navigate('/blogs');
+    } catch (error) {
+      setErrorMessage('Creating a new blog failed');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   function validateForm(values) {
@@ -102,7 +102,9 @@ const BlogCreation = () => {
 
               <div className="form-floating mb-4">
                 <Form.Control
-                  type="text"
+                  as="textarea"
+                  rows={10}
+                  style={{ height: '200px' }}
                   id="content"
                   placeholder="Enter content"
                   name="content"
@@ -114,6 +116,8 @@ const BlogCreation = () => {
                 <Form.Label htmlFor="content">Content</Form.Label>
                 <Form.Control.Feedback type="invalid">{errors.content}</Form.Control.Feedback>
               </div>
+
+
 
               {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
 
