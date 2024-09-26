@@ -71,7 +71,7 @@ const RegisterComponent = () => {
 
   return (
     <section className="login-section d-flex justify-content-center align-items-center h-100 m-5">
-      <div className="login-container">
+      <div className="login-container mt-5">
         <h2 className='fw-bolder text-center mb-4'>Register a New Account</h2>
         <Formik
           initialValues={{ firstname: '', lastname: '', email: '', password: '', repeatPassword: '' }}

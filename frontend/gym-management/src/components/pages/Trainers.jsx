@@ -32,6 +32,7 @@ const Trainers = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
+
                 const resp = await getAllTrainersForOneTrainer(decodedToken.userID);
                 setTrainers(resp.data);
             } catch (error) {
@@ -94,20 +95,6 @@ const Trainers = () => {
             return;
         }
 
-        const newTrainerWithUser = {
-            user: {
-                image: null,
-                firstName: newTrainer.firstname,
-                lastName: newTrainer.lastname,
-                email: newTrainer.email,
-                password: newTrainer.password,
-                confirmPassword: newTrainer.confirmPassword
-            },
-            description: newTrainer.description,
-            status: { statusType: 'AVAILABLE' },
-            id: trainers.length + 1
-        };
-
         const newTrainerToSend = {
             firstname: newTrainer.firstname,
             lastname: newTrainer.lastname,
@@ -117,19 +104,32 @@ const Trainers = () => {
         };
 
         try {
-            await addNewTrainer(newTrainerToSend);
+            const response = await addNewTrainer(newTrainerToSend);
+            const { id } = response.data;
+            const newTrainerWithUser = {
+                id,
+                user: {
+                    image: null,
+                    firstName: newTrainer.firstname,
+                    lastName: newTrainer.lastname,
+                    email: newTrainer.email,
+                },
+                description: newTrainer.description,
+                status: { statusType: 'AVAILABLE' },
+            };
+
             setTrainers([...trainers, newTrainerWithUser]);
             setShowAddTrainerModal(false);
-            setNewTrainer({ firstname: '', lastname: '', email: '', description: '', password: '', confirmPassword: '' });
-            setValidationErrors({});
+            resetNewTrainerForm();
         } catch (error) {
             if (error.response && error.response.status === 400 && error.response.data.message.includes('email')) {
-                setValidationErrors({ email: 'Email is already in use' })
+                setValidationErrors({ email: 'Email is already in use' });
             } else {
                 setError("Failed to add the trainer.");
             }
         }
     };
+
 
     const validateNewTrainer = (trainer) => {
         const errors = {};
@@ -209,8 +209,8 @@ const Trainers = () => {
             </div>
             <div className="d-flex justify-content-center mb-5">
                 <Button variant="primary" onClick={() => setShowAddTrainerModal(true)}>
-                <i className="bi bi-person-plus me-2"/>
-                Add New Trainer
+                    <i className="bi bi-person-plus me-2" />
+                    Add New Trainer
                 </Button>
             </div>
             <div className="row">

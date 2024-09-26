@@ -89,7 +89,7 @@ public class AuthenticationService {
 
     }
 
-    public void registerTrainer(RegisterTrainerRequest request) {
+    public Long registerTrainer(RegisterTrainerRequest request) {
 
 
         Optional<User> userByEmail = repository.findByEmail(request.getEmail());
@@ -121,7 +121,9 @@ public class AuthenticationService {
                 .build();
 
 
-        trainerRepository.save(trainer);
+        Trainer newTrainer = trainerRepository.save(trainer);
+
+        return newTrainer.getId();
 
     }
 
