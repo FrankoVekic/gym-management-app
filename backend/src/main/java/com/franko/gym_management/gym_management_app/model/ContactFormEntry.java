@@ -32,7 +32,7 @@ public class ContactFormEntry {
     @NotEmpty(message = "Email is required")
     @Column(columnDefinition = "varchar(255)", nullable = false)
     private String email;
-    
+
     @Column(name = "phone_number")
     private String phoneNumber;
 

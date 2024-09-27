@@ -51,8 +51,19 @@ export default function ContactFormComponent() {
         // phone number validation
         if (!values.phoneNumber.trim()) {
             errors.phoneNumber = 'Phone number is required';
-        } else if (!/^\d{6,9}$/.test(values.phoneNumber)) {
-            errors.phoneNumber = 'Phone number must contain 6 to 9 digits';
+        } else if (!/^\d+$/.test(values.phoneNumber)) {
+            errors.phoneNumber = 'Phone number must contain only digits';
+        } else {
+            const phoneNumberLength = values.phoneNumber.length;
+            if (selectedPrefix === '+385') {
+                if (phoneNumberLength < 8 || phoneNumberLength > 9) {
+                    errors.phoneNumber = 'Phone number must contain 8 to 9 digits';
+                }
+            } else {
+                if (phoneNumberLength < 6 || phoneNumberLength > 7) {
+                    errors.phoneNumber = 'Phone number must contain 6 to 7 digits';
+                }
+            }
         }
 
         // message validation
@@ -65,7 +76,7 @@ export default function ContactFormComponent() {
 
     return (
         <section className="bg-light py-5">
-            <div className="container px-5 my-5 px-5">
+            <div className="container px-5 my-5">
                 <div className="text-center mb-5">
                     <div className="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i className="bi bi-envelope"></i></div>
                     <h2 className="fw-bolder">{Statics.contactFormEntryTitle}</h2>
