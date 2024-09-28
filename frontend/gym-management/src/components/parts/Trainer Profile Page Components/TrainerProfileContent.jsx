@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { updateUserProfile, updateProfileImage } from "../../api/api";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Button, Alert } from "react-bootstrap";
-import Statics from '../../static utils/Statics';
 
 const validate = (values) => {
     let errors = {};
@@ -29,6 +28,7 @@ const validate = (values) => {
 const TrainerProfileContent = ({ profile, setProfile }) => {
     const [loading, setLoading] = useState(true);
     const [image, setImage] = useState(null);
+    const [imageError, setImageError] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
 
@@ -78,20 +78,27 @@ const TrainerProfileContent = ({ profile, setProfile }) => {
 
     const handleFileChange = (e) => {
         setImage(e.target.files[0]);
+        setImageError("");
     };
 
     const handleImageUpload = async () => {
-        if (!image) return;
-
+        if (!image) {
+            setImageError("No image is selected.");
+            return;
+        }
+    
         try {
             const updatedImageUrl = await updateProfileImage({ image, userId: profile.id });
             setSuccessMessage("Profile image updated successfully.");
             setErrorMessage("");
-
+    
             setProfile((prevProfile) => ({
                 ...prevProfile,
                 image: updatedImageUrl.data
             }));
+    
+            setImage(null);
+            document.querySelector('input[name="image"]').value = null;
         } catch (error) {
             setErrorMessage("Failed to update profile image.");
             setSuccessMessage("");
@@ -122,27 +129,14 @@ const TrainerProfileContent = ({ profile, setProfile }) => {
                             <div className="row gy-2">
                                 <label className="col-12 form-label m-0">Profile Image</label>
                                 <div className="col-12">
-                                    {profile.image ? (
-                                        <>
-                                            <img
-                                                src={`${Statics.imagesFEUrl}${profile.image}`}
-                                                className="img-fluid profile-image"
-                                                alt={`${profile.firstName} ${profile.lastName}`}
-                                            />
-                                            <input
-                                                type="file"
-                                                accept=".jpg, .jpeg, .png"
-                                                name="image"
-                                                onChange={handleFileChange}
-                                            />
-                                        </>
-                                    ) : (
-                                        <input
-                                            type="file"
-                                            accept=".jpg, .jpeg, .png"
-                                            name="image"
-                                            onChange={handleFileChange}
-                                        />
+                                    <input
+                                        type="file"
+                                        accept=".jpg, .jpeg, .png"
+                                        name="image"
+                                        onChange={handleFileChange}
+                                    />
+                                    {imageError && (
+                                        <div className="text-danger">{imageError}</div>
                                     )}
                                 </div>
                                 <div className="col-12">
