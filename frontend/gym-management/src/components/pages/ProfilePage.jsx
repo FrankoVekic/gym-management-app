@@ -6,7 +6,7 @@ import ProfileNavbar from "../parts/Profile Page Components/ProfileNavbar";
 import ProfileCard from "../parts/Profile Page Components/ProfileCard";
 import { getMemberProfile } from "../api/api";
 import { jwtDecode } from "jwt-decode";
-import { Spinner } from "react-bootstrap";
+import { Spinner, Alert } from "react-bootstrap";
 
 const ProfilePage = () => {
     const [profile, setProfile] = useState(null);
@@ -42,7 +42,13 @@ const ProfilePage = () => {
             </div>
         );
     }
-    if (errorMessage) return <div>{errorMessage}</div>;
+    if (errorMessage) {
+        return (
+            <div className="d-flex justify-content-center align-items-center mt-5">
+                <Alert variant="danger">{errorMessage}</Alert>
+            </div>
+        );
+    }
 
     const handleImageUpdated = (newImage) => {
         setProfile((prevProfile) => ({
