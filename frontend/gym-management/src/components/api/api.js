@@ -257,8 +257,8 @@ export const updateMemberStatus = ({statusId, memberId}) => {
 };
 
 // UPDATE TRAINER STATUS
-export const updateTrainerStatus = ({trainerId, status}) => {
-    return axios.put(`${API_URL}/public/trainers/updateTrainerStatus`, {trainerId, status});
+export const updateTrainerStatus = ({userId, status}) => {
+    return axios.put(`${API_URL}/public/trainers/updateTrainerStatus`, {userId, status});
 };
 
 // UPDATE CONTACT ENTRY IS CONTACTED

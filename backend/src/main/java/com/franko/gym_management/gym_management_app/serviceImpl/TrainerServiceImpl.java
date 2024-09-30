@@ -5,8 +5,10 @@ import com.franko.gym_management.gym_management_app.exceptions.ResourceNotFoundE
 import com.franko.gym_management.gym_management_app.mapper.TrainerMapper;
 import com.franko.gym_management.gym_management_app.model.Status;
 import com.franko.gym_management.gym_management_app.model.Trainer;
+import com.franko.gym_management.gym_management_app.model.User;
 import com.franko.gym_management.gym_management_app.repository.StatusRepository;
 import com.franko.gym_management.gym_management_app.repository.TrainerRepository;
+import com.franko.gym_management.gym_management_app.repository.UserRepository;
 import com.franko.gym_management.gym_management_app.service.TrainerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +26,9 @@ public class TrainerServiceImpl implements TrainerService {
 
     @Autowired
     private StatusRepository statusRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     public List<TrainerDto> getTrainers() {
@@ -94,7 +99,8 @@ public class TrainerServiceImpl implements TrainerService {
     @Override
     public void updateTrainerStatus(UpdateTrainerStatusDto updateTrainerStatusDto) {
 
-        Trainer trainer = trainerRepository.findById(updateTrainerStatusDto.getTrainerId()).orElseThrow(() -> new RuntimeException("Trainer with given ID does not exist"));
+        User user = userRepository.findById(updateTrainerStatusDto.getUserId()).orElseThrow(() -> new RuntimeException("User with given ID does not exist"));
+        Trainer trainer = trainerRepository.findByUserId(user.getId()).orElseThrow(() -> new RuntimeException("Trainer with given ID does not exist"));
         Status status;
         try{
             status = statusRepository.findByStatusType(updateTrainerStatusDto.getStatus());

@@ -53,19 +53,12 @@ const TrainerProfileContent = ({ profile, setProfile }) => {
                 firstName: values.firstName, 
                 lastName: values.lastName 
             };
-            
+
             await updateUserProfile({ 
                 id: profile.id, 
                 firstname: updatedProfile.firstName, 
                 lastname: updatedProfile.lastName 
             });
-
-            if (image) {
-                const updatedImageUrl = await updateProfileImage({ image, userId: profile.id });
-                if (typeof updatedImageUrl === 'string') {
-                    updatedProfile.image = updatedImageUrl;
-                }
-            }
 
             setProfile(updatedProfile);
             setSuccessMessage("Profile updated successfully.");
@@ -74,6 +67,7 @@ const TrainerProfileContent = ({ profile, setProfile }) => {
             setErrorMessage("Failed to update profile.");
             setSuccessMessage("");
         }
+
     };
 
     const handleFileChange = (e) => {
