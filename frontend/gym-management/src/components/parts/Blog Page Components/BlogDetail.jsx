@@ -26,7 +26,8 @@ const BlogDetail = () => {
     const indexOfFirstComment = indexOfLastComment - commentsPerPage;
 
     const activeComments = comments.filter(comment => comment.deletedAt === null);
-    const currentComments = activeComments.slice(indexOfFirstComment, indexOfLastComment);
+    const sortedComments = activeComments.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    const currentComments = sortedComments.slice(indexOfFirstComment, indexOfLastComment);
 
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
