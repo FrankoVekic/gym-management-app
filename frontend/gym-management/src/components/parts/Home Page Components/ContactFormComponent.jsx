@@ -6,12 +6,13 @@ import Statics from '../../static utils/Statics';
 
 export default function ContactFormComponent() {
     const [successMessage, setSuccessMessage] = useState('');
+    const [selectedPrefix, setSelectedPrefix] = useState('+385');
 
     const handleSubmit = (values, { setSubmitting, resetForm }) => {
         createContactEntry({
             fullName: values.fullName,
             email: values.email,
-            phoneNumber: values.phoneNumber,
+            phoneNumber: `${selectedPrefix}${values.phoneNumber}`,
             message: values.message
         })
             .then(response => {
@@ -34,8 +35,7 @@ export default function ContactFormComponent() {
         // full name validation
         if (!values.fullName.trim()) {
             errors.fullName = 'Full name is required';
-        }
-        else if(values.fullName.length > 100){
+        } else if (values.fullName.length > 100) {
             errors.fullName = 'Full name is too long';
         }
 
@@ -44,18 +44,26 @@ export default function ContactFormComponent() {
             errors.email = 'Email is required';
         } else if (!/^\S+@\S+\.\S+$/.test(values.email)) {
             errors.email = 'Invalid email address';
-        }
-        else if(values.email.length > 70){
-            errors.email = 'Email is too long'
+        } else if (values.email.length > 70) {
+            errors.email = 'Email is too long';
         }
 
         // phone number validation
         if (!values.phoneNumber.trim()) {
             errors.phoneNumber = 'Phone number is required';
-        } else if (!/^(\+385\d{8,10})$/.test(values.phoneNumber)) {
-            errors.phoneNumber = 'Invalid phone number, must start with (+385) and have 8 or 9 digits';
-        } else if (values.phoneNumber.startsWith('+385') && (values.phoneNumber.length < 12 || values.phoneNumber.trim().length > 13)) {
-            errors.phoneNumber = 'Phone number must start with (+385) and have 8 to 9 digits';
+        } else if (!/^\d+$/.test(values.phoneNumber)) {
+            errors.phoneNumber = 'Phone number must contain only digits';
+        } else {
+            const phoneNumberLength = values.phoneNumber.length;
+            if (selectedPrefix === '+385') {
+                if (phoneNumberLength < 8 || phoneNumberLength > 9) {
+                    errors.phoneNumber = 'Phone number must contain 8 to 9 digits';
+                }
+            } else {
+                if (phoneNumberLength < 6 || phoneNumberLength > 7) {
+                    errors.phoneNumber = 'Phone number must contain 6 to 7 digits';
+                }
+            }
         }
 
         // message validation
@@ -68,7 +76,7 @@ export default function ContactFormComponent() {
 
     return (
         <section className="bg-light py-5">
-            <div className="container px-5 my-5 px-5">
+            <div className="container px-5 my-5">
                 <div className="text-center mb-5">
                     <div className="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i className="bi bi-envelope"></i></div>
                     <h2 className="fw-bolder">{Statics.contactFormEntryTitle}</h2>
@@ -77,7 +85,12 @@ export default function ContactFormComponent() {
                 <div className="row gx-5 justify-content-center">
                     <div className="col-lg-6">
                         <Formik
-                            initialValues={{ fullName: '', email: '', phoneNumber: '', message: '' }}
+                            initialValues={{
+                                fullName: '',
+                                email: '',
+                                phoneNumber: '',
+                                message: ''
+                            }}
                             enableReinitialize={true}
                             onSubmit={handleSubmit}
                             validate={validateForm}
@@ -113,16 +126,31 @@ export default function ContactFormComponent() {
                                         <Form.Control.Feedback type="invalid">{errors.email}</Form.Control.Feedback>
                                     </div>
                                     <div className="form-floating mb-3">
-                                        <Form.Control
-                                            type="tel"
-                                            id="phoneNumber"
-                                            placeholder="(+385)..."
-                                            name="phoneNumber"
-                                            value={values.phoneNumber}
-                                            onChange={handleChange}
-                                            isInvalid={!!errors.phoneNumber}
-                                        />
-                                        <Form.Label htmlFor="phoneNumber">Phone number</Form.Label>
+                                        <div className="d-flex">
+                                            <select
+                                                className="form-select me-2"
+                                                value={selectedPrefix}
+                                                onChange={(e) => setSelectedPrefix(e.target.value)}
+                                                style={{ width: '100px' }}
+                                            >
+                                                <option value="+385">+385</option>
+                                                <option value="091">091</option>
+                                                <option value="092">092</option>
+                                                <option value="099">099</option>
+                                            </select>
+                                            <Form.Control
+                                                type="tel"
+                                                id="phoneNumber"
+                                                placeholder="Enter phone number..."
+                                                name="phoneNumber"
+                                                value={values.phoneNumber}
+                                                onChange={handleChange}
+                                                isInvalid={!!errors.phoneNumber}
+                                                minLength={6}
+                                                maxLength={9}
+                                            />
+                                        </div>
+                                        <Form.Label htmlFor="phoneNumber"></Form.Label>
                                         <Form.Control.Feedback type="invalid">{errors.phoneNumber}</Form.Control.Feedback>
                                     </div>
                                     <div className="form-floating mb-3">

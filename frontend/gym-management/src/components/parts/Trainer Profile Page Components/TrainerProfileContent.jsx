@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { updateUserProfile, updateProfileImage } from "../../api/api";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Button, Alert } from "react-bootstrap";
-import Statics from '../../static utils/Statics';
 
 const validate = (values) => {
     let errors = {};
@@ -29,6 +28,7 @@ const validate = (values) => {
 const TrainerProfileContent = ({ profile, setProfile }) => {
     const [loading, setLoading] = useState(true);
     const [image, setImage] = useState(null);
+    const [imageError, setImageError] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
 
@@ -48,27 +48,16 @@ const TrainerProfileContent = ({ profile, setProfile }) => {
 
     const handleSubmit = async (values) => {
         try {
-            const updatedProfile = {
-                ...profile,
-                firstName: values.firstName,
-                lastName: values.lastName
+            const updatedProfile = { 
+                ...profile, 
+                firstName: values.firstName, 
+                lastName: values.lastName 
             };
 
-            const isUnchanged = (
-                profile.firstName === values.firstName &&
-                profile.lastName === values.lastName
-            );
-
-            if (isUnchanged) {
-                setErrorMessage("No changes made to the profile.");
-                setSuccessMessage("");
-                return;
-            }
-
-            await updateUserProfile({
-                id: profile.id,
-                firstname: updatedProfile.firstName,
-                lastname: updatedProfile.lastName
+            await updateUserProfile({ 
+                id: profile.id, 
+                firstname: updatedProfile.firstName, 
+                lastname: updatedProfile.lastName 
             });
 
             setProfile(updatedProfile);
@@ -78,24 +67,32 @@ const TrainerProfileContent = ({ profile, setProfile }) => {
             setErrorMessage("Failed to update profile.");
             setSuccessMessage("");
         }
+
     };
 
     const handleFileChange = (e) => {
         setImage(e.target.files[0]);
+        setImageError("");
     };
 
     const handleImageUpload = async () => {
-        if (!image) return;
-
+        if (!image) {
+            setImageError("No image is selected.");
+            return;
+        }
+    
         try {
             const updatedImageUrl = await updateProfileImage({ image, userId: profile.id });
             setSuccessMessage("Profile image updated successfully.");
             setErrorMessage("");
-
+    
             setProfile((prevProfile) => ({
                 ...prevProfile,
                 image: updatedImageUrl.data
             }));
+    
+            setImage(null);
+            document.querySelector('input[name="image"]').value = null;
         } catch (error) {
             setErrorMessage("Failed to update profile image.");
             setSuccessMessage("");
@@ -132,6 +129,9 @@ const TrainerProfileContent = ({ profile, setProfile }) => {
                                         name="image"
                                         onChange={handleFileChange}
                                     />
+                                    {imageError && (
+                                        <div className="text-danger">{imageError}</div>
+                                    )}
                                 </div>
                                 <div className="col-12">
                                     <Button onClick={handleImageUpload} className="btn btn-primary">

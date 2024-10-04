@@ -31,7 +31,7 @@ const TrainerProfileCard = ({ profile, setProfile }) => {
         setStatus(newStatus);
 
         try {
-            await updateTrainerStatus({ trainerId: profile.id, status: newStatus });
+            await updateTrainerStatus({ userId: profile.id, status: newStatus });
             setProfile(prevProfile => ({
                 ...prevProfile,
                 status: newStatus

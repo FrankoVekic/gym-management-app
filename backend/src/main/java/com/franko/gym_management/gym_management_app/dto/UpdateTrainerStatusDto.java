@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UpdateTrainerStatusDto {
 
-    private Long trainerId;
+    private Long userId;
     private String status;
 
 }
